@@ -1,0 +1,31 @@
+{
+    "mcpServers": {
+        "context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp@latest"
+            ],
+            "env": {}
+        },
+        "Framelink Figma MCP": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "figma-developer-mcp",
+                "--figma-api-key=YOUR_FIGMA_API_KEY_HERE",
+                "--stdio"
+            ]
+        },
+        "mcp-validator": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "mcp-validator"
+            ],
+            "env": {
+                "OPENROUTER_API_KEY": "YOUR_OPENROUTER_API_KEY_HERE"
+            }
+        }
+    }
+}
