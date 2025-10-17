@@ -142,3 +142,4 @@ target/
 .DS_Store
 lib/*
 reports/*
+user-rules/meta-info.md
