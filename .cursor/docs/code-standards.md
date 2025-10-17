@@ -1,8 +1,8 @@
 ---
 id: code-style-reference
 type: reference
-prompt_language: "ru"
-response_language: "ru"
+prompt_language: 'ru'
+response_language: 'ru'
 alwaysApply: false
 ---
 
@@ -47,7 +47,7 @@ alwaysApply: false
 
 <rule_id_registry>
 structural.one_file_one_function — Один файл = одна функция, максимум 150 строк.
-structural.file_size_max_150 — Лимит размера файла 150 строк.
+structural.file_size_max_150 — Лимит размера файла 150 строк (исключение: тестовые файлы).
 arrays.methods_only — Только методы массивов, никаких `for/while`.
 control_flow.guard_clauses — Guard clauses вместо глубокой вложенности.
 comparisons.explicit — Только явные сравнения (никаких `!value`).
@@ -64,10 +64,10 @@ tests.mock_only — Тесты только на мок-данных, без р�
 absolute_bans.class — Запрещены `class`, только функциональная композиция.
 absolute_bans.multiple_functions_per_file — Запрещено несколько функций в одном файле.
 absolute_bans.no_default_exports — Запрещены `default` экспорты.
-absolute_bans.no_comments_in_functions — Запрещены комментарии внутри тел функций.
+absolute_bans.no_comments_in_functions — Запрещены комментарии внутри тел функций (исключение: @ts-ignore, @ts-expect-error, eslint-disable).
 absolute_bans.no_implicit_comparisons — Запрещены неявные сравнения (`!value`).
 absolute_bans.no_deep_if_else — Запрещены глубокие ветвления вместо guard clauses.
-absolute_bans.files_over_150_lines — Запрещены файлы > 150 строк.
+absolute_bans.files_over_150_lines — Запрещены файлы > 150 строк (исключение: тестовые файлы).
 absolute_bans.types_inline_in_code — Запрещены inline-типы внутри кода.
 absolute_bans.node_imports_without_prefix — Запрещены Node.js импорты без `node:`.
 modules.esm_only — Только ESM, CommonJS запрещён; Node-модули с префиксом `node:`.
@@ -90,7 +90,7 @@ modules.esm_only — Только ESM, CommonJS запрещён; Node-моду�
 <structural_requirements>
 **ЖЕЛЕЗНЫЕ ПРАВИЛА:**
 
-- **Размер:** Один файл = одна функция, максимум 150 строк
+- **Размер:** Один файл = одна функция, максимум 150 строк (исключение: тестовые файлы могут быть больше)
 - **Тесты:** 100% покрытие для каждой новой функции
 - **JSDoc:** Комментарии на русском для каждой функции
 - **Guard Clauses:** Вместо глубокой вложенности
@@ -149,20 +149,20 @@ export function createUserService(deps: UserServiceDeps) {
 // ❌ ЗАПРЕЩЕНО - глубокая вложенность
 function processData(data: unknown) {
     if (data) {
-        if (typeof data === "object") {
+        if (typeof data === 'object') {
             if (data.name) {
                 return data.name;
             }
         }
     }
-    return "Invalid data";
+    return 'Invalid data';
 }
 
 // ✅ ОБЯЗАТЕЛЬНО - guard clauses
 function processData(data: unknown) {
-    if (!data) return "Invalid data";
-    if (typeof data !== "object") return "Invalid data";
-    if (!data.name) return "No name";
+    if (!data) return 'Invalid data';
+    if (typeof data !== 'object') return 'Invalid data';
+    if (!data.name) return 'No name';
     return data.name;
 }
 ```
@@ -182,9 +182,7 @@ for (let i = 0; i < items.length; i++) {
 }
 
 // ✅ ОБЯЗАТЕЛЬНО - методы массивов
-const results = items
-    .filter((item) => item.isValid)
-    .map((item) => process(item));
+const results = items.filter((item) => item.isValid).map((item) => process(item));
 ```
 
 </array_methods>
@@ -196,11 +194,11 @@ const results = items
 ```typescript
 // ❌ ЗАПРЕЩЕНО - неявные сравнения
 if (!value) return;
-if (!!user.isActive) console.log("active");
+if (!!user.isActive) console.log('active');
 
 // ✅ ОБЯЗАТЕЛЬНО - явные сравнения
 if (value === null || value === undefined) return;
-if (user.isActive === true) console.log("active");
+if (user.isActive === true) console.log('active');
 ```
 
 </explicit_comparisons>
@@ -269,17 +267,17 @@ export type FacadeExportData = {
 
 ```typescript
 // 1. Node.js с префиксом 'node:'
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 // 2. Внешние библиотеки
-import { z } from "zod";
+import { z } from 'zod';
 
 // 3. Типы с префиксом type
-import type { PackageChoice } from "../../model/types/main";
+import type { PackageChoice } from '../../model/types/main';
 
 // 4. Внутренние модули
-import { processPackage } from "./process-package";
+import { processPackage } from './process-package';
 ```
 
 </import_grouping>
@@ -309,23 +307,23 @@ import { processPackage } from "./process-package";
 <test_structure>
 
 ```typescript
-import { validatePackageName } from "..";
+import { validatePackageName } from '..';
 
-describe("validatePackageName", () => {
-    it("должен возвращать true для корректного названия пакета", () => {
-        const validNames = ["my-package", "test123", "simple-test-package"];
+describe('validatePackageName', () => {
+    it('должен возвращать true для корректного названия пакета', () => {
+        const validNames = ['my-package', 'test123', 'simple-test-package'];
 
         validNames.forEach((name) => {
             expect(validatePackageName(name)).toBe(true);
         });
     });
 
-    it("должен возвращать ошибку для пустого названия", () => {
-        const emptyName = "";
+    it('должен возвращать ошибку для пустого названия', () => {
+        const emptyName = '';
 
         const result = validatePackageName(emptyName);
 
-        expect(result).toBe("Название пакета обязательно");
+        expect(result).toBe('Название пакета обязательно');
     });
 });
 ```
@@ -343,7 +341,7 @@ describe("validatePackageName", () => {
 - **Один файл теста на каждую функцию**
 - **Vitest: не импортируй `describe`, `it`, `expect` - доступны глобально**
 - **Тестируй обычные, граничные и ошибочные случаи**
-- **Никаких комментариев внутри тестов**
+- **Никаких комментариев внутри тестов** (исключение: @ts-ignore, @ts-expect-error, eslint-disable)
 - **Никаких проверок на реальных данных - только моки**
   </test_rules>
 
@@ -408,9 +406,16 @@ export function processData() {
     return result;
 }
 
-// ✅ ОБЯЗАТЕЛЬНО - без комментариев
+// ✅ ОБЯЗАТЕЛЬНО - без комментариев (кроме @ts-ignore, @ts-expect-error, eslint-disable)
 export function processData() {
     if (!data) return error;
+    return result;
+}
+
+// ✅ РАЗРЕШЕНО - комментарии с игнором
+export function processData() {
+    // @ts-ignore - временное решение до обновления типов
+    const result = legacyFunction(data);
     return result;
 }
 ```
@@ -432,4 +437,4 @@ export function processData() {
 - ❌ **Неявные сравнения:** `!value` вместо `value === null`
 - ❌ **Отсутствие фигурных скобок** в if/else
 - ❌ **Глубокие if/else** вместо guard clauses
-- ❌ **Комментарии внутри тела функций** включая `// Guard clause`, `
+- ❌ **Комментарии внутри тела функций** включая `// Guard clause`, `// TODO` (исключение: `@ts-ignore`, `@ts-expect-error`, `eslint-disable`)
