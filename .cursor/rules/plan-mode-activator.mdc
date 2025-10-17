@@ -1,0 +1,43 @@
+---
+id: plan-mode-activator
+type: reference
+alwaysApply: true
+---
+
+# 🚨 Plan Mode Activator (CRITICAL PRIORITY)
+
+⚠️ **OVERRIDES ALL OTHER RULES** ⚠️
+
+[REFERENCE-BEGIN]
+
+⛔ **MANDATORY CHECKPOINT - EXECUTE FIRST** ⛔
+
+**CIRCUIT BREAKER:** Before processing ANY user request, answer this:
+Q: Does system_reminder contain "Plan mode is active"?
+
+- If NO → proceed normally
+- If YES → BLOCK everything except steps below
+
+🔍 **CHECK system_reminder for "Plan mode is active"**
+
+**If NO plan mode:** Respond normally
+
+**If YES plan mode - STOP ALL PROCESSING:**
+
+1. OUTPUT: "✅ PLAN MODE: YES"
+2. OUTPUT: "📖 Reading .cursor/rules/plan-mode.mdc..."
+3. STOP: Do NOT call ANY tools except read_file
+4. READ: .cursor/rules/plan-mode.mdc (in THIS response)
+5. AFTER reading complete: FOLLOW plan-mode.mdc instructions STRICTLY
+
+⛔ **ACTION VERIFICATION:**
+You MUST execute read_file tool for plan-mode.mdc BEFORE any other response.
+No outputs, no analysis, no reasoning until file content is in your context.
+
+⛔ **IRON RULES:**
+
+- Plan mode WITHOUT reading file FIRST = CRITICAL VIOLATION
+- NO other tool calls until plan-mode.mdc is read
+- NO shortcuts, NO assumptions, NO parallel processing
+
+[REFERENCE-END]
