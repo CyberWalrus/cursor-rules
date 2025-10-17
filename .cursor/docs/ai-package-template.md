@@ -358,7 +358,7 @@ yarn workspace ${WORKSPACE_NAME} dev
 id: package-mcp-validator
 documentation_type: 'ai-package-documentation'
 package_context:
-    name: 'mcp-validator'
+    name: '@morj/tools.mcp-validator'
     type: 'tool'
     architecture_type: 'layered_library'
     main_exports: ['validate', 'test-prompt']
@@ -371,7 +371,7 @@ architecture_docs:
         - 'architecture/ui.xml'
 ---
 
-# 🔧 AI-документация: mcp-validator
+# 🔧 AI-документация: @morj/tools.mcp-validator
 
 <package_purpose>
 **Назначение пакета:**

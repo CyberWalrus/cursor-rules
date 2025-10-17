@@ -138,7 +138,7 @@ If size limits exceeded: prioritize essential information and move detailed exam
 - **XML секции:** Каждая основная секция обернута в соответствующие XML теги
 - **Структура:** Линейная последовательность секций без вложенных блоков
 - **Кодировка:** UTF-8 с поддержкой русского языка
-- **Ограничения:** Максимум 120 строк контента, включая YAML
+- **Ограничения:** Максимум 120 строк контента, включая YAML (исключение: тестовые файлы могут быть больше)
 
 **Правила форматирования:**
 
@@ -269,7 +269,7 @@ documentation_type: 'ai-module-documentation'
 module_context:
     name: 'validation'
     path: 'src/services/workflows/validation'
-    parent_package: 'mcp-validator'
+    parent_package: '@morj/tools.mcp-validator'
     purpose: 'валидация кода и промптов через AI модели'
 ---
 
@@ -353,7 +353,7 @@ documentation_type: 'ai-module-documentation'
 module_context:
     name: 'mcp-server'
     path: 'src/services/adapters/mcp-server'
-    parent_package: 'mcp-validator'
+    parent_package: '@morj/tools.mcp-validator'
     purpose: 'MCP протокол сервер для интеграции с Cursor'
 ---
 
@@ -445,7 +445,7 @@ process.stdin.pipe(mcpServer).pipe(process.stdout);
 - `documentation_type: 'ai-module-documentation'`
 - `ai_documentation_version: '2.0.0'`
 - `module_context` с полными метаданными модульной единицы
-- `size_limits: content: { max: 120 }` - строгий лимит 120 строк
+- `size_limits: content: { max: 120 }` - строгий лимит 120 строк (исключение: тестовые файлы)
 
 **Структура примеров кода:**
 
