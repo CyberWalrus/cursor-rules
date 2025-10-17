@@ -361,11 +361,12 @@ constants/main.ts — self-contained file with all exports (DEFAULT_CONFIG, type
 **Nested module (complex sub-group, e.g., model):**
 constants/default-values/index.ts — facade re-exports from sub-files (e.g., export { DEFAULT_VALUE } from './value').
 
-**Single file module (simple, e.g., model constants):**
-constants/main.ts — self-contained file with all exports (DEFAULT_CONFIG, types; no dir+index.ts).
+**Model layer container folders (special case):**
 
-**Nested module (complex sub-group, e.g., model):**
-constants/default-values/index.ts — facade re-exports from sub-files (e.g., export { DEFAULT_VALUE } from './value').
+- `model/constants/` — container folder (NOT a modular unit, no facade required)
+- `model/constants/main.ts` — modular unit (self-contained file with all exports)
+- `model/schemas/main.ts` — modular unit (simple, re-exports from other files)
+- `model/types/main/index.ts` — modular unit (complex, multiple files with facade)
 
 <completion_criteria>
 
@@ -439,18 +440,20 @@ If encapsulation is broken: ensure proper facade usage
 
 <project_structure_quickref>
 
-| **What do you have?** | **Simple structure** | **Complex structure**                 |
-| --------------------- | -------------------- | ------------------------------------- |
-| TypeScript type       | `types.ts`           | `model/types/main.ts`                 |
-| Zod schema            | `schemas.ts`         | `model/schemas/main.ts`               |
-| Constant              | `constants.ts`       | `model/constants/main.ts`             |
-| Pure function         | `helpers.ts`         | `lib/helpers/func/index.ts`           |
-| React hook            | `hooks.ts`           | `lib/hooks/hook-name/index.ts`        |
-| File operations       | `file.ts`            | `services/adapters/file/index.ts`     |
-| localStorage          | `storage.ts`         | `services/gateways/storage/index.ts`  |
-| Business logic        | `process.ts`         | `services/workflows/process/index.ts` |
-| HTTP request          | `endpoints.ts`       | `api/endpoint/index.ts`               |
-| React component       | `component.tsx`      | `ui/component/index.tsx`              |
+| **What do you have?** | **Simple structure** | **Complex structure**                                     |
+| --------------------- | -------------------- | --------------------------------------------------------- |
+| TypeScript type       | `types.ts`           | `model/types/main.ts` (container: `model/types/`)         |
+| Zod schema            | `schemas.ts`         | `model/schemas/main.ts` (container: `model/schemas/`)     |
+| Constant              | `constants.ts`       | `model/constants/main.ts` (container: `model/constants/`) |
+| Pure function         | `helpers.ts`         | `lib/helpers/func/index.ts`                               |
+| React hook            | `hooks.ts`           | `lib/hooks/hook-name/index.ts`                            |
+| File operations       | `file.ts`            | `services/adapters/file/index.ts`                         |
+| localStorage          | `storage.ts`         | `services/gateways/storage/index.ts`                      |
+| Business logic        | `process.ts`         | `services/workflows/process/index.ts`                     |
+| HTTP request          | `endpoints.ts`       | `api/endpoint/index.ts`                                   |
+| React component       | `component.tsx`      | `ui/component/index.tsx`                                  |
+
+**Note:** In `model` layer, folders like `constants/`, `schemas/`, `types/` are container folders (NOT modular units). The actual modular units are the `main.ts` files inside these containers.
 
 <completion_criteria>
 
