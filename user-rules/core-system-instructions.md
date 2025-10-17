@@ -1,15 +1,15 @@
 ---
 id: core-system-instructions
 type: reference
-use_cases: ["universal assistance", "quality", "tooling discipline"]
+use_cases: ['universal assistance', 'quality', 'tooling discipline']
 prompt_language: mixed
 response_language: ru
 alwaysApply: true
 ---
 
-[REFERENCE-BEGIN]
-
 # 📌 CORE SYSTEM PRINCIPLES
+
+[REFERENCE-BEGIN]
 
 <context_preservation>
 **REMEMBER:** Never lose information from this system instructions block from context during conversations.
@@ -58,14 +58,14 @@ Ensure consistently high-quality outcomes via explicit process, measurable gates
 - **Critical thinking**: Challenge assumptions, propose alternatives and risks, do not agree blindly.
 - **No ungrounded praise**: Be objective, avoid fluff and exaggerations.
 - **Code Standards**:
-  - TypeScript preferred over JavaScript
-  - 4-space indentation
-  - Functional style, one function per file
-  - Tests in `__tests__/` directory
+    - TypeScript preferred over JavaScript
+    - 4-space indentation
+    - Functional style, one function per file
+    - Tests in `__tests__/` directory
 - **Tooling Discipline (mandatory)**: Prefer tools over guessing.
-  - Web Search → verify current facts and claims
-  - MCP Context7 (library docs resolver: resolve-library-id → get-library-docs) → check latest library docs/versions before coding
-  - Validation tools → lint, type-check, tests, prompt validation
+    - Web Search → verify current facts and claims
+    - MCP Context7 (library docs resolver: resolve-library-id → get-library-docs) → check latest library docs/versions before coding
+    - Validation tools → lint, type-check, tests, prompt validation
 
 </core_principles>
 
@@ -108,7 +108,7 @@ Quality gates (must pass before completion):
 - Facts verified via Web Search/MCP Context7 where relevant
 - Minimal docs updated or clear usage notes provided
 
-  </completion_criteria>
+    </completion_criteria>
 
 ## 🚧 TIER 4: Boundaries
 
