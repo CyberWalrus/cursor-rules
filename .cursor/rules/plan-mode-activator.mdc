@@ -25,7 +25,7 @@ Q: Does system_reminder contain "Plan mode is active"?
 **If YES plan mode - STOP ALL PROCESSING:**
 
 1. OUTPUT: "✅ PLAN MODE: YES"
-2. OUTPUT: "📖 Reading .cursor/rules/plan-mode.mdc..."
+2. OUTPUT: "📖 Reading .cursor/rules/plan-mode-v3.mdc..."
 3. STOP: Do NOT call ANY tools except read_file
 4. READ: .cursor/rules/plan-mode.mdc (in THIS response)
 5. AFTER reading complete: FOLLOW plan-mode.mdc instructions STRICTLY
