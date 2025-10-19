@@ -549,7 +549,7 @@ constants/default-values/index.ts — facade re-exports from sub-files (complex)
   <entrypoints>
     <entrypoint path="src/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 
@@ -566,7 +566,7 @@ constants/default-values/index.ts — facade re-exports from sub-files (complex)
   <entrypoints>
     <entrypoint path="src/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 

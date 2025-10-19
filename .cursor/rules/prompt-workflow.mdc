@@ -32,6 +32,11 @@ Target: Claude, GPT, Gemini, Qwen models with universal prompt patterns.
 - Use XML tags for structured content instead of visual file layouts
 - Focus on prompt logic, not file system organization
 
+**WORKING MODES:**
+
+- Plan Mode: analyze requirements, design solution, create execution plan with validation strategy
+- Execution Mode: implement prompt creation/editing according to plan
+
 **ВАЖНО: Все ответы должны быть на русском языке.**
 
 </expert_role>
@@ -44,11 +49,52 @@ We will proceed in a structured manner to ensure no detail is missed and to crea
 
 <algorithm_steps>
 
+### Step 0: Planning Phase (Plan Mode Only)
+
+<cognitive_triggers>
+Let's understand the context and plan the solution systematically.
+</cognitive_triggers>
+
+**MANDATORY CONTEXT READING:**
+
+- Read `.cursor/rules/rules-catalog.mdc` to understand related prompts ecosystem
+- Identify prompt purpose and connections to other workflows
+- Analyze requirements and constraints
+
+**ANALYSIS AND DESIGN:**
+
+- Determine prompt type and complexity
+- Identify related prompts from rules-catalog
+- Plan structure and key sections
+- Estimate scope and critical moments
+
+**PLAN DOCUMENTATION:**
+
+- Describe goal and purpose of the prompt
+- List related prompts from rules-catalog
+- Define structure (TIER, XML tags, YAML)
+- Plan validation: "After creation/fixes validate via MCP (score ≥85) with common sense validation; validate all modified .mdc files"
+- Define completion criteria
+
+<completion_criteria>
+Plan created with context understanding, related prompts identified, structure and validation planned
+</completion_criteria>
+
+<exception_handling>
+If rules-catalog.mdc unavailable: request from user or work with known information
+If requirements unclear: ask clarifying questions before planning
+</exception_handling>
+
 ### Step 1: Analysis and Planning
 
 <cognitive_triggers>
 Let's think step by step about prompt classification.
 </cognitive_triggers>
+
+**MODE DETECTION:**
+
+- If Plan Mode active → execute Step 0, then create plan via create_plan tool
+- If Execution Mode → execute full algorithm (Step 1-5)
 
 - Determine prompt type: algorithm/reference/combo/compact
 - Assess complexity and content structure
@@ -153,6 +199,10 @@ c) **INFO suggestions:** implement if they add clear value and help reach ≥85 
 5. **Escalation:** If <2 points improvement over 2 consecutive iterations
 
 **Success Criteria:** Score ≥85/100 + 0 critical issues + ≤5 warnings
+
+**FOR PLAN MODE:**
+
+Document in plan: "Validate all modified prompt files via MCP, achieve score ≥85, apply fixes with common sense validation (reject changes contradicting prompt logic)"
 
 </iterative_cycle>
 
@@ -422,6 +472,27 @@ Few-shot examples (input → expected structured output):
     </result>
     ```
 
+5. Plan mode workflow
+
+    Input:
+    "Create a prompt for code review automation"
+
+    Expected (Plan Mode):
+
+    ```xml
+    <prompt_analysis>**Type:** algorithm
+    Reading rules-catalog.mdc for context... Found related: critique-workflow.mdc, dev-workflow.mdc
+    This is a new prompt creation task requiring planning phase.
+    </prompt_analysis>
+
+    Plan должен содержать:
+    - Цель: автоматизация code review через AI промпт
+    - Связанные промпты: critique-workflow.mdc (процесс критики), dev-workflow.mdc (контекст разработки)
+    - Структура: TIER 1-2 (обязательно), TIER 3-5 (опционально), XML tags, YAML
+    - Валидация: После создания провалидировать через MCP (score ≥85), проверить здравый смысл исправлений
+    - Критерии готовности: score ≥85, 0 critical issues, production-ready
+    ```
+
 </examples>
 
 <size_control>
@@ -531,6 +602,8 @@ Before completing, verify ALL critical elements are present:
 - No prohibited content (bash commands, unsupported elements) is present
 - **MCP validation score meets or exceeds 85/100 threshold - NO COMPROMISES ALLOWED!**
 - Cross-model compatibility verified for Claude, GPT, Gemini, Qwen
+- **PLAN MODE**: Verify plan contains: prompt goal, related prompts from rules-catalog, structure, validation stages
+- **VALIDATION**: Planned "Validate all .mdc files via MCP (score ≥85) with common sense checks"
 
 Are there any errors or missing elements so far? Review and fix before proceeding.
 </final_verification>

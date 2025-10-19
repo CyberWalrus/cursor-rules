@@ -269,7 +269,7 @@ documentation_type: 'ai-module-documentation'
 module_context:
     name: 'validation'
     path: 'src/services/workflows/validation'
-    parent_package: '@morj/tools.mcp-validator'
+    parent_package: '@${ORG}/tools.mcp-validator'
     purpose: 'валидация кода и промптов через AI модели'
 ---
 
@@ -353,7 +353,7 @@ documentation_type: 'ai-module-documentation'
 module_context:
     name: 'mcp-server'
     path: 'src/services/adapters/mcp-server'
-    parent_package: '@morj/tools.mcp-validator'
+    parent_package: '@${ORG}/tools.mcp-validator'
     purpose: 'MCP протокол сервер для интеграции с Cursor'
 ---
 

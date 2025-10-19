@@ -622,7 +622,7 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
     <entrypoint path="src/applications/cli-tools/index.ts" />
     <entrypoint path="src/applications/common/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 
@@ -639,7 +639,7 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
   <entrypoints>
     <entrypoint path="src/applications/public-frontend/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 

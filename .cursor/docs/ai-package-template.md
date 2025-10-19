@@ -263,7 +263,7 @@ yarn workspace ${WORKSPACE_NAME} dev
 
 **Template переменные для пакетной документации:**
 
-- `${PACKAGE_NAME}` - полное имя пакета (@morj/package-name)
+- `${PACKAGE_NAME}` - полное имя пакета (@${ORG}/package-name)
 - `${PACKAGE_TYPE}` - library|service|tool|application
 - `${ARCHITECTURE_TYPE}` - тип архитектуры пакета (см. TIER 4)
 - `${WORKSPACE_PATH}` - относительный путь в монорепо
@@ -300,42 +300,42 @@ yarn workspace ${WORKSPACE_NAME} dev
 **Описание:** Весь пакет представляет одну модульную единицу  
 **Подходит для:** Небольших библиотек, утилит, простых компонентов  
 **Структура:** `src/index.ts` + несколько вспомогательных файлов  
-**Пример:** `@morj/shared.format-date`, `@morj/ui.button`
+**Пример:** `@${ORG}/shared.format-date`, `@${ORG}/ui.button`
 
 ### layered_library
 
 **Описание:** Несколько модульных единиц, организованных по слоям  
 **Подходит для:** Библиотек компонентов, наборов утилит, API клиентов  
 **Структура:** `src/{api,ui,lib,model}/модули/` с фасадами  
-**Пример:** `@morj/shared` (ui + lib + api), `@morj/ui` (компоненты)
+**Пример:** `@${ORG}/shared` (ui + lib + api), `@${ORG}/ui` (компоненты)
 
 ### fsd_standard
 
 **Описание:** Feature-Sliced Design без доменной группировки  
 **Подходит для:** Средних frontend приложений  
 **Структура:** `pages|widgets|features|entities|shared` слои  
-**Пример:** `@morj/web-app` (React SPA)
+**Пример:** `@${ORG}/web-app` (React SPA)
 
 ### fsd_domain
 
 **Описание:** FSD с группировкой по бизнес-доменам  
 **Подходит для:** Крупных frontend приложений  
 **Структура:** `pages/|widgets/{domain}/|features/{domain}/|entities/{domain}/|shared`  
-**Пример:** `@morj/casino-frontend` (домены: user, betting, payments)
+**Пример:** `@${ORG}/app-name` (домены: user, betting, payments)
 
 ### server_fsd
 
 **Описание:** Серверная версия FSD для backend приложений  
 **Подходит для:** API серверов, микросервисов  
 **Структура:** `controllers|services|models|repositories|middleware|config` слои  
-**Пример:** `@morj/api-server`, `@morj/auth-service`
+**Пример:** `@${ORG}/api-server`, `@${ORG}/auth-service`
 
 ### multi_app_monolith
 
 **Описание:** Несколько приложений в одном пакете  
 **Подходит для:** Монолитных проектов, CLI tools с подкомандами  
 **Структура:** `src/{app1,app2,common}/` с независимыми точками входа  
-**Пример:** `@morj/monorepo-tools` (CLI + web + API)
+**Пример:** `@${ORG}/monorepo-tools` (CLI + web + API)
 
 **🎯 ВАЖНОСТЬ УКАЗАНИЯ ТИПА:**
 
@@ -358,7 +358,7 @@ yarn workspace ${WORKSPACE_NAME} dev
 id: package-mcp-validator
 documentation_type: 'ai-package-documentation'
 package_context:
-    name: '@morj/tools.mcp-validator'
+    name: '@${ORG}/tools.mcp-validator'
     type: 'tool'
     architecture_type: 'layered_library'
     main_exports: ['validate', 'test-prompt']
@@ -371,7 +371,7 @@ architecture_docs:
         - 'architecture/ui.xml'
 ---
 
-# 🔧 AI-документация: @morj/tools.mcp-validator
+# 🔧 AI-документация: @${ORG}/tools.mcp-validator
 
 <package_purpose>
 **Назначение пакета:**

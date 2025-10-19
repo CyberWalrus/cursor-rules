@@ -107,7 +107,7 @@ All architecture XML files MUST follow this canonical shape, aligned with `valid
     <entrypoints>
       <entrypoint path="src/index.ts" />
     </entrypoints>
-    <ruleset>morj-2025-09</ruleset>
+    <ruleset>${PROJECT_NAME}-2025-10</ruleset>
     <source_revision>git:HEAD_SHA</source_revision>
     <generated_at>2025-01-01T00:00:00Z</generated_at>
     <validator_min_version>1</validator_min_version>

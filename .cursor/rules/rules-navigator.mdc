@@ -1,0 +1,20 @@
+---
+id: rules-navigator
+type: reference
+use_cases: ['rules navigation', 'docs lookup']
+prompt_language: en
+response_language: ru
+alwaysApply: true
+---
+
+# 📚 Rules & Docs Navigator
+
+**Self-Access Rule:** Always prefer reading rules/docs files yourself using read_file tool with absolute paths before asking the user.
+
+**Quick Reference:**
+
+- Rules: `.cursor/rules/*.mdc` (10 files)
+- Docs: `.cursor/docs/*.md` (14 files)
+- Full catalog: `.cursor/rules/rules-catalog.mdc`
+
+**Usage:** When you need specific rule or doc, read the target file directly rather than asking user for guidance.

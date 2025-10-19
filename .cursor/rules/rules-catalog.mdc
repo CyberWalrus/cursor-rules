@@ -1,0 +1,159 @@
+---
+id: rules-catalog
+type: reference
+use_cases: ['workspace rules access', 'ai self-navigation', 'cursor rules and docs lookup']
+prompt_language: en
+response_language: ru
+alwaysApply: false
+---
+
+# Cursor Rules и Docs Справочник
+
+[REFERENCE-BEGIN]
+
+## Rules Files (.cursor/rules/):
+
+1. **rules-catalog.mdc**
+    - **Description:** Complete catalog of all rules and docs with detailed descriptions and usage instructions. Use this for comprehensive overview of the .cursor rules setup.
+    - **Relative Path:** `.cursor/rules/rules-catalog.mdc` (current file)
+    - **When to read:** If you need meta-information about how rules are structured or managed, or want to browse all available rules and docs.
+
+2. **rules-navigator.mdc**
+    - **Description:** Lightweight navigation helper for quick access to rules and docs. Minimal reference for AI self-navigation without loading full catalog.
+    - **Relative Path:** `.cursor/rules/rules-navigator.mdc`
+    - **When to read:** When you need quick reference to available rules/docs without detailed descriptions.
+
+3. **code-workflow.mdc**
+    - **Description:** Workflow for code development, including decision algorithms for simple vs. full processes, quality checks, and integration rules.
+    - **Relative Path:** `.cursor/rules/code-workflow.mdc`
+    - **When to read:** When handling coding tasks, refactoring, or deciding on development processes.
+
+4. **prompt-workflow.mdc**
+    - **Description:** Detailed prompt engineering workflow, including analysis, structure creation, validation with MCP, and output formats for creating/editing prompts.
+    - **Relative Path:** `.cursor/rules/prompt-workflow.mdc`
+    - **When to read:** When the task involves creating, improving, or validating AI prompts.
+
+5. **critique-workflow.mdc**
+    - **Description:** Workflow for critiquing code, prompts, or outputs, with steps for analysis, feedback structure, and iterative improvements.
+    - **Relative Path:** `.cursor/rules/critique-workflow.mdc`
+    - **When to read:** For tasks requiring review, feedback, or quality assessment of generated content.
+
+6. **ai-docs-workflow.mdc**
+    - **Description:** Workflow for generating and maintaining AI documentation, including templates, examples, and best practices for docs in the repo.
+    - **Relative Path:** `.cursor/rules/ai-docs-workflow.mdc`
+    - **When to read:** When updating or creating documentation related to AI agents or code styles.
+
+7. **dev-workflow.mdc**
+    - **Description:** Advanced planning mode with architecture validation, structured preparation workflow, and quality gate enforcement before plan creation.
+    - **Relative Path:** `.cursor/rules/dev-workflow.mdc`
+    - **When to read:** When planning complex projects requiring architecture validation and systematic preparation.
+
+8. **plan-mode-activator.mdc**
+    - **Description:** Critical priority checkpoint that activates plan mode workflow and enforces task-dispatcher reading before any processing.
+    - **Relative Path:** `.cursor/rules/plan-mode-activator.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true), triggers task dispatcher workflow in plan mode.
+
+9. **task-dispatcher.mdc**
+    - **Description:** Meta-classifier for lightning-fast task type determination and workflow routing with activity type classification.
+    - **Relative Path:** `.cursor/rules/task-dispatcher.mdc`
+    - **When to read:** When starting any new task to determine correct workflow and activity type.
+
+10. **undefined.md**
+    - **Description:** Fallback workflow for undefined or uncertain task types with basic analysis and routing logic.
+    - **Relative Path:** `.cursor/rules/undefined.md`
+    - **When to read:** When task type cannot be determined or emergency fallback needed.
+
+11. **jira-task-creator.mdc**
+    - **Description:** Interactive JIRA task creation workflow with requirements gathering, solution validation (web search + Context7), and wiki markup generation. Outputs copy-ready JIRA task description in Cursor plan.
+    - **Relative Path:** `.cursor/rules/jira-task-creator.mdc`
+    - **When to read:** When creating JIRA tasks that are actionable and ready for copy-paste, including for breaking down larger initiatives into JIRA-sized work items.
+
+12. **detailed-plan-creator.mdc**
+    - **Description:** Comprehensive planning workflow for complex tasks requiring detailed architecture design, module structure definition, and step-by-step implementation roadmap. Creates plans via Cursor's create_plan tool with todos and dependencies.
+    - **Relative Path:** `.cursor/rules/detailed-plan-creator.mdc`
+    - **When to read:** When planning complex features that require careful decomposition, architecture design, multiple components, or phased execution with validation gates.
+
+### Docs Files (.cursor/docs/):
+
+1. **ai-module-template.md**
+    - **Description:** Template and reference for documenting module units (модульные единицы) in TypeScript projects, including YAML metadata, XML structure, and examples.
+    - **Relative Path:** `.cursor/docs/ai-module-template.md`
+    - **When to read:** When creating or updating AI documentation for individual modules.
+
+2. **ai-package-template.md**
+    - **Description:** Template and reference for package-level AI documentation (package-ai-docs.md), including module_docs policy, architecture types, and development commands.
+    - **Relative Path:** `.cursor/docs/ai-package-template.md`
+    - **When to read:** When documenting entire packages or setting up AI docs workflows.
+
+3. **architecture.md**
+    - **Description:** General architecture principles and overview for the project.
+    - **Relative Path:** `.cursor/docs/architecture.md`
+    - **When to read:** For overall project architecture guidance.
+
+4. **code-standards.md**
+    - **Description:** Coding standards, style rules, and quality guidelines.
+    - **Relative Path:** `.cursor/docs/code-standards.md`
+    - **When to read:** When applying code style or quality checks.
+
+5. **generate-architecture-xml.md**
+    - **Description:** Workflow for generating XML architecture files for validation.
+    - **Relative Path:** `.cursor/docs/generate-architecture-xml.md`
+    - **When to read:** When creating or updating architecture XML schemas.
+
+6. **naming.md**
+    - **Description:** Naming conventions for files, functions, variables, and modules.
+    - **Relative Path:** `.cursor/docs/naming.md`
+    - **When to read:** For consistent naming in code.
+
+7. **testing.md**
+    - **Description:** Testing best practices, patterns, and guidelines.
+    - **Relative Path:** `.cursor/docs/testing.md`
+    - **When to read:** When writing or reviewing tests.
+
+8. **numbering-system.md**
+    - **Description:** Notation rules and semantics for hierarchical task numbering (Phase/Step/Task/Block) with modifiers (Run/Variant/Concurrent/Fallback).
+    - **Relative Path:** `.cursor/docs/numbering-system.md`
+    - **When to read:** When working with structured task decomposition or hierarchical planning systems.
+
+9. **architecture-fsd-domain.md**
+    - **Description:** FSD Domain architecture reference for large frontend applications with business domain separation (user, payments, betting).
+    - **Relative Path:** `.cursor/docs/architecture-fsd-domain.md`
+    - **When to read:** When working with Feature-Sliced Design projects requiring domain-driven structure.
+
+10. **architecture-fsd-standard.md**
+    - **Description:** FSD Standard architecture reference for medium-complexity frontend applications without domain grouping.
+    - **Relative Path:** `.cursor/docs/architecture-fsd-standard.md`
+    - **When to read:** When working with standard Feature-Sliced Design projects.
+
+11. **architecture-layered-library.md**
+    - **Description:** Layered Library architecture for multi-module packages (UI libraries, API clients, utility packages) with thematic layer grouping.
+    - **Relative Path:** `.cursor/docs/architecture-layered-library.md`
+    - **When to read:** When building shared libraries or multi-module packages.
+
+12. **architecture-server-fsd.md**
+    - **Description:** Server FSD architecture for backend applications with adapted layer naming (controllers, services, models).
+    - **Relative Path:** `.cursor/docs/architecture-server-fsd.md`
+    - **When to read:** When working with backend/server-side TypeScript projects using FSD principles.
+
+13. **architecture-single-module.md**
+    - **Description:** Single Module architecture for simple projects (utilities, hooks, validators) with minimal structure and facade pattern.
+    - **Relative Path:** `.cursor/docs/architecture-single-module.md`
+    - **When to read:** When building simple single-purpose modules or utilities.
+
+14. **architecture-multi-app-monolith.md**
+    - **Description:** Multi App Monolith architecture for fullstack monorepos with multiple isolated applications and shared common layer.
+    - **Relative Path:** `.cursor/docs/architecture-multi-app-monolith.md`
+    - **When to read:** When working with monorepo projects containing multiple applications.
+
+## Usage Instructions
+
+- **Self-Access Rule:** Always prefer reading these files yourself using the read_file tool with absolute paths before asking the user about rules or docs.
+- **Relative Paths:** Provided for navigation; convert to absolute for tool calls.
+- **Update Note:** This справочник is a snapshot; if new files are added, update it accordingly.
+- **Quick Access:** Use `rules-navigator.mdc` for lightweight navigation instead of loading this full catalog.
+
+<completion_criteria>
+Справочник accessed and relevant file read if needed; task proceeds with rules and docs applied.
+</completion_criteria>
+
+[REFERENCE-END]

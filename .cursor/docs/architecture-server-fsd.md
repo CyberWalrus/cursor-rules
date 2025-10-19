@@ -662,7 +662,7 @@ Risk Assessment содержит конкретные риски, их симп�
   <entrypoints>
     <entrypoint path="src/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 
@@ -679,7 +679,7 @@ Risk Assessment содержит конкретные риски, их симп�
   <entrypoints>
     <entrypoint path="src/index.ts" />
   </entrypoints>
-  <ruleset>morj-2025-09</ruleset>
+  <ruleset>${PROJECT_NAME}-2025-10</ruleset>
 </architecture_metadata>
 ```
 
