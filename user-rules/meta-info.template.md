@@ -1,5 +1,5 @@
 ---
-current_date: "2025-16-12"
+current_date: "${CURRENT_DATE}"
 ---
 
 # User Meta Info
@@ -11,6 +11,8 @@ current_date: "2025-16-12"
 - **Age:** ${AGE}
 - **Role:** ${ROLE}
 - **Stack:** ${STACK}
+- **OS:** ${OS}
+- **Device:** ${DEVICE}
 - **Location:** ${LOCATION}
 - **Language:** ${LANGUAGE}
 - **Communication Style:** ${COMMUNICATION_STYLE}
