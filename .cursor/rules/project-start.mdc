@@ -1,0 +1,65 @@
+---
+id: project-start-helper
+type: reference
+use_cases: ['project_launch', 'dev_server', 'browser_url']
+prompt_language: en
+response_language: ru
+alwaysApply: false
+---
+
+# 🚀 Project Start Helper
+
+[REFERENCE-BEGIN]
+
+## 🎯 TIER 1: Purpose
+
+<expert_role>
+Quick reference for launching this project's development server and accessing it via browser.
+</expert_role>
+
+<algorithm_motivation>
+Provide consistent, error-free project launch instructions to prevent port conflicts and navigation issues.
+</algorithm_motivation>
+
+## ⚡ TIER 2: Commands
+
+<start_commands>
+
+**Development server:**
+
+```bash
+yarn start
+```
+
+- Starts Vite dev server
+- Default URL: <http://localhost:5173>
+- Look for "Local: <http://localhost:XXXX/>" in output
+
+**PORT extraction:**
+Parse `yarn start` output for "localhost:XXXX" → extract XXXX as PORT variable for browser_navigate.
+
+**Browser URL pattern:**
+
+```
+http://localhost:{PORT}/{page-path}
+```
+
+**Other commands:**
+
+- `yarn build` - production build
+- `yarn test` - run all tests
+- `yarn eslint:check` - lint code
+
+</start_commands>
+
+<exception_handling>
+**Port conflict:** If 5173 taken, Vite auto-assigns next available port (5174, 5175...) - check output for actual PORT.
+
+**Server fails:** Check node_modules installed (`yarn install`), verify Node.js version ≥18.
+</exception_handling>
+
+<completion_criteria>
+Server running, PORT extracted from output, ready for browser_navigate({ url: `http://localhost:${PORT}/` })
+</completion_criteria>
+
+[REFERENCE-END]

@@ -13,8 +13,8 @@ alwaysApply: true
 
 **Quick Reference:**
 
-- Rules: `.cursor/rules/*.mdc` (10 files)
-- Docs: `.cursor/docs/*.md` (14 files)
+- Rules: `.cursor/rules/*.mdc`
+- Docs: `.cursor/docs/*.md`
 - Full catalog: `.cursor/rules/rules-catalog.mdc`
 
 **Usage:** When you need specific rule or doc, read the target file directly rather than asking user for guidance.

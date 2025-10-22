@@ -1,8 +1,8 @@
 ---
 id: prompt-engineering-v1
 type: combo
-use_cases: ['prompt_creation', 'prompt_improvement', 'prompt_editing']
-prompt_language: mixed
+use_cases: ['prompt_creation', 'prompt_improvement', 'prompt_editing', 'prompt_validation']
+prompt_language: en
 response_language: ru
 globs: **/*.mdc, .cursor/**/*.md
 alwaysApply: false
@@ -22,9 +22,10 @@ Target: Claude, GPT, Gemini, Qwen models with universal prompt patterns.
 
 **LANGUAGE POLICY:**
 
-- Create prompts in English (professional standard)
-- BUT if prompt includes user-facing output/responses, those should be in Russian
-- Add explicit language instruction in expert_role when user output is expected
+- **Prompt content:** Always write in English (algorithms, instructions, XML tags, structure)
+- **User output instruction:** Add ONLY this Russian phrase when user-facing output is expected: "**ВАЖНО: Все ответы должны быть на русском языке.**"
+- **Examples:** Technical structure in English, user-facing output examples in Russian
+- Keep language instructions minimal - one sentence in Russian maximum
 
 **CONTENT RESTRICTIONS:**
 
@@ -140,11 +141,11 @@ If XML tags are malformed: verify proper opening/closing tag syntax
 
 ### Step 3: Content Development
 
-- Fill expert_role with specific expertise definition
-- **Language instruction:** Add "**ВАЖНО: Все ответы должны быть на русском языке.**" if prompt generates user-facing output
-- Develop algorithm_steps with clear instructions (in English)
-- Add examples and prefill patterns (user output examples in Russian if applicable)
-- Set completion_criteria for each step
+- Fill expert_role with specific expertise definition (in English)
+- **Language instruction:** Add ONLY this single Russian sentence if prompt generates user-facing output: "**ВАЖНО: Все ответы должны быть на русском языке.**" — nothing more
+- Develop algorithm_steps with clear instructions (always in English)
+- Add examples and prefill patterns (technical structure in English, user output samples in Russian if applicable)
+- Set completion_criteria for each step (in English)
 
 <completion_criteria>
 Completion: All sections contain actionable content, prefills ready
@@ -386,6 +387,8 @@ Standard prefill templates:
 <examples>
 Few-shot examples (input → expected structured output):
 
+**Note:** All examples follow language policy: prompt structure in English, user-facing output examples in Russian.
+
 1. Improve a basic summarization prompt for Russian users
 
     Input:
@@ -595,7 +598,7 @@ Before completing, verify ALL critical elements are present:
 - YAML frontmatter is present and correctly filled (id, type, use_cases, prompt_language, response_language, alwaysApply); `id` is unique/descriptive (e.g., includes version), `use_cases` are relevant, language fields specify appropriate values
 - All required TIER sections (1-2 mandatory, 3-5 as needed) are included with proper XML tags
 - Each algorithm step has completion_criteria and exception_handling where needed
-- **LANGUAGE POLICY APPLIED**: If prompt generates user-facing output, includes "**IMPORTANT: All responses must be in Russian.**" in expert_role
+- **LANGUAGE POLICY APPLIED**: Prompt content is in English; ONLY adds Russian phrase "**ВАЖНО: Все ответы должны быть на русском языке.**" if user-facing output expected; examples show English structure with Russian output samples
 - **SYSTEM ANCHORS are MANDATORY placed**: [ALGORITHM-BEGIN/END] for algorithm type, [REFERENCE-BEGIN/END] for reference type
 - Output format section matches the required structure with prefill examples
 - The model's response begins with `<prompt_analysis>**Type:** ...` and includes `<improvements>` and `<result>` sections

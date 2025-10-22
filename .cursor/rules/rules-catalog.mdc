@@ -11,7 +11,7 @@ alwaysApply: false
 
 [REFERENCE-BEGIN]
 
-## Rules Files (.cursor/rules/):
+## Rules Files (.cursor/rules/)
 
 1. **rules-catalog.mdc**
     - **Description:** Complete catalog of all rules and docs with detailed descriptions and usage instructions. Use this for comprehensive overview of the .cursor rules setup.
@@ -73,7 +73,22 @@ alwaysApply: false
     - **Relative Path:** `.cursor/rules/detailed-plan-creator.mdc`
     - **When to read:** When planning complex features that require careful decomposition, architecture design, multiple components, or phased execution with validation gates.
 
-### Docs Files (.cursor/docs/):
+13. **ui-workflow.mdc**
+    - **Description:** UI planning workflow with browser validation using Playwright MCP tools. Identifies visual problems through browser inspection, clarifies user requirements interactively, creates detailed plans with browser verification checkpoints for layout, colors, typography, responsiveness, and animations.
+    - **Relative Path:** `.cursor/rules/ui-workflow.mdc`
+    - **When to read:** When fixing visual/UI problems, validating design implementation, checking responsive layouts, or planning UI improvements through browser-based analysis.
+
+14. **project-start.mdc**
+    - **Description:** Quick reference helper for launching this project's development server. Provides yarn start command, PORT extraction instructions, browser URL patterns, and troubleshooting for port conflicts.
+    - **Relative Path:** `.cursor/rules/project-start.mdc`
+    - **When to read:** When needing to start the development server or reference launch commands for browser-based validation tasks.
+
+15. **auxiliary-dev-workflow.mdc**
+    - **Description:** Workflow for auxiliary/side development tasks that are NOT part of the main project architecture (VPN setup, deployment scripts, VDS configuration, automation tools, cloud setup). Enforces mandatory verification through web search for current best practices and MCP Context7 for package versions, with OS/device compatibility validation (macOS ARM64, Linux, Windows). Includes aggressive requirement gathering in Plan Mode and fallback to dev-workflow.mdc if task is actually main project work.
+    - **Relative Path:** `.cursor/rules/auxiliary-dev-workflow.mdc`
+    - **When to read:** When handling infrastructure setup, deployment automation, system configuration, tooling development, or any development task that exists outside the main project codebase. NOT for tasks that modify project files or integrate into project architecture.
+
+### Docs Files (.cursor/docs/)
 
 1. **ai-module-template.md**
     - **Description:** Template and reference for documenting module units (модульные единицы) in TypeScript projects, including YAML metadata, XML structure, and examples.

@@ -1,0 +1,34 @@
+---
+id: chat-mode-router
+type: compact
+alwaysApply: true
+---
+
+# Chat Mode Router
+
+<chat_mode_router>
+
+**STOP REASONING - ACT NOW**
+
+**EXECUTE IMMEDIATELY - NO REASONING NEEDED:**
+All required information is already in context (system_reminder, mode_specific_rule). Skip analysis, act instantly.
+
+**INSTANT DETECTION - NO FILE READS:**
+
+Check in order, announce immediately:
+
+1. mode_specific_rule exists → OTHER MODE (follow it, no dispatcher)
+2. system_reminder = "Plan mode is active" → PLAN MODE (read task-dispatcher.mdc)
+3. system_reminder = Ask marker → ASK MODE (read ask-dispatcher.mdc)
+4. Otherwise → AGENT MODE (read agent-dispatcher.mdc)
+
+**Required actions (execute both):**
+
+1. **Announce mode:** Output `[MODE NAME] → reading [dispatcher-file].mdc`
+   - Examples: `PLAN MODE → reading task-dispatcher.mdc` or `AGENT MODE → reading agent-dispatcher.mdc`
+
+2. **Read dispatcher:** Immediately call read_file with the dispatcher path (skip for OTHER MODE)
+
+**Then:** Read corresponding dispatcher if needed for task execution.
+
+</chat_mode_router>

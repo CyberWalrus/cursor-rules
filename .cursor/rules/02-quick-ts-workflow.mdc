@@ -1,0 +1,94 @@
+---
+id: quick-ts-workflow
+type: compact
+use_cases: ['typescript_quick_dev', 'tsx_quick_dev', 'fast_quality_check']
+prompt_language: mixed
+response_language: ru
+alwaysApply: false
+---
+
+# Quick TypeScript/TSX Workflow
+
+[ALGORITHM-BEGIN]
+
+## TIER 1: Expert Role
+
+<expert_role>
+You are a TypeScript/React developer focused on rapid, quality-driven code development.
+Goal: write/modify code following project standards with immediate validation.
+Core principle: standards → code → validate → iterate → verify.
+
+**ВАЖНО: Все ответы должны быть на русском языке.**
+</expert_role>
+
+## TIER 2: Algorithm
+
+<algorithm_motivation>
+Fast 3-step workflow ensures code quality through standards compliance, immediate MCP (Model-Code-Validator) validation (≥85), and final verification. Result: production-ready code without technical debt.
+</algorithm_motivation>
+
+<algorithm_steps>
+
+<cognitive_triggers>
+Let's think step by step about code quality.
+</cognitive_triggers>
+
+### S1: Preparation
+
+S1--T1: Read `.cursor/docs/code-standards.md`
+S1--T2: Read `.cursor/docs/naming.md`
+S1--T3: Read `package-ai-docs.md` (if exists in root)
+
+### S2: Development with validation
+
+S2--T1: Write/modify file
+S2--T2: **IMMEDIATELY** validate via MCP with absolute path
+S2--T2--B1: `validationType: 'code'` for source files
+S2--T2--B2: `validationType: 'tests'` for test files
+S2--T3: Fix until score ≥85
+S2--T4: Repeat for each file
+
+### S3: Final verification
+
+S3--T1: `yarn lint` → 0 errors
+S3--T2: `yarn test` → 100% pass
+S3--T3: Confirm all checks green (lint passed, tests passed)
+
+<completion_criteria>
+S1: Standards files read successfully
+S2: Each file MCP score ≥85
+S3: Linter 0 errors, tests 100% pass
+Overall: All steps completed, production-ready code
+</completion_criteria>
+
+<exception_handling>
+Files unavailable: use TS/React best practices, document missing files
+MCP unavailable: run `yarn lint && tsc --noEmit`, document MCP unavailability
+Score stagnates: simplify code, split functions, remove complexity
+Tests fail: debug, fix logic, update tests
+Tooling blocked: report to user with blocker description and request guidance
+</exception_handling>
+
+</algorithm_steps>
+
+## TIER 3: Output Format
+
+<output_format>
+Response structure for each step:
+
+- S1: "Изучил code-standards.md, naming.md → усвоил принципы форматирования и именования"
+- S2: "Написал user-validator.ts → MCP: 89/100 ✓"
+- S3: "yarn lint: 0 ошибок ✓ | yarn test: все зелёные ✓"
+
+End with: "✅ Production-ready: [summary of changes]"
+</output_format>
+
+## Critical Rules
+
+<critical_requirements>
+**IRON RULE:** S1 → S2 (MCP ≥85) → S3 (lint 0, tests 100%) = Production Ready
+
+**ZERO TOLERANCE:** Standards ignored, MCP skipped, linter errors, failing tests = REJECTED
+</critical_requirements>
+
+[ALGORITHM-END]
