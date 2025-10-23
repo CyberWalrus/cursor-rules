@@ -10,6 +10,8 @@ alwaysApply: false
 
 # Prompt Engineering System
 
+<!-- COMBO: ALGORITHM PART -->
+
 [ALGORITHM-BEGIN]
 
 ## TIER 1: Expert Role
@@ -112,8 +114,39 @@ When editing existing prompts, perform these additional steps:
 - Maintain existing system anchors and XML structure if functional
 - Only modify sections that address the specific editing request
 
+**COMPACT MODE SPECIFICS:**
+
+When creating/editing compact prompts, apply these criteria:
+
+**Use compact type for:**
+
+- Routing and detection (modes, states, conditions)
+- Simple classifications (1-3 categories)
+- Quick checks and validations (boolean logic)
+- Atomic operations (one action = one prompt)
+- Tasks solvable in 1-3 steps
+- Target size: 5-100 lines (optimal 10-25 for routers)
+
+**DO NOT use compact for:**
+
+- Multi-step algorithms (>5 steps with dependencies)
+- Complex business logic (nested conditions)
+- Detailed exception handling (many edge cases)
+- Data validation with rules (requires explanations)
+- Code generation (needs examples and templates)
+
+**Structural requirements:**
+
+- ONE semantic XML tag with prompt name (no multiple tags)
+- NO TIER structure (use **bold** headers instead)
+- NO system anchors [ALGORITHM-BEGIN/END]
+- Inline exception handling (embedded in logic)
+- Imperative triggers (INSTANT, EXECUTE, REQUIRED)
+- Numbered lists over prose
+- No emoji (token economy)
+
 <completion_criteria>
-Completion: Type clearly identified, complexity assessed, operation selected, edit analysis completed if applicable
+Completion: Type clearly identified, complexity assessed, operation selected, edit analysis completed if applicable, compact criteria applied if compact type
 </completion_criteria>
 
 <exception_handling>
@@ -124,12 +157,21 @@ If editing existing prompt: always preserve working elements unless explicitly r
 
 ### Step 2: Structure Creation
 
+**FOR COMPACT TYPE:**
+
+- Add minimal YAML (id, type, alwaysApply only)
+- Create ONE semantic XML tag with prompt name
+- Use **bold** headers instead of TIER sections
+- NO system anchors [ALGORITHM-BEGIN/END]
+
+**FOR ALGORITHM/REFERENCE/COMBO TYPES:**
+
 - Add minimal YAML frontmatter (id, type, use_cases, alwaysApply)
 - Create TIER headers (1-2 mandatory, 3-5 optional)
 - Wrap content in XML tags (expert_role, algorithm_steps, examples)
 
 <completion_criteria>
-Completion: YAML added, TIER headers created, XML structure established
+Completion: YAML added, structure created according to type (compact: one XML tag + bold headers; others: TIER headers + multiple XML tags)
 Only proceed if the above criteria are satisfied. Otherwise, address any gaps before continuing.
 </completion_criteria>
 
@@ -250,7 +292,9 @@ Triple check: structure audit (YAML+TIER+XML+Anchors) + content quality + size c
 Let's think step by step about finalization and quality verification.
 </cognitive_triggers>
 
-- Add system anchors [ALGORITHM-BEGIN/END] - MANDATORY for all algorithm prompts
+- Add system anchors [ALGORITHM-BEGIN/END] - MANDATORY for algorithm type prompts
+- Add system anchors [REFERENCE-BEGIN/END] - MANDATORY for reference type prompts
+- NO system anchors for compact type prompts
 - Verify no prohibited elements (bash commands, excessive repetition)
 - Confirm production readiness
 
@@ -297,7 +341,21 @@ Focus on surgical changes rather than complete reconstruction.
 
 [ALGORITHM-END]
 
+<!-- COMBO: REFERENCE PART -->
+
 [REFERENCE-BEGIN]
+
+## TIER 1: Expert Role (Reference)
+
+<expert_role>
+You are a Prompt Engineering Reference Expert providing comprehensive documentation, examples, and best-practice guidelines for creating production-ready AI prompts across multiple types (algorithm, reference, combo, compact).
+
+Your reference materials cover: YAML structure, TIER hierarchy, XML tagging patterns, validation processes, compact optimization rules, and cross-model compatibility patterns for Claude, GPT, Gemini, and Qwen.
+
+**LANGUAGE POLICY:** Technical documentation is in English. Examples show English structure with Russian user-facing output samples where applicable.
+</expert_role>
+
+## TIER 2: Reference Guidelines
 
 <output_format>
 Required response sections:
@@ -322,7 +380,7 @@ When editing existing prompts, structure the response as:
 Focus on surgical changes rather than complete reconstruction.
 </output_format>
 
-## TIER 4: Technical Reference
+## TIER 3: Technical Reference
 
 <yaml_essentials>
 Minimal YAML frontmatter:
@@ -496,6 +554,52 @@ Few-shot examples (input → expected structured output):
     - Критерии готовности: score ≥85, 0 critical issues, production-ready
     ```
 
+6. Create compact mode router prompt
+
+    Input:
+    "Create a prompt that detects feature flag state and routes to appropriate handler."
+
+    Expected:
+
+    ```xml
+    <prompt_analysis>**Type:** compact
+    This is a simple routing task (1-3 steps): check condition → execute action. Perfect for compact type.</prompt_analysis>
+    <improvements>
+    - **critical:** Apply compact rules: one XML tag, no TIER, imperative trigger
+    - **critical:** Use numbered list for detection logic with inline fallback
+    - **important:** Front-load imperative trigger, explicit action items
+    - **optional:** Reference compact-prompts-best-practices.mdc for optimization patterns
+    </improvements>
+    <result>
+    ```yaml
+    ---
+    id: feature-flag-router
+    type: compact
+    alwaysApply: false
+    ---
+
+    # Feature Flag Router
+
+    <feature_flag_router>
+
+    **INSTANT DETECTION - NO API CALLS:**
+
+    Check in order, route immediately:
+
+    1. flag = "enabled" → LOAD feature_handler.ts
+    2. flag = "disabled" → LOAD fallback_handler.ts
+    3. Otherwise → DEFAULT (log warning, use fallback)
+
+    **Execute both:**
+    1. **Announce:** Print `FLAG STATE: [state] → routing to [handler]`
+    2. **Route:** Call appropriate handler module
+
+    </feature_flag_router>
+    ```
+
+    </result>
+    ```
+
 </examples>
 
 <size_control>
@@ -509,6 +613,57 @@ Recommended size guidelines:
 If content becomes unwieldy: split into smaller focused prompts or simplify structure
 
 </size_control>
+
+<compact_rules>
+**10 Rules for Compact Prompts:**
+
+Reference: `.cursor/rules/compact-prompts-best-practices.mdc`
+
+**Key principles (apply ONLY to compact type):**
+
+1. **One semantic wrapper:** Single XML tag with prompt name, no multiple tags
+2. **Imperative triggers:** Use INSTANT, EXECUTE, REQUIRED (not "please" or "you should")
+3. **No TIER structure:** Use **bold** headers, flat structure
+4. **No system anchors:** [ALGORITHM-BEGIN/END] NOT needed for compact
+5. **Inline exception handling:** Embed fallbacks in logic (3. Otherwise → default)
+6. **No emoji:** Token economy, plain text only
+7. **Front-load critical info:** Imperative trigger first, logic second
+8. **Explicit action items:** Specific actions with examples (not abstract hints)
+9. **Minimal YAML:** Only id, type, alwaysApply (no use_cases, language, globs)
+10. **Numbered lists > prose:** Scannable structure, -50% tokens
+
+**Compact prompt anatomy:**
+
+```yaml
+---
+id: prompt-name
+type: compact
+alwaysApply: true
+---
+
+# Prompt Title
+
+<prompt_name>
+
+**IMPERATIVE TRIGGER:**
+
+Core logic (numbered list):
+1. Check A → do X
+2. Check B → do Y
+3. Otherwise → default
+
+**Explicit actions:**
+1. Action 1 with example
+2. Action 2 with example
+
+</prompt_name>
+```
+
+**Example:** See chat-mode-router optimization case study in compact-prompts-best-practices.mdc (103→15 lines, -85% tokens, 5x faster)
+
+</compact_rules>
+
+## TIER 4: Quality Standards
 
 <validation_rules>
 Quality gates:
@@ -534,7 +689,35 @@ Quality gates:
 **IRON RULE:** Score < 85 = production deployment BLOCKED until fixed!
 **MANTRA:** "Every MCP comment is protection from defects in production prompts."
 
+#### COMPACT PROMPTS VALIDATION
+
+For compact type prompts, MCP validator may report warnings about:
+
+- Missing TIER structure (expected behavior, ignore)
+- Missing multiple XML tags (expected behavior, ignore)
+- Missing completion_criteria in steps (expected behavior, ignore)
+
+**Focus areas for compact:**
+
+- Clarity of logic (numbered list readable)
+- Performance (imperative triggers, no emoji)
+- Conciseness (5-100 lines, optimal 10-25)
+
+**Acceptable scores for compact:**
+
+- 60-80: Good (if size optimal and logic clear)
+- 80-90: Excellent (structure + performance)
+- 90-100: Perfect (rare for compact)
+
+**Critical errors must be 0:**
+
+- Missing action items
+- Unclear routing logic
+- Multiple nested conditions
+
 </validation_rules>
+
+## TIER 5: Additional Patterns
 
 <json_schema_guidance>
 For JSON outputs, include a strict schema and conformance instruction.
@@ -588,7 +771,7 @@ System anchors enable reliable machine parsing and content extraction. Always pl
 
 </system_anchors>
 
-## TIER 5: Final Verification Checklist
+## TIER 6: Final Verification Checklist
 
 <final_verification>
 Remember: you are an elite prompt engineer - ensure your final answer is thorough, clear, and follows the format.
@@ -600,6 +783,7 @@ Before completing, verify ALL critical elements are present:
 - Each algorithm step has completion_criteria and exception_handling where needed
 - **LANGUAGE POLICY APPLIED**: Prompt content is in English; ONLY adds Russian phrase "**ВАЖНО: Все ответы должны быть на русском языке.**" if user-facing output expected; examples show English structure with Russian output samples
 - **SYSTEM ANCHORS are MANDATORY placed**: [ALGORITHM-BEGIN/END] for algorithm type, [REFERENCE-BEGIN/END] for reference type
+- **COMPACT TYPE VERIFICATION**: If type=compact, verify: ONE semantic XML tag (not multiple), NO TIER structure, NO system anchors, imperative trigger first line, numbered lists, minimal YAML (id+type+alwaysApply only), inline fallback
 - Output format section matches the required structure with prefill examples
 - The model's response begins with `<prompt_analysis>**Type:** ...` and includes `<improvements>` and `<result>` sections
 - No prohibited content (bash commands, unsupported elements) is present
@@ -607,8 +791,24 @@ Before completing, verify ALL critical elements are present:
 - Cross-model compatibility verified for Claude, GPT, Gemini, Qwen
 - **PLAN MODE**: Verify plan contains: prompt goal, related prompts from rules-catalog, structure, validation stages
 - **VALIDATION**: Planned "Validate all .mdc files via MCP (score ≥85) with common sense checks"
+- **LANGUAGE POLICY FINAL CHECK**: All language-policy violations must be resolved before final validation (prompt content in English, only one Russian sentence for user-facing output)
 
 Are there any errors or missing elements so far? Review and fix before proceeding.
 </final_verification>
+
+<production_readiness>
+**PRODUCTION READY STATUS:**
+
+Final checklist before deployment:
+
+- [ ] MCP validation score ≥85/100 achieved
+- [ ] All critical issues resolved (0 critical errors)
+- [ ] Language policy compliance verified (English content, Russian only for user output instruction)
+- [ ] Combo type structure properly marked (ALGORITHM + REFERENCE parts)
+- [ ] All TIER sections, XML tags, and anchors in place
+- [ ] Cross-model compatibility confirmed for Claude, GPT, Gemini, Qwen
+
+**Status after all checks:** PRODUCTION READY
+</production_readiness>
 
 [REFERENCE-END]

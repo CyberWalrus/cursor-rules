@@ -95,6 +95,29 @@ alwaysApply: false
 
 <naming_rules>
 
+### Проекты и репозитории: kebab-case
+
+<project_naming>
+**Правило:** Названия проектов/репозиториев используют kebab-case или lowercase
+
+- `cursor-rules` — конфигурация и правила
+- `vite-plugin-react` — плагин с контекстом
+- `typescript-utils` — библиотека утилит
+- `my-app` — простое приложение
+- Длина: 2-4 слова (до 30 символов оптимально)
+- Описательность: название должно объяснять назначение проекта
+
+<completion_criteria>
+**Критерий завершения:** Название проекта в kebab-case, описательное, уникальное, проверено на доступность в GitHub/npm
+</completion_criteria>
+
+<exception_handling>
+**При npm scoped packages:** разрешен формат `@scope/package-name`
+**При доменных именах:** допустимы точки (например, `next.js`)
+**При брендовых названиях:** одно слово lowercase (например, `react`, `vite`)
+</exception_handling>
+</project_naming>
+
 ### Файловая система: kebab-case
 
 <file_naming>

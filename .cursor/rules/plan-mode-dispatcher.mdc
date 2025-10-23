@@ -1,0 +1,238 @@
+---
+id: plan-mode-dispatcher
+type: compact
+alwaysApply: false
+---
+
+# Plan Mode Dispatcher
+
+<plan_mode_dispatcher>
+
+<mode_check>
+**CRITICAL CHECK:** This prompt works ONLY in Plan Mode!
+
+If NOT in Plan Mode (system_reminder does NOT contain "Plan mode is active"):
+
+- Skip this entire prompt completely
+- Do not apply plan-mode-dispatcher logic
+- Use other mode dispatchers instead
+
+**NO EXCEPTIONS:** This dispatcher is FORBIDDEN outside Plan Mode!
+</mode_check>
+
+**INSTANT CLASSIFICATION - ACT NOW**
+
+**FAST CLASSIFICATION - NO ANALYSIS PARALYSIS**
+
+**MANDATORY SEQUENCE - NO EXCEPTIONS (repeat 3 times if needed):**
+
+1. Classify task type (PRIORITY 1 or 2 logic)
+2. Announce: `Identified: [Type], reading .cursor/rules/[file].mdc`
+3. Read file: **FIRST TOOL CALL MUST BE** `read_file` for workflow file - FORBIDDEN to read ANY other files before workflow loaded
+4. Execute: follow workflow algorithm WITHOUT DELAY
+
+**CRITICAL:** If you don't call `read_file` tool NOW → workflow FAILS immediately!
+
+**NO PLANNING, NO WRITING - CLASSIFY TYPE FIRST!**
+
+---
+
+**PRIORITY 1: SHORT CODES (instant match, no analysis)**
+
+Check if request starts with short code, match instantly:
+
+- `tdcode` / `тдкод` / `tddev` / `тдразработка` → Code Development (.cursor/rules/dev-workflow.mdc)
+- `tdaux` / `тдвсп` / `tdsys` / `тдсис` → Auxiliary Development (.cursor/rules/auxiliary-dev-workflow.mdc)
+- `tdui` / `тдюай` / `tduiplan` / `тдюайплан` → UI Development (.cursor/rules/ui-workflow.mdc)
+- `tdcritic` / `тдкритик` / `tdmeta` / `тдкритика` → Technical Critique (.cursor/rules/critique-workflow.mdc)
+- `tdjira` / `тдджира` / `tdtask` / `тдзадача` → JIRA Task Creation (.cursor/rules/jira-task-creator.mdc)
+- `tdplan` / `тдплан` / `tddetail` / `тддеталь` → Detailed Planning (.cursor/rules/detailed-plan-creator.mdc)
+- `tdprompt` / `тдпромпт` / `tdpromt` / `тдпромт` → Prompt Engineering (.cursor/rules/prompt-workflow.mdc)
+- `tdaidoc` / `тдаидок` / `tdaidocs` / `тдаидоки` → AI Documentation (.cursor/rules/ai-docs-workflow.mdc)
+
+If short code matched → skip to EXECUTION PATTERN below.
+
+---
+
+**PRIORITY 2: UNDERSTAND TASK MEANING (not just keywords)**
+
+**Core principle:** Classify by WHAT task achieves, not HOW it's described.
+
+Keywords are hints, PURPOSE is the criterion.
+
+**Classification logic:**
+
+1. **Material scan (hint only):**
+   - Code files (.ts/.js/.py/.go) → likely Code/UI Development
+   - .cursor/ files → likely Prompt Engineering
+   - Docs/README → likely AI Documentation
+   - Configs → check PURPOSE below
+
+2. **Analyze task PURPOSE (primary criterion):**
+   - Changing AI behavior, .cursor/ rules → Prompt Engineering
+   - Creating AI-readable docs (YAML, llms.txt, structured) → AI Documentation
+   - Breaking down complex features, roadmaps → Detailed Planning
+   - JIRA tasks, technical specifications → JIRA Task Creation
+   - Review, critique, assess code quality → Technical Critique
+   - Scripts/deploy/infra outside project scope → Auxiliary Development
+   - Visual/browser/UI/styles issues → UI Development
+   - Implementing code logic, functions, APIs → Code Development
+
+3. **Disambiguation examples:**
+   - "Create docs" → for AI consumption? → AI Documentation | for devs? → not classified
+   - ".cursor/ changes" → AI behavior? → Prompt Engineering | just files? → Code Development
+   - "Add button" → visual/frontend? → UI Development | backend API? → Code Development
+   - "Setup config" → deploy/infra? → Auxiliary Dev | project config? → Code Development
+
+**FALLBACKS (when truly uncertain):**
+
+- If stuck between 2 types → choose HIGHER WEIGHT from table below
+- If complete uncertainty → choose Undefined (.cursor/rules/undefined.md)
+- If multi-faceted → choose MAIN type now, plan others later
+
+---
+
+**EXECUTION PATTERN (required actions) - NO EXCEPTIONS:**
+
+1. **Announce:** Output `Identified: [Type] ([short description]), reading .cursor/rules/[file].mdc`
+2. **Read file:** **FIRST TOOL CALL** - `read_file` for workflow file BEFORE any other tool calls (analysis, grep, context reading)
+3. **Execute immediately:** Apply classification to current task, follow workflow algorithm
+4. **No questions:** Do NOT ask user questions before reading workflow file
+
+**For combined tasks add:** `WHEN SWITCHING to [type2] will read .cursor/rules/[file2].mdc`
+
+**HARD REQUIREMENT:** Announce + `read_file` tool call MUST be in SAME response batch!
+
+**CORRECT examples:**
+
+✓ Single type with immediate tool call:
+
+```
+Identified: Prompt Engineering (prompt engineering), reading .cursor/rules/prompt-workflow.mdc
+[immediately calls read_file tool with absolute path in same response]
+```
+
+✓ Combined types with deferred reading:
+
+```
+Identified: Code Development (main), AI Documentation (additional), reading .cursor/rules/dev-workflow.mdc
+WHEN SWITCHING to documentation will read .cursor/rules/ai-docs-workflow.mdc
+[immediately calls read_file for dev-workflow.mdc in same response]
+```
+
+**INCORRECT examples:**
+
+✗ No announcement before reading:
+
+```
+[calls read_file without announcing type - WRONG!]
+```
+
+✗ Asking questions before reading workflow:
+
+```
+Identified: Prompt Engineering, reading prompt-workflow.mdc
+
+Should I create a new prompt or edit existing one?
+[NO! Read workflow file with read_file tool FIRST, then follow its instructions]
+```
+
+✗ Calling other tools before read_file:
+
+```
+Identified: Code Development, reading dev-workflow.mdc
+[calls grep or codebase_search before read_file - WRONG!]
+[read_file MUST be FIRST tool call after announcement]
+```
+
+✗ Reading context files before workflow:
+
+```
+Identified: Prompt Engineering, reading prompt-workflow.mdc
+[calls read_file for agent-dispatcher.mdc, ask-mode-workflow.mdc for analysis - WRONG!]
+[Workflow file MUST be read FIRST, context files AFTER workflow loaded]
+```
+
+---
+
+**CLASSIFICATION CORRECTION (during planning)**
+
+If during planning it becomes clear the initial classification was wrong:
+
+1. **Reclassify:** Determine correct task type using PRIORITY 2 logic above
+2. **Read correct workflow:** Immediately read appropriate .cursor/rules/[file].mdc
+3. **Follow new rules:** Apply the correct workflow algorithm, discard previous approach
+
+---
+
+**TYPE REFERENCE (8 types, weights for priority)**
+
+| Type | Short Codes | Triggers | Weight | File |
+|------|-------------|----------|--------|------|
+| Code Development | tdcode, тдкод, tddev | create, add, implement, refactor, bug, fix, error, failing, создай, добавь, реализуй, баг, исправь | +2 | .cursor/rules/dev-workflow.mdc |
+| Auxiliary Development | tdaux, тдвсп, tdsys | script, deploy, vpn, server, automation, setup outside project, yandex cloud, скрипт, деплой, сервер, автоматизация | +3 | .cursor/rules/auxiliary-dev-workflow.mdc |
+| UI Development | tdui, тдюай, tduiplan | ui, visual, design, layout, responsive, browser, styles, header, адаптив, визуальные проблемы, стили | +4 | .cursor/rules/ui-workflow.mdc |
+| Technical Critique | tdcritic, тдкритик, tdmeta | critique, review, evaluate, assess, find issues, what's wrong, критикуй, ревью, оцени, что не так | +3 | .cursor/rules/critique-workflow.mdc |
+| JIRA Task Creation | tdjira, тдджира, tdtask | create task, JIRA task, technical specification, write task, создай задачу, задача для JIRA, составь задачу | +3 | .cursor/rules/jira-task-creator.mdc |
+| Detailed Planning | tdplan, тдплан, tddetail | create plan, detailed plan, implementation plan, break down, decompose, roadmap, создай план, декомпозиция, разбей задачу | +4 | .cursor/rules/detailed-plan-creator.mdc |
+| Prompt Engineering | tdprompt, тдпромпт, tdpromt | prompt, prompting, AI instructions, LLM prompt, improve prompt, промт, промпт, prompt engineering, улучши промпт | +5 | .cursor/rules/prompt-workflow.mdc |
+| AI Documentation | tdaidoc, тдаидок, tdaidocs | ai-documentation, AI-friendly, machine-readable, structured metadata, YAML frontmatter, for AI, llms.txt, машинно-читаемый | +4 | .cursor/rules/ai-docs-workflow.mdc |
+
+**Weight usage:** Higher weight wins in uncertain situations (Prompt Engineering +5 highest, Code Development +2 lowest)
+
+---
+
+**DEFERRED READING (during execution)**
+
+Read additional workflow files when:
+
+1. **Phase change:** Finished main task → before starting next, read its workflow
+2. **Obstacles:** Main workflow doesn't cover situation → read corresponding additional one
+3. **User request:** User asks to switch activity → read new workflow
+4. **Context change:** Task evolved into another type → read new workflow
+
+Always announce: `Switching to [type], reading .cursor/rules/[file].mdc` + immediate read_file call
+
+---
+
+**PLAN EXECUTION START (when user approves plan)**
+
+**CRITICAL TRIGGER:** When user clicks "Apply" or says "execute plan" or "start implementation":
+
+**HARD REQUIREMENT - DO THIS FIRST:**
+
+1. **Declare mode switch:** Output `current_chat_mode = AGENT MODE` (separate line)
+2. **Announce:** Output `→ reading .cursor/rules/agent-dispatcher.mdc`
+3. **Read dispatcher:** Call read_file('.cursor/rules/agent-dispatcher.mdc') IMMEDIATELY
+4. **Execute plan:** Follow agent-dispatcher instructions, implement todos autonomously
+
+**NO EXCEPTIONS:** Plan execution ALWAYS requires switching to AGENT MODE first!
+
+**CORRECT example when plan approved:**
+
+✓ User: "Apply the plan" or clicks Apply button
+
+```
+current_chat_mode = AGENT MODE
+→ reading .cursor/rules/agent-dispatcher.mdc
+[calls read_file immediately]
+[then implements plan following agent-dispatcher logic]
+```
+
+**INCORRECT example:**
+
+✗ User: "Apply the plan"
+
+```
+Starting implementation...
+[implements without switching to agent mode]
+[NO! Must declare current_chat_mode = AGENT MODE first!]
+```
+
+---
+
+**MANDATORY COMPLIANCE**
+
+After reading any workflow file: STRICTLY follow its algorithm and recommendations. Workflow rules override general instructions.
+
+</plan_mode_dispatcher>

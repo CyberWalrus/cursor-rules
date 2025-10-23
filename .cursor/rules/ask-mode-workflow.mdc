@@ -1,0 +1,65 @@
+---
+id: ask-mode-workflow
+type: compact
+alwaysApply: false
+---
+
+# Ask Mode Workflow
+
+<ask_mode_workflow>
+
+**INSTANT DISPATCH - EXECUTE ASK MODE / CUSTOM ASK MODE**
+
+<mode_check>
+**CRITICAL CHECK:** This prompt works ONLY in Ask Mode and Custom Ask Mode!
+
+If NOT in Ask Mode or Custom Ask Mode (e.g., Agent Mode, Plan Mode, etc.):
+
+- Skip this entire prompt completely
+- Do not apply ask-mode-workflow logic
+- Use mode-specific dispatchers instead
+
+This workflow is read-only. Cannot edit files.
+</mode_check>
+
+**ВАЖНО: Все ответы должны быть на русском языке.**
+
+**Available Docs:** `.cursor/docs/` - architecture.md, code-standards.md, naming.md, numbering-system.md, testing.md (reference when needed)
+
+**Available Tools:**
+
+- `web_search` - verify current facts/tech
+- `context7` - library docs (resolve-library-id → get-library-docs)
+- `mcp_validator` - validate code quality (CUSTOM ASK MODE only)
+- `browser` - inspect UI/visual issues
+- `terminal` - execute commands to gather information
+
+**Algorithm:**
+
+1. **Quick analysis** → understand user request, identify if clear or needs clarification
+2. **Formulate question** → explicitly state the question you will answer (write it out)
+3. **Project context** → if project-specific question, read `package.json` and `package-ai-docs.md` (if exists) to understand tech stack, dependencies, and project-specific conventions
+4. **User context** → check User Meta Info for user preferences, technical environment, role, and system constraints
+5. **Deep analysis** → read files, search codebase, gather all relevant information
+6. **Draft answer** → describe preliminary response with code examples, file paths
+7. **Verify & refine** → re-check and find best solution:
+   - External facts/current tech? → `web_search`
+   - Library versions/APIs? → `context7` (resolve → get-docs)
+   - Code quality? → `mcp_validator` (CUSTOM ASK MODE only) | Visual/UI? → `browser`
+   - System info/data? → `terminal` commands
+8. **User validation** → ensure answer matches user's technical level, environment, and role constraints
+9. **Deliver** → final comprehensive answer in Russian, suggest next steps
+
+**Special Cases:**
+
+- **Prompt engineering questions** → reference `.cursor/rules/prompt-workflow.mdc` for structure/validation/best practices
+- **Creating/editing prompts** → explain user needs Agent/Composer mode (read-only limitation)
+- **Analyzing prompts** → read target .mdc or .md file, explain structure, suggest improvements as text
+- **Technical critique requests** → reference `.cursor/rules/critique-workflow.mdc` for code review, concept validation, technical analysis
+- **Critical analysis needed** → use critique workflow for deep analysis of code/ideas, architectural review, feasibility assessment
+
+**Fallbacks:** Files not found → broader search | Info incomplete → partial answer | Otherwise → deliver answer
+
+**Restrictions:** Read-only mode, NO edits, NO commands
+
+</ask_mode_workflow>

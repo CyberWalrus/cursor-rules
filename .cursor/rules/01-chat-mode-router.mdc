@@ -13,21 +13,77 @@ alwaysApply: true
 **EXECUTE IMMEDIATELY - NO REASONING NEEDED:**
 All required information is already in context (system_reminder, mode_specific_rule). Skip analysis, act instantly.
 
+**HARD REQUIREMENT - NO EXCEPTIONS:**
+
+- Set `current_chat_mode` variable FIRST (separate line)
+- Announce mode change if detected
+- Read dispatcher file IMMEDIATELY
+- All 3 actions in SAME response batch
+
+**MODE CHANGE DETECTION (fast-path):**
+
+Check explicit signals first (0-cost):
+
+1. "switched from" in system_reminder → MODE CHANGED
+2. mode_specific_rule appears/disappears → MODE CHANGED
+3. Otherwise → SAME MODE (skip announcement, proceed with task)
+
 **INSTANT DETECTION - NO FILE READS:**
+
+IF MODE CHANGED (from fast-path above):
 
 Check in order, announce immediately:
 
-1. mode_specific_rule exists → OTHER MODE (follow it, no dispatcher)
-2. system_reminder = "Plan mode is active" → PLAN MODE (read task-dispatcher.mdc)
-3. system_reminder = Ask marker → ASK MODE (read ask-dispatcher.mdc)
-4. Otherwise → AGENT MODE (read agent-dispatcher.mdc)
+1. mode_specific_rule exists with "custom_ask" → CUSTOM ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
+2. mode_specific_rule exists (other) → OTHER MODE (follow it, no dispatcher)
+3. system_reminder = "Plan mode is active" → PLAN MODE (read .cursor/rules/plan-mode-dispatcher.mdc)
+4. system_reminder = Ask marker → ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
+5. Otherwise → AGENT MODE (read .cursor/rules/agent-dispatcher.mdc)
 
-**Required actions (execute both):**
+**Required actions (execute both) - NO EXCEPTIONS:**
 
-1. **Announce mode:** Output `[MODE NAME] → reading [dispatcher-file].mdc`
-   - Examples: `PLAN MODE → reading task-dispatcher.mdc` or `AGENT MODE → reading agent-dispatcher.mdc`
+1. **Set variable:** Output `current_chat_mode = [MODE NAME]` (separate line for easy parsing)
+2. **Announce mode:** Output `→ reading .cursor/rules/[dispatcher-file].mdc`
+   - If mode changed: Output `Mode switched: current_chat_mode = [NEW MODE]` then `→ reading .cursor/rules/[dispatcher-file].mdc`
+3. **Read dispatcher:** Immediately call read_file with the dispatcher path (skip for OTHER MODE)
 
-2. **Read dispatcher:** Immediately call read_file with the dispatcher path (skip for OTHER MODE)
+**HARD REQUIREMENT:** Variable + announcement + read_file MUST happen in same response batch!
+
+**CORRECT examples:**
+
+✓ New session (PLAN MODE detected):
+
+```
+current_chat_mode = PLAN MODE
+→ reading .cursor/rules/plan-mode-dispatcher.mdc
+[calls read_file immediately]
+```
+
+✓ Mode changed (switched to AGENT MODE):
+
+```
+Mode switched: current_chat_mode = AGENT MODE
+→ reading .cursor/rules/agent-dispatcher.mdc
+[calls read_file immediately]
+```
+
+**INCORRECT examples:**
+
+✗ No variable declared:
+
+```
+PLAN MODE → reading .cursor/rules/plan-mode-dispatcher.mdc
+[missing current_chat_mode variable!]
+```
+
+✗ Variable not on separate line:
+
+```
+current_chat_mode = PLAN MODE → reading file
+[parsing difficult, should be 2 lines!]
+```
+
+**CRITICAL:** After reading dispatcher, IMMEDIATELY EXECUTE its instructions - no interpretation, no skipping steps.
 
 **Then:** Read corresponding dispatcher if needed for task execution.
 
