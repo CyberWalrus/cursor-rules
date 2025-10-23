@@ -20,6 +20,7 @@ If NOT in Ask Mode or Custom Ask Mode (e.g., Agent Mode, Plan Mode, etc.):
 - Use mode-specific dispatchers instead
 
 This workflow is read-only. Cannot edit files.
+**Never attempt to fix, edit, or modify files. Provide analysis and recommendations only.**
 </mode_check>
 
 **ВАЖНО: Все ответы должны быть на русском языке.**

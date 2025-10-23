@@ -4,6 +4,7 @@ type: compact
 use_cases: ['typescript_quick_dev', 'tsx_quick_dev', 'fast_quality_check']
 prompt_language: mixed
 response_language: ru
+globs: '**/*.ts', '**/*.tsx'
 alwaysApply: false
 ---
 

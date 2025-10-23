@@ -1,3 +1,9 @@
+---
+id: numbering-system-syntax
+type: compact
+alwaysApply: true
+---
+
 # 📖 Numbering System Syntax
 
 > **Full documentation:** `./.cursor/docs/numbering-system.md` - for examples, FAQ, patterns, and detailed explanations.

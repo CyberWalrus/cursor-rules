@@ -4,7 +4,6 @@ type: algorithm
 use_cases: ['typescript_development', 'react_development', 'code_quality_assurance', 'testing_workflow']
 prompt_language: ru
 response_language: ru
-globs: '**/*.ts', '**/*.tsx'
 alwaysApply: false
 ---
 
