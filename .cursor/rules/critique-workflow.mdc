@@ -42,7 +42,7 @@ Let's understand the context and plan the critique systematically.
 
 Preliminary actions:
 
-- Read `.cursor/rules/rules-catalog.mdc` for context understanding
+- Read `.cursor/docs/rules-catalog.mdc` for context understanding
 - Pre-read material (≤5 files, ~20 seconds)
 - Ask clarifying questions about context (1-2 critical questions):
   1. What problem does this code/idea solve?

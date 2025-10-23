@@ -60,7 +60,7 @@ Let's understand the context and plan the solution systematically.
 
 **MANDATORY CONTEXT READING:**
 
-- Read `.cursor/rules/rules-catalog.mdc` to understand related prompts ecosystem
+- Read `.cursor/docs/rules-catalog.mdc` to understand related prompts ecosystem
 - Identify prompt purpose and connections to other workflows
 - Analyze requirements and constraints
 
