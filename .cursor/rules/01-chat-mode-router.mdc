@@ -51,7 +51,7 @@ IF MODE CHANGED, check in order:
 2. mode_specific_rule exists (other) → OTHER MODE (follow it, no dispatcher)
 3. system_reminder = "Plan mode is active" → PLAN MODE (read .cursor/rules/plan-mode-dispatcher.mdc)
 4. system_reminder = Ask marker → ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
-5. Otherwise → AGENT MODE (read .cursor/rules/04-agent-mode-workflow.mdc.mdc)
+5. Otherwise → AGENT MODE (read .cursor/rules/05-agent-mode-workflow.mdc)
 
 **AFTER MODE DETECTION (for Plan Mode):**
 Plan Mode detected → read plan-mode-dispatcher.mdc → FOLLOW ITS INSTRUCTIONS:
@@ -79,8 +79,8 @@ Then immediately call read_file in same response batch, then verbalize: "🔧 **
 
 ```
 Mode switched: current_chat_mode = AGENT MODE
-→ reading .cursor/rules/04-agent-mode-workflow.mdc.mdc
-→ Following instructions from 04-agent-mode-workflow.mdc.mdc
+→ reading .cursor/rules/05-agent-mode-workflow.mdc
+→ Following instructions from 05-agent-mode-workflow.mdc
 ```
 
 Then immediately call read_file in same response batch, then verbalize: "🔧 **Режим:** AGENT MODE"

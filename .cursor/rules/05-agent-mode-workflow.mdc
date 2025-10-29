@@ -1,5 +1,5 @@
 ---
-id: 04-agent-mode-workflow
+id: 05-agent-mode-workflow
 type: compact
 response_language: ru
 alwaysApply: true
@@ -15,9 +15,9 @@ alwaysApply: true
 **Activation check:**
 
 - If system_reminder contains "Agent mode" or no mode specified → proceed with agent workflow
-- If Plan Mode is active (system_reminder contains "Plan mode is active") → skip 04-agent-mode-workflow.mdc entirely
-- If Ask Mode is active → skip 04-agent-mode-workflow.mdc entirely
-- If other mode active → skip 04-agent-mode-workflow.mdc entirely
+- If Plan Mode is active (system_reminder contains "Plan mode is active") → skip 05-agent-mode-workflow.mdc entirely
+- If Ask Mode is active → skip 05-agent-mode-workflow.mdc entirely
+- If other mode active → skip 05-agent-mode-workflow.mdc entirely
 
 **Rule:** Without Agent Mode context, this prompt does not apply.
 </mode_check>
@@ -58,9 +58,9 @@ After EACH file modification (search_replace/write/edit_notebook):
 1. **VALIDATE:** Call `mcp_mcp-validator_validate` with correct type:
    - `.ts/.tsx/.js/.jsx` → `'code'`
    - `.test.ts/.spec.ts` → `'tests'`
-   - `.mdc/.md` (in `.cursor/rules/`) → `'prompts'`
+   - `.mdc/.md` (in `.cursor/`) → `'prompts'`
    - `architecture.xml` → `'architecture'`
-   - `README.md` → `'documentation'`
+   - `package-ai-docs.md, module-ai-docs.md` → `'documentation'`
 
 2. **CHECK SCORE:** Target ≥85
    - Score ≥85 → proceed to step 3
