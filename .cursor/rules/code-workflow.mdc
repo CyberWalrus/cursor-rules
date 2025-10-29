@@ -1,5 +1,5 @@
 ---
-id: plan-mode-v3
+id: code-workflow
 type: algorithm
 use_cases: ['planning', 'project_preparation', 'architecture_validation']
 prompt_language: mixed
