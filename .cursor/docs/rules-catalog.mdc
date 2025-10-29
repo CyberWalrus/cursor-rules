@@ -13,30 +13,30 @@ alwaysApply: false
 
 ## Rules Files (.cursor/rules/)
 
-1. **01-rules-navigator.mdc**
+1. **01-chat-mode-router.mdc**
+    - **Description:** Compact prompt for instant chat mode detection (Plan/Agent/Ask/Custom Ask/Other) and automatic reading of corresponding dispatcher files. Emergency priority execution with blocking checks.
+    - **Relative Path:** `.cursor/rules/01-chat-mode-router.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true), triggers appropriate mode dispatcher based on system context.
+
+2. **02-rules-navigator.mdc**
     - **Description:** Lightweight navigation helper for quick access to rules and docs. Minimal reference for AI self-navigation without loading full catalog. Compact prompt with self-access rule.
-    - **Relative Path:** `.cursor/rules/01-rules-navigator.mdc`
+    - **Relative Path:** `.cursor/rules/02-rules-navigator.mdc`
     - **When to read:** Automatically applied (alwaysApply: true). When you need quick reference to available rules/docs without detailed descriptions.
 
-2. **02-code-standards-compact.mdc**
+3. **03-code-standards-compact.mdc**
     - **Description:** Compact code standards enforcement with critical rules: one file = one function, guard clauses, array methods, explicit comparisons, no classes, JSDoc (Russian), ESM-only. Includes absolute bans list and import/export rules.
-    - **Relative Path:** `.cursor/rules/02-code-standards-compact.mdc`
+    - **Relative Path:** `.cursor/rules/03-code-standards-compact.mdc`
     - **When to read:** Automatically applied (alwaysApply: true) for instant code quality enforcement. References `.cursor/docs/code-standards.md` for detailed examples.
 
-3. **03-naming-compact.mdc**
+4. **04-naming-compact.mdc**
     - **Description:** Compact naming conventions quick reference: kebab-case files, PascalCase components, camelCase functions, SCREAMING_SNAKE_CASE constants. Includes test naming (Russian) and no default exports rule.
-    - **Relative Path:** `.cursor/rules/03-naming-compact.mdc`
+    - **Relative Path:** `.cursor/rules/04-naming-compact.mdc`
     - **When to read:** Automatically applied (alwaysApply: true) for consistent naming enforcement. References `.cursor/docs/naming.md` for detailed examples.
 
-4. **04-agent-mode-workflow.mdc**
+5. **05-agent-mode-workflow.mdc**
     - **Description:** Compact prompt with Agent Mode execution algorithm: plan → documentation → execution → validation (MCP ≥85) → final verification (lint/tests). Includes mode check to skip when not in Agent Mode.
-    - **Relative Path:** `.cursor/rules/04-agent-mode-workflow.mdc`
+    - **Relative Path:** `.cursor/rules/05-agent-mode-workflow.mdc`
     - **When to read:** Automatically applied (alwaysApply: true) in Agent Mode for systematic validation and quality gates.
-
-5. **05-chat-mode-router.mdc**
-    - **Description:** Compact prompt for instant chat mode detection (Plan/Agent/Ask/Custom Ask/Other) and automatic reading of corresponding dispatcher files. Emergency priority execution with blocking checks.
-    - **Relative Path:** `.cursor/rules/05-chat-mode-router.mdc`
-    - **When to read:** Automatically applied (alwaysApply: true), triggers appropriate mode dispatcher based on system context.
 
 6. **ai-docs-workflow.mdc**
     - **Description:** Reference workflow for AI documentation integration with architectural rules. Aligns AI documentation practices with project architecture (FSD, packages, module units), terminology unification, and YAML policies.
@@ -48,9 +48,9 @@ alwaysApply: false
     - **Relative Path:** `.cursor/rules/ask-mode-workflow.mdc`
     - **When to read:** When in Ask Mode for analysis, recommendations, and information gathering without file modifications.
 
-8. **auxiliary-code-workflow.mdc**
+8. **auxiliary-dev-workflow.mdc**
     - **Description:** Algorithm workflow for auxiliary/side development tasks that are NOT part of the main project architecture (VPN setup, deployment scripts, VDS configuration, automation tools, cloud setup). Enforces mandatory verification through web search for current best practices and MCP Context7 for package versions, with OS/device compatibility validation (macOS ARM64, Linux, Windows). Includes aggressive requirement gathering in Plan Mode and fallback to code-workflow.mdc if task is actually main project work.
-    - **Relative Path:** `.cursor/rules/auxiliary-code-workflow.mdc`
+    - **Relative Path:** `.cursor/rules/auxiliary-dev-workflow.mdc`
     - **When to read:** When handling infrastructure setup, deployment automation, system configuration, tooling development, or any development task that exists outside the main project codebase. NOT for tasks that modify project files or integrate into project architecture.
 
 9. **critique-workflow.mdc**
