@@ -13,105 +13,80 @@ alwaysApply: false
 
 ## Rules Files (.cursor/rules/)
 
-1. **00-numbering-system-syntax.md**
-    - **Description:** Compact prompt with numbering system syntax (P/S/T/B hierarchy, R/V/C/F modifiers, fallback rules). References `.cursor/docs/numbering-system.md` for full documentation.
-    - **Relative Path:** `.cursor/rules/00-numbering-system-syntax.md`
-    - **When to read:** When working with hierarchical task decomposition or structured planning systems requiring numbered notation.
+1. **01-rules-navigator.mdc**
+    - **Description:** Lightweight navigation helper for quick access to rules and docs. Minimal reference for AI self-navigation without loading full catalog. Compact prompt with self-access rule.
+    - **Relative Path:** `.cursor/rules/01-rules-navigator.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true). When you need quick reference to available rules/docs without detailed descriptions.
 
-2. **01-chat-mode-router.mdc**
-    - **Description:** Compact prompt for instant chat mode detection (Plan/Agent/Ask/Custom Ask/Other) and automatic reading of corresponding dispatcher files.
-    - **Relative Path:** `.cursor/rules/01-chat-mode-router.mdc`
+2. **02-code-standards-compact.mdc**
+    - **Description:** Compact code standards enforcement with critical rules: one file = one function, guard clauses, array methods, explicit comparisons, no classes, JSDoc (Russian), ESM-only. Includes absolute bans list and import/export rules.
+    - **Relative Path:** `.cursor/rules/02-code-standards-compact.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true) for instant code quality enforcement. References `.cursor/docs/code-standards.md` for detailed examples.
+
+3. **03-naming-compact.mdc**
+    - **Description:** Compact naming conventions quick reference: kebab-case files, PascalCase components, camelCase functions, SCREAMING_SNAKE_CASE constants. Includes test naming (Russian) and no default exports rule.
+    - **Relative Path:** `.cursor/rules/03-naming-compact.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true) for consistent naming enforcement. References `.cursor/docs/naming.md` for detailed examples.
+
+4. **04-agent-mode-workflow.mdc**
+    - **Description:** Compact prompt with Agent Mode execution algorithm: plan → documentation → execution → validation (MCP ≥85) → final verification (lint/tests). Includes mode check to skip when not in Agent Mode.
+    - **Relative Path:** `.cursor/rules/04-agent-mode-workflow.mdc`
+    - **When to read:** Automatically applied (alwaysApply: true) in Agent Mode for systematic validation and quality gates.
+
+5. **05-chat-mode-router.mdc**
+    - **Description:** Compact prompt for instant chat mode detection (Plan/Agent/Ask/Custom Ask/Other) and automatic reading of corresponding dispatcher files. Emergency priority execution with blocking checks.
+    - **Relative Path:** `.cursor/rules/05-chat-mode-router.mdc`
     - **When to read:** Automatically applied (alwaysApply: true), triggers appropriate mode dispatcher based on system context.
 
-3. **02-rules-navigator.mdc**
-    - **Description:** Lightweight navigation helper for quick access to rules and docs. Minimal reference for AI self-navigation without loading full catalog.
-    - **Relative Path:** `.cursor/rules/02-rules-navigator.mdc`
-    - **When to read:** When you need quick reference to available rules/docs without detailed descriptions.
-
-4. **agent-dispatcher.mdc**
-    - **Description:** Reference prompt for Agent Mode with autonomous task execution, full codebase access, and independent decision making.
-    - **Relative Path:** `.cursor/rules/agent-dispatcher.mdc`
-    - **When to read:** When in Agent Mode for autonomous task execution and direct file modifications.
-
-5. **agent-mode-workflow.mdc**
-    - **Description:** Compact prompt with Agent Mode execution algorithm: plan → documentation → execution → validation (MCP ≥85) → final verification (lint/tests).
-    - **Relative Path:** `.cursor/rules/agent-mode-workflow.mdc`
-    - **When to read:** When executing tasks in Agent Mode requiring systematic validation and quality gates.
-
 6. **ai-docs-workflow.mdc**
-    - **Description:** Workflow for generating and maintaining AI documentation, including templates, examples, and best practices for docs in the repo.
+    - **Description:** Reference workflow for AI documentation integration with architectural rules. Aligns AI documentation practices with project architecture (FSD, packages, module units), terminology unification, and YAML policies.
     - **Relative Path:** `.cursor/rules/ai-docs-workflow.mdc`
-    - **When to read:** When updating or creating documentation related to AI agents or code styles.
+    - **When to read:** When creating or updating AI documentation (package-ai-docs.md, module-ai-docs.md) that needs alignment with architecture rules.
 
 7. **ask-mode-workflow.mdc**
-    - **Description:** Compact prompt for Ask Mode (read-only): analysis → question formulation → project context → deep analysis → verification (web_search/context7/browser) → answer.
+    - **Description:** Compact prompt for Ask Mode (read-only): analysis → question formulation → project context → deep analysis → verification (web_search/context7/browser) → answer. References `.cursor/docs/numbering-system.md` for task notation.
     - **Relative Path:** `.cursor/rules/ask-mode-workflow.mdc`
     - **When to read:** When in Ask Mode for analysis, recommendations, and information gathering without file modifications.
 
-8. **auxiliary-dev-workflow.mdc**
-    - **Description:** Workflow for auxiliary/side development tasks that are NOT part of the main project architecture (VPN setup, deployment scripts, VDS configuration, automation tools, cloud setup). Enforces mandatory verification through web search for current best practices and MCP Context7 for package versions, with OS/device compatibility validation (macOS ARM64, Linux, Windows). Includes aggressive requirement gathering in Plan Mode and fallback to dev-workflow.mdc if task is actually main project work.
-    - **Relative Path:** `.cursor/rules/auxiliary-dev-workflow.mdc`
+8. **auxiliary-code-workflow.mdc**
+    - **Description:** Algorithm workflow for auxiliary/side development tasks that are NOT part of the main project architecture (VPN setup, deployment scripts, VDS configuration, automation tools, cloud setup). Enforces mandatory verification through web search for current best practices and MCP Context7 for package versions, with OS/device compatibility validation (macOS ARM64, Linux, Windows). Includes aggressive requirement gathering in Plan Mode and fallback to code-workflow.mdc if task is actually main project work.
+    - **Relative Path:** `.cursor/rules/auxiliary-code-workflow.mdc`
     - **When to read:** When handling infrastructure setup, deployment automation, system configuration, tooling development, or any development task that exists outside the main project codebase. NOT for tasks that modify project files or integrate into project architecture.
 
-9. **code-workflow.mdc**
-    - **Description:** Workflow for code development, including decision algorithms for simple vs. full processes, quality checks, and integration rules.
-    - **Relative Path:** `.cursor/rules/code-workflow.mdc`
-    - **When to read:** When handling coding tasks, refactoring, or deciding on development processes.
-
-10. **critique-workflow.mdc**
-    - **Description:** Workflow for critiquing code, prompts, or outputs, with steps for analysis, feedback structure, and iterative improvements.
+9. **critique-workflow.mdc**
+    - **Description:** Algorithm workflow for technical critique and validation. Elite Principal Tech Reviewer for code review, architectural analysis, and technical idea validation. Includes Plan Mode with clarifying questions and Execution Mode with 7-step analysis.
     - **Relative Path:** `.cursor/rules/critique-workflow.mdc`
-    - **When to read:** For tasks requiring review, feedback, or quality assessment of generated content.
+    - **When to read:** For tasks requiring review, feedback, or quality assessment of code, concepts, or technical ideas.
 
-11. **detailed-plan-creator.mdc**
-    - **Description:** Comprehensive planning workflow for complex tasks requiring detailed architecture design, module structure definition, and step-by-step implementation roadmap. Creates plans via Cursor's create_plan tool with todos and dependencies.
+10. **detailed-plan-creator.mdc**
+    - **Description:** Algorithm workflow for creating detailed implementation plans for complex tasks. Comprehensive planning with architecture design, module structure definition, and step-by-step implementation roadmap. Creates plans via Cursor's create_plan tool with todos and dependencies.
     - **Relative Path:** `.cursor/rules/detailed-plan-creator.mdc`
     - **When to read:** When planning complex features that require careful decomposition, architecture design, multiple components, or phased execution with validation gates.
 
-12. **dev-workflow.mdc**
-    - **Description:** Advanced planning mode with architecture validation, structured preparation workflow, and quality gate enforcement before plan creation.
-    - **Relative Path:** `.cursor/rules/dev-workflow.mdc`
+11. **code-workflow.mdc**
+    - **Description:** Algorithm workflow for advanced planning mode with architecture validation. Structured preparation workflow with quality gate enforcement before plan creation. Includes XML architecture validation through MCP with ≥85 score requirement.
+    - **Relative Path:** `.cursor/rules/code-workflow.mdc`
     - **When to read:** When planning complex projects requiring architecture validation and systematic preparation.
 
-13. **jira-task-creator.mdc**
-    - **Description:** Interactive JIRA task creation workflow with requirements gathering, solution validation (web search + Context7), and wiki markup generation. Outputs copy-ready JIRA task description in Cursor plan.
+12. **jira-task-creator.mdc**
+    - **Description:** Algorithm workflow for interactive JIRA task creation with requirements gathering, solution validation (web search + Context7), and wiki markup generation. Outputs copy-ready JIRA task description in Cursor plan.
     - **Relative Path:** `.cursor/rules/jira-task-creator.mdc`
     - **When to read:** When creating JIRA tasks that are actionable and ready for copy-paste, including for breaking down larger initiatives into JIRA-sized work items.
 
-14. **plan-mode-dispatcher.mdc**
-    - **Description:** Critical priority checkpoint that activates plan mode workflow and enforces task-dispatcher reading before any processing.
+13. **plan-mode-dispatcher.mdc**
+    - **Description:** Combo prompt (algorithm + reference) for Plan Mode task classification and workflow routing. Meta-classifier for lightning-fast activity type determination with classification table and immediate workflow file reading.
     - **Relative Path:** `.cursor/rules/plan-mode-dispatcher.mdc`
-    - **When to read:** Automatically applied (alwaysApply: true), triggers task dispatcher workflow in plan mode.
+    - **When to read:** Automatically applied (alwaysApply: true) in Plan Mode, triggers activity type classification and corresponding workflow routing.
 
-15. **project-start.mdc**
-    - **Description:** Quick reference helper for launching this project's development server. Provides yarn start command, PORT extraction instructions, browser URL patterns, and troubleshooting for port conflicts.
-    - **Relative Path:** `.cursor/rules/project-start.mdc`
-    - **When to read:** When needing to start the development server or reference launch commands for browser-based validation tasks.
-
-16. **prompt-workflow.mdc**
-    - **Description:** Detailed prompt engineering workflow, including analysis, structure creation, validation with MCP, and output formats for creating/editing prompts.
+14. **prompt-workflow.mdc**
+    - **Description:** Combo prompt (algorithm + reference) for prompt engineering. Creates production-ready AI prompts with XML structuring, YAML metadata, and MCP validation (score ≥85). Supports algorithm/reference/combo/compact/command types.
     - **Relative Path:** `.cursor/rules/prompt-workflow.mdc`
-    - **When to read:** When the task involves creating, improving, or validating AI prompts.
+    - **When to read:** When the task involves creating, improving, editing, or validating AI prompts.
 
-17. **quick-ts-workflow.mdc**
-    - **Description:** Algorithm prompt for rapid TypeScript/TSX development: preparation (standards) → development with validation (MCP ≥85) → final verification (lint/tests).
-    - **Relative Path:** `.cursor/rules/quick-ts-workflow.mdc`
-    - **When to read:** When doing quick TypeScript/TSX development requiring fast quality-driven code creation with immediate validation.
-
-18. **task-dispatcher.mdc**
-    - **Description:** Meta-classifier for lightning-fast task type determination and workflow routing with activity type classification.
-    - **Relative Path:** `.cursor/rules/task-dispatcher.mdc`
-    - **When to read:** When starting any new task to determine correct workflow and activity type.
-
-19. **ui-workflow.mdc**
-    - **Description:** UI planning workflow with browser validation using Playwright MCP tools. Identifies visual problems through browser inspection, clarifies user requirements interactively, creates detailed plans with browser verification checkpoints for layout, colors, typography, responsiveness, and animations.
+15. **ui-workflow.mdc**
+    - **Description:** Algorithm workflow for UI planning with browser validation using Playwright MCP tools. Identifies visual problems through browser inspection, clarifies user requirements interactively, creates detailed plans with browser verification checkpoints. Uses package.json and package-ai-docs.md for launch instructions.
     - **Relative Path:** `.cursor/rules/ui-workflow.mdc`
     - **When to read:** When fixing visual/UI problems, validating design implementation, checking responsive layouts, or planning UI improvements through browser-based analysis.
-
-20. **undefined.md**
-    - **Description:** Fallback workflow for undefined or uncertain task types with basic analysis and routing logic.
-    - **Relative Path:** `.cursor/rules/undefined.md`
-    - **When to read:** When task type cannot be determined or emergency fallback needed.
 
 ### Docs Files (.cursor/docs/)
 

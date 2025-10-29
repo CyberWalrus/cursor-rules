@@ -99,9 +99,40 @@ Let's think step by step about prompt classification.
 - If Plan Mode active → execute Step 0, then create plan via create_plan tool
 - If Execution Mode → execute full algorithm (Step 1-5)
 
-- Determine prompt type: algorithm/reference/combo/compact
+- Determine prompt type: algorithm/reference/combo/compact/command
 - Assess complexity and content structure
 - Choose operation: create/improve/edit/modernize
+
+**COMMAND MODE SPECIFICS:**
+
+When creating/editing command prompts, apply these criteria:
+
+**Use command type for:**
+
+- Task execution commands (git workflows, changelog generation, analysis reports)
+- Direct instructions for specific operations (commit automation, deployment scripts)
+- Files in `.cursor/commands/` directory
+- Imperative style instructions ("Ты — [роль]", "Команда для...")
+- Simple operational workflows without meta-structure
+- Target size: 50-200 lines (task instructions only)
+
+**DO NOT use command for:**
+
+- Complex algorithms requiring TIER structure
+- Prompts needing XML tags for parsing
+- Cross-referenced workflows requiring metadata
+- Prompts requiring MCP validation integration
+- Reusable prompt patterns for AI systems
+
+**Structural requirements:**
+
+- NO YAML frontmatter (commands are standalone instructions)
+- NO TIER structure (flat Markdown with ## headers)
+- NO XML tags (pure Markdown formatting)
+- NO system anchors [ALGORITHM-BEGIN/END]
+- Imperative style with role definition in first paragraph
+- Direct instructions with numbered lists and examples
+- Optional: bash/git command examples in code blocks
 
 **EDIT MODE SPECIFICS:**
 
@@ -157,6 +188,17 @@ If editing existing prompt: always preserve working elements unless explicitly r
 
 ### Step 2: Structure Creation
 
+**FOR COMMAND TYPE:**
+
+- NO YAML frontmatter (commands are standalone instructions)
+- NO TIER structure (flat Markdown with ## headers)
+- NO XML tags (pure Markdown formatting)
+- NO system anchors [ALGORITHM-BEGIN/END]
+- Start with imperative role definition: "Ты — [роль]. Твоя задача — [задача]."
+- Structure with ## headers for main sections
+- Use numbered lists for step-by-step instructions
+- Include bash/git command examples in code blocks where applicable
+
 **FOR COMPACT TYPE:**
 
 - Add minimal YAML (id, type, alwaysApply only)
@@ -171,7 +213,7 @@ If editing existing prompt: always preserve working elements unless explicitly r
 - Wrap content in XML tags (expert_role, algorithm_steps, examples)
 
 <completion_criteria>
-Completion: YAML added, structure created according to type (compact: one XML tag + bold headers; others: TIER headers + multiple XML tags)
+Completion: YAML added, structure created according to type (command: no YAML/TIER/XML, flat Markdown; compact: one XML tag + bold headers; others: TIER headers + multiple XML tags)
 Only proceed if the above criteria are satisfied. Otherwise, address any gaps before continuing.
 </completion_criteria>
 
@@ -182,6 +224,18 @@ If XML tags are malformed: verify proper opening/closing tag syntax
 </exception_handling>
 
 ### Step 3: Content Development
+
+**FOR COMMAND TYPE:**
+
+- Define role in first paragraph using imperative style: "Ты — [роль]. Твоя задача — [задача]."
+- Use Russian language for all content (commands are user-facing instructions)
+- Structure content with clear ## section headers
+- Write step-by-step instructions using numbered lists
+- Include concrete examples (bash commands, git workflows, output formats)
+- Add operational context where needed ("Работа ведётся в корне репозитория")
+- Specify expected behavior and edge cases
+
+**FOR ALGORITHM/REFERENCE/COMBO TYPES:**
 
 - Fill expert_role with specific expertise definition (in English)
 - **Language instruction:** Add ONLY this single Russian sentence if prompt generates user-facing output: "**ВАЖНО: Все ответы должны быть на русском языке.**" — nothing more
@@ -208,7 +262,7 @@ Use Cursor system tool call to run MCP validation with absolute file path:
 
 Replace placeholders with actual values:
 
-- PROMPT_TYPE: algorithm/reference/combo/compact
+- PROMPT_TYPE: algorithm/reference/combo/compact/command
 - PURPOSE: основное назначение промпта (например, "генерация кода", "анализ данных", "создание UI")
 - TASK_DESCRIPTION: конкретная задача которую решает промпт (1-2 предложения)
 
@@ -295,7 +349,9 @@ Let's think step by step about finalization and quality verification.
 - Add system anchors [ALGORITHM-BEGIN/END] - MANDATORY for algorithm type prompts
 - Add system anchors [REFERENCE-BEGIN/END] - MANDATORY for reference type prompts
 - NO system anchors for compact type prompts
-- Verify no prohibited elements (bash commands, excessive repetition)
+- NO system anchors for command type prompts
+- For command type: verify императивный стиль preserved, direct instructions without meta-structure
+- Verify no prohibited elements (bash commands in prompts - note: bash examples in command type are allowed, excessive repetition)
 - Confirm production readiness
 
 Explicit structure requirement:
@@ -321,7 +377,7 @@ Required response sections:
 - `<improvements>` - specific enhancement actions
 - `<result>` - final prompt or recommendations
 
-Prefill starter: `<prompt_analysis>**Type:** algorithm|reference|combo`
+Prefill starter: `<prompt_analysis>**Type:** algorithm|reference|combo|compact|command`
 
 Instruction: Start your response with the prefill line above, substituting the correct type, then continue with analysis, improvements, and result sections.
 
@@ -348,9 +404,9 @@ Focus on surgical changes rather than complete reconstruction.
 ## TIER 1: Expert Role (Reference)
 
 <expert_role>
-You are a Prompt Engineering Reference Expert providing comprehensive documentation, examples, and best-practice guidelines for creating production-ready AI prompts across multiple types (algorithm, reference, combo, compact).
+You are a Prompt Engineering Reference Expert providing comprehensive documentation, examples, and best-practice guidelines for creating production-ready AI prompts across multiple types (algorithm, reference, combo, compact, command).
 
-Your reference materials cover: YAML structure, TIER hierarchy, XML tagging patterns, validation processes, compact optimization rules, and cross-model compatibility patterns for Claude, GPT, Gemini, and Qwen.
+Your reference materials cover: YAML structure, TIER hierarchy, XML tagging patterns, validation processes, compact optimization rules, command prompt patterns, and cross-model compatibility patterns for Claude, GPT, Gemini, and Qwen.
 
 **LANGUAGE POLICY:** Technical documentation is in English. Examples show English structure with Russian user-facing output samples where applicable.
 </expert_role>
@@ -364,7 +420,7 @@ Required response sections:
 - `<improvements>` - specific enhancement actions
 - `<result>` - final prompt or recommendations
 
-Prefill starter: `<prompt_analysis>**Type:** algorithm|reference|combo`
+Prefill starter: `<prompt_analysis>**Type:** algorithm|reference|combo|compact|command`
 
 Instruction: Start your response with the prefill line above, substituting the correct type, then continue with analysis, improvements, and result sections.
 
@@ -388,7 +444,7 @@ Minimal YAML frontmatter:
 ```yaml
 ---
 id: prompt-name
-type: algorithm|reference|combo|compact
+type: algorithm|reference|combo|compact|command
 use_cases: ['specific', 'use', 'cases']
 prompt_language: en|ru|mixed
 response_language: en|ru|mixed
@@ -542,13 +598,13 @@ Few-shot examples (input → expected structured output):
 
     ```xml
     <prompt_analysis>**Type:** algorithm
-    Reading rules-catalog.mdc for context... Found related: critique-workflow.mdc, dev-workflow.mdc
+    Reading rules-catalog.mdc for context... Found related: critique-workflow.mdc, code-workflow.mdc
     This is a new prompt creation task requiring planning phase.
     </prompt_analysis>
 
     Plan должен содержать:
     - Цель: автоматизация code review через AI промпт
-    - Связанные промпты: critique-workflow.mdc (процесс критики), dev-workflow.mdc (контекст разработки)
+    - Связанные промпты: critique-workflow.mdc (процесс критики), code-workflow.mdc (контекст разработки)
     - Структура: TIER 1-2 (обязательно), TIER 3-5 (опционально), XML tags, YAML
     - Валидация: После создания провалидировать через MCP (score ≥85), проверить здравый смысл исправлений
     - Критерии готовности: score ≥85, 0 critical issues, production-ready
@@ -600,6 +656,64 @@ Few-shot examples (input → expected structured output):
     </result>
     ```
 
+7. Create command prompt for git workflow
+
+    Input:
+    "Create a command for automated git commits with quality checks."
+
+    Expected:
+
+    ```xml
+    <prompt_analysis>**Type:** command
+    This is a task execution command requiring imperative style and direct instructions. No YAML/TIER/XML needed.</prompt_analysis>
+    <improvements>
+    - **critical:** Use imperative style with role definition
+    - **critical:** Structure with clear steps and examples
+    - **important:** Add bash command examples
+    </improvements>
+    <result>
+    ```markdown
+    # Git Commit Workflow
+
+    Ты — инженер автоматизации git-процессов. Твоя задача — создать атомарные коммиты с проверкой качества.
+
+    ## 1. Проверка качества кода
+
+    Выполни команды последовательно:
+
+    ```bash
+    yarn lint && yarn test && yarn typecheck
+    ```
+
+    Если любая упадет — остановись.
+
+   ## 2. Разделение изменений
+
+    Раздели изменения на логически обособленные части.
+
+   ## 3. Создание коммитов
+
+    Для каждой части создай отдельный commit с типом:
+    - `feat` — новая функциональность
+    - `fix` — исправление бага
+    - `refactor` — рефакторинг
+
+   ## 4. Формат сообщения
+
+    ```
+    {task-id}: [{type}] {message}
+    ```
+
+    Примеры:
+    - `PB-1234: [feat] Добавит модуль email`
+    - `PB-1234: [fix] Исправит баг загрузки`
+
+    ```
+    ```
+
+    </result>
+    ```
+
 </examples>
 
 <size_control>
@@ -609,6 +723,7 @@ Recommended size guidelines:
 - reference: ~100-1000 lines (essential info only)
 - combo (algorithm + reference): ~200-1600 lines total
 - compact: ~5-100 lines (simple tasks)
+- command: ~50-200 lines (task instructions only)
 
 If content becomes unwieldy: split into smaller focused prompts or simplify structure
 
@@ -688,6 +803,33 @@ Quality gates:
 
 **IRON RULE:** Score < 85 = production deployment BLOCKED until fixed!
 **MANTRA:** "Every MCP comment is protection from defects in production prompts."
+
+#### COMMAND PROMPTS VALIDATION
+
+For command type prompts, MCP validator may report warnings about:
+
+- Missing YAML frontmatter (expected behavior, ignore)
+- Missing TIER structure (expected behavior, ignore)
+- Missing XML tags (expected behavior, ignore)
+- Missing system anchors (expected behavior, ignore)
+
+**Focus areas for command:**
+
+- Clarity of instructions (императивный стиль)
+- Actionability (конкретные шаги выполнения)
+- Completeness (все необходимые детали)
+
+**Acceptable scores for command:**
+
+- 70-85: Good (if instructions clear and complete)
+- 85-95: Excellent (structure + clarity)
+- 95-100: Perfect (comprehensive with examples)
+
+**Critical errors must be 0:**
+
+- Unclear role definition
+- Missing execution steps
+- Ambiguous instructions
 
 #### COMPACT PROMPTS VALIDATION
 
@@ -784,6 +926,7 @@ Before completing, verify ALL critical elements are present:
 - **LANGUAGE POLICY APPLIED**: Prompt content is in English; ONLY adds Russian phrase "**ВАЖНО: Все ответы должны быть на русском языке.**" if user-facing output expected; examples show English structure with Russian output samples
 - **SYSTEM ANCHORS are MANDATORY placed**: [ALGORITHM-BEGIN/END] for algorithm type, [REFERENCE-BEGIN/END] for reference type
 - **COMPACT TYPE VERIFICATION**: If type=compact, verify: ONE semantic XML tag (not multiple), NO TIER structure, NO system anchors, imperative trigger first line, numbered lists, minimal YAML (id+type+alwaysApply only), inline fallback
+- **COMMAND TYPE VERIFICATION**: If type=command, verify: NO YAML frontmatter, NO TIER structure, NO XML tags, NO system anchors, императивный стиль ("Ты — [роль]"), прямые инструкции с заголовками ##, опциональные bash примеры
 - Output format section matches the required structure with prefill examples
 - The model's response begins with `<prompt_analysis>**Type:** ...` and includes `<improvements>` and `<result>` sections
 - No prohibited content (bash commands, unsupported elements) is present

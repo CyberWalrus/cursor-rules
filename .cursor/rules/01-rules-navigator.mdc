@@ -1,9 +1,6 @@
 ---
 id: rules-navigator
-type: reference
-use_cases: ['rules navigation', 'docs lookup']
-prompt_language: en
-response_language: ru
+type: compact
 alwaysApply: true
 ---
 

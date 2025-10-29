@@ -1,0 +1,90 @@
+---
+id: naming-compact
+type: compact
+response_language: ru
+alwaysApply: true
+---
+
+# Naming Conventions
+
+<naming_conventions>
+
+**INSTANT ENFORCEMENT - CONSISTENCY REQUIRED:**
+
+**ВАЖНО: Все ответы должны быть на русском языке.**
+
+Read full reference: `.cursor/docs/naming.md` for detailed examples and edge cases.
+
+## Quick Reference
+
+**Files & Directories:** kebab-case
+
+- `base-button.tsx`, `form-validation.test.tsx`, `user-settings/`
+
+**React Components:** PascalCase
+
+- `BaseButton`, `Checkbox`, `ErrorBoundary`
+
+**Functions & Variables:** camelCase
+
+- `validateInput`, `userData`, `isLoading`
+- Booleans: `isValid`, `hasError`, `canSubmit`
+
+**Types:** PascalCase + suffix
+
+- `BaseButtonProps`, `ButtonState`, `ButtonVariants`
+
+**Zod Schemas:** camelCase + Schema
+
+- `configSchema`, `userValidationSchema`
+
+**Constants:** SCREAMING_SNAKE_CASE
+
+- `API_ENDPOINTS`, `BUTTON_SIZES`, `MAX_RETRY_COUNT`
+
+**CSS Classes:** kebab-case (Tailwind)
+
+- `bg-primary-500`, `text-icon-normal`
+- Style functions: `baseButtonVariants`, `checkboxVariants`
+
+## Critical Rules
+
+1. **Projects/Repos:** kebab-case or lowercase (`cursor-rules`, `vite-plugin-react`)
+2. **No default exports:** Named exports ONLY (`export { BaseButton }`)
+3. **Type imports:** Use `type` prefix (`import type { User } from './types'`)
+4. **Full words:** `button` not `btn` (except: `props`, `ref`, `config`)
+5. **Union types:** Not enum (`type Variant = 'primary' | 'secondary'`)
+
+## Test Naming
+
+**Files:** kebab-case by component name
+
+- `button.test.tsx`, `form-validation.e2e.test.tsx`
+
+**Descriptions:** Russian language
+
+```typescript
+describe('Button', () => {
+    it('проверка скриншота кнопки по умолчанию', () => {});
+    it('вызывает onClick при клике', () => {});
+});
+```
+
+## Storybook
+
+**Meta objects:** camelCase
+**Stories:** PascalCase English
+
+- `Default`, `AllVariants`, `WithIcons`, `Disabled`
+
+## Validation Checklist
+
+1. Correct case? (kebab/camel/Pascal/SCREAMING_SNAKE)
+2. Describes purpose? (clear without context)
+3. Consistent with project? (follows patterns)
+4. Avoids abbreviations? (full words preferred)
+5. No default exports? (named only)
+
+**Exception:** External libraries keep original naming (React.Component, useState)
+
+</naming_conventions>

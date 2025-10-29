@@ -31,6 +31,8 @@ Role feature: activates only at the moment of classifying new tasks or redefinin
 
 **Rule:** Without Plan Mode, this prompt does not apply.
 
+**CLARIFICATION:** Plan Mode check determines WHETHER to create a plan. Activity type classification determines WHICH workflow to follow. Both are mandatory.
+
 <exception_handling>
 If system_reminder does NOT contain "Plan mode is active": skip this entire prompt, do not apply plan-mode-dispatcher logic, continue with normal task execution without classification overhead.
 </exception_handling>
@@ -44,16 +46,47 @@ Fast and accurate task classification with immediate workflow routing ensures ef
 
 <algorithm_steps>
 
-<tier2_intro>
-**This is critically important for proper task processing and work efficiency!**
-</tier2_intro>
+<pre_flight_checklist>
+**BLOCKING CHECK - READ THIS FIRST:**
+
+If you are reading user request without declaring activity type first - STOP IMMEDIATELY.
+This is a protocol violation. You MUST classify and announce type BEFORE processing any task.
+
+**Why classification first:** 5 seconds of classification → correct workflow → saves hours of wrong approach. Skipping classification = wrong algorithm = rework of entire task.
+
+**PLAN MODE INTEGRATION:**
+
+Plan Mode does NOT replace activity classification - they work together:
+
+1. FIRST: Classify activity type (🧠 Prompt Engineering / 🔧 Code Development / etc.)
+2. SECOND: Announce: "Identified activity types: [type], reading file [name].mdc"
+3. THIRD: Read workflow file
+4. FOURTH: Proceed with Plan Mode workflow (create plan via create_plan tool)
+
+**CRITICAL:** Mode (Plan/Agent/Ask) + Activity Type are orthogonal - apply BOTH.
+
+**Required actions in SAME response batch:**
+
+1. Classify task type using classifier table
+2. Output: "Identified activity types: [type], reading file [name].mdc"
+3. Call: read_file('[name].mdc') in same batch
+4. Follow workflow instructions from read file
+
+**SELF-CHECK BEFORE PROCEEDING:**
+
+- [ ] Activity type announced: "Identified activity types: [type]"
+- [ ] Workflow file read_file called
+- [ ] Now following workflow instructions (Plan Mode or Execution Mode)
+
+**VIOLATION:** Working on task without classification = PROTOCOL BREACH
+</pre_flight_checklist>
 
 ### 🚨 Critical Requirement
 
 <critical_requirements>
-**EMERGENCY BLOCKING:** DON'T PLAN, DON'T WRITE — FIRST DETERMINE THE ACTIVITY TYPE!
+**BLOCKING REQUIREMENT:** DON'T PLAN, DON'T WRITE — FIRST DETERMINE THE ACTIVITY TYPE!
 
-**CRITICAL SPEED:** Perform fast, shallow analysis only (no deep reasoning). Choose type based on triggers and material type, not extensive deliberation. If uncertain after initial scan, use emergency procedures from Step 1.
+**CRITICAL SPEED applies to TYPE CLASSIFICATION ONLY (Step 1):** Perform fast, shallow analysis for classification. Choose type based on triggers and material type, not extensive deliberation. After classification → follow workflow thoroughly.
 
 **MANDATORY SEQUENCE:**
 
@@ -62,6 +95,11 @@ Fast and accurate task classification with immediate workflow routing ensures ef
 3. Apply algorithms
 
 **HARD REQUIREMENT:** FORBIDDEN to execute tasks without reading workflow files!
+
+**CLARIFICATION:** "Read ONLY main workflow" means:
+
+- ✓ DO read: supporting docs required by workflow (rules-catalog, package.json, etc.)
+- ❌ DON'T read: other workflow files (until their triggers fire)
 </critical_requirements>
 
 <completion_criteria>
@@ -91,15 +129,19 @@ Let's quickly determine the task type. Let's analyze the key triggers.
 - Creating JIRA tasks or technical specifications → 📋 JIRA Task Creation
 - Breaking down complex features or creating implementation roadmaps → 📐 Detailed Planning
 
-**EMERGENCY PROCEDURES AGAINST ANALYSIS PARALYSIS:**
+**FALLBACK PROTOCOL (if uncertain):**
 
 1. **If quick scan is inconclusive** → immediately choose MOST LIKELY type by first impression
 2. **If uncertain between 2-3 types** → choose type with HIGHEST WEIGHT from table
 3. **If weights equal** → choose type that comes HIGHER in classifier (by row order)
-4. **If complete uncertainty** → automatically choose **❓ Undefined** and read `undefined.md`
+4. **If complete uncertainty** → automatically choose most likely type by first impression and proceed
 5. **If multi-faceted task** → choose MAIN type now, plan others for later
 
 **CRITICAL FALLBACK:** Better to choose inaccurate type and correct later than get stuck in analysis!
+
+**COMMON MISTAKE:** "Task is obvious, skip classification" → wrong workflow → time wasted on rework. Even obvious tasks require formal classification to select the right algorithm.
+
+**SELF-CHECK:** Did I classify type? → NO = STOP and classify immediately
 </classification_algorithm>
 
 <completion_criteria>
@@ -112,7 +154,8 @@ Main type determined by task meaning (not action), additional types identified t
 **STRICTLY MANDATORY:** After analysis always directly state:
 
 **Main format:**
-"Identified activity types: [type list], reading file [name].mdc"
+"Identified activity types: [type list], reading file [name].mdc
+→ Following instructions from [name].mdc"
 
 **For combined tasks add reading plan:**
 "when I work on [type2] I'll read [file2].mdc"
@@ -128,75 +171,40 @@ Main type determined by task meaning (not action), additional types identified t
 
 **CORRECT EXECUTION PATTERN:**
 
-1. Output announcement text: "Identified activity types: [type], reading file [name].mdc"
+1. Output announcement text: "Identified activity types: [type], reading file [name].mdc" + "→ Following instructions from [name].mdc"
 2. Immediately call read_file tool in the same response batch
 3. Wait for file content, then follow its instructions
+
+<announcement_blocker>
+**FORBIDDEN PATTERNS (will cause task failure):**
+
+❌ Starting analysis without announcement
+❌ Asking questions before reading workflow
+❌ Calling other tools before read_file
+❌ Outputting anything except announcement before read_file
+
+**REQUIRED PATTERN:**
+
+✓ Output announcement text → read_file in same batch → follow workflow
+</announcement_blocker>
+
+**CRITICAL REQUIREMENT:**
+
+The workflow file contains specialized rules for the identified activity type - they take priority over general instructions. By announcing intention to follow them BEFORE reading, you commit to applying the workflow.
+
+**DEFERRED READING (during execution):**
+
+Read additional workflow files ONLY when triggers fire:
+
+- Phase change: finished main task → read new workflow before starting
+- Obstacle: main workflow doesn't cover → read corresponding workflow
+- User request: user asks to switch → read requested workflow
+- Context change: task evolved into another type → read new workflow
 
 </vocalization_requirements>
 
 <completion_criteria>
 Announcement phrase spoken in exact format, read_file tool call executed in same response batch, main workflow file read immediately before any other actions
-</completion_criteria>
-
-### Step 3: Step-by-step Workflow File Reading
-
-<workflow_reading_algorithm>
-**STEP A. IMMEDIATE READING (0 second delay):**
-
-- Read ONLY the main workflow file immediately after announcing types
-- Main = type with highest weight from identified types
-
-**STEP B. DEFERRED READING (during execution):**
-
-**TRIGGERS for reading additional workflow files:**
-
-1. **When changing task phase:**
-
-    - Finished main task → BEFORE starting additional one, read its workflow
-    - Example: "Finished development, now reading documentation.mdc for documentation"
-
-2. **When encountering obstacles:**
-    - Main workflow doesn't cover situation → read corresponding additional one
-    - Example: "Found code complexities, reading development.mdc for proper solution"
-
-3. **When user requests:**
-    - User asks to switch to another activity → read its workflow
-    - Example: "User asks for analysis, reading analysis.mdc"
-
-4. **When task context changes:**
-    - Task evolved into another type → read new workflow
-    - Example: "Task from development turned into critique, reading meta.mdc"
-      </workflow_reading_algorithm>
-
-<completion_criteria>
-**Completion criteria:** Main workflow file read immediately, triggers for reading additional files defined and planned
-</completion_criteria>
-
-### Step 4: Reading Plan Formation
-
-<reading_plan_formation>
-**Plan formation algorithm:**
-
-1. **NOW**: Determine main type → read its workflow file IMMEDIATELY
-2. **IN PLAN**: Determine additional types → plan their reading points
-3. **ANNOUNCE**: "reading file [main].mdc, WHEN SWITCHING to [type2] I'll read [file2].mdc"
-
-**Planning examples with triggers:**
-
-- "reading file dev-workflow.mdc, WHEN SWITCHING to documentation I'll read ai-docs-workflow.mdc"
-- "reading file jira-task-creator.mdc, IF COMPLEX TASK I'll read detailed-plan-creator.mdc"
-- "reading file detailed-plan-creator.mdc, WHEN CREATING JIRA TASK I'll read jira-task-creator.mdc"
-- "reading file prompt-workflow.mdc, WHEN DEVELOPMENT NEEDED I'll read dev-workflow.mdc"
-  </reading_plan_formation>
-
-<exception_handling>
-**If workflow files unavailable:** stop and request them through file reading tool!
-**If type uncertainty:** choose "❓ Undefined" and read `undefined.md`
-**If type conflict:** choose type with highest weight from classifier
-</exception_handling>
-
-<completion_criteria>
-Reading plan composed with specific triggers, all potential obstacles considered, exceptional situations provided for
 </completion_criteria>
 
 </algorithm_steps>
@@ -220,11 +228,26 @@ Required output structure:
    - Apply algorithms from the workflow
    - Use workflow-specific output formats
 
+4. **Plan Execution Instruction (when creating plan):**
+   - Add at the start of created plan: "⚠️ EXECUTION: When executing this plan, switch to Agent Mode for systematic implementation with validation."
+
 **Execution Pattern:**
 
 ```
 [Output announcement text] → [Call read_file in same batch] → [Wait for content] → [Follow workflow instructions]
 ```
+
+<output_format_check>
+**BEFORE SENDING RESPONSE: Verify format compliance**
+
+Required elements present:
+
+- [ ] "Identified activity types: [type], reading file [name].mdc" as first line
+- [ ] read_file tool call in same response batch
+- [ ] No questions or other actions before read_file
+
+If ANY checkbox unchecked → reformat response before sending!
+</output_format_check>
 
 </output_format>
 
@@ -251,8 +274,8 @@ Every line of this mechanism has meaning for proper system operation. Skipping a
 
 | Activity | Short Codes | Triggers | Weight | File |
 | :--- | :---- | :----- | :-- | :---- |
-| **🔧 Code Development** | `tdcode` `тдкод` `tddev` `тдразработка` | "create", "add", "change", "implement", "refactor", "optimize", "bug", "error", "fix", "debug", "broken", "failing", "создай", "добавь", "измени", "реализуй", "рефактори", "оптимизируй", "баг", "падает", "не работает", "ошибка", "исправь", "тесты падают" | +2 | `dev-workflow.mdc` |
-| **🔧 Auxiliary Development** | `tdaux` `тдвсп` `tdsys` `тдсис` | "script", "deploy", "vpn", "vds", "server", "automation", "setup outside project", "yandex cloud", "configure", "скрипт", "деплой", "впн", "сервер", "автоматизация", "настройка вне проекта", "яндекс облако", "настрой" | +3 | `auxiliary-dev-workflow.mdc` |
+| **🔧 Code Development** | `tdcode` `тдкод` `tddev` `тдразработка` | "create", "add", "change", "implement", "refactor", "optimize", "bug", "error", "fix", "debug", "broken", "failing", "создай", "добавь", "измени", "реализуй", "рефактори", "оптимизируй", "баг", "падает", "не работает", "ошибка", "исправь", "тесты падают" | +2 | `code-workflow.mdc` |
+| **🔧 Auxiliary Development** | `tdaux` `тдвсп` `tdsys` `тдсис` | "script", "deploy", "vpn", "vds", "server", "automation", "setup outside project", "yandex cloud", "configure", "скрипт", "деплой", "впн", "сервер", "автоматизация", "настройка вне проекта", "яндекс облако", "настрой" | +3 | `auxiliary-code-workflow.mdc` |
 | **🎨 UI Development** | `tdui` `тдюай` `tduiplan` `тдюайплан` | "ui", "visual", "design", "layout", "responsive", "browser", "UI", "UX", "header", "styles", "визуальный", "дизайн", "верстка", "адаптив", "визуальные проблемы", "хедер", "стили", "browser validation", "проверь ui" | +4 | `ui-workflow.mdc` |
 | **🔍 Technical Critique** | `tdcritic` `тдкритик` `tdmeta` `тдкритика` | "critique", "review", "evaluate", "assess", "find issues", "what's wrong", "критикуй", "проверь", "ревью", "оцени", "что не так", "найди проблемы" | +3 | `critique-workflow.mdc` |
 | **📋 JIRA Task Creation** | `tdjira` `тдджира` `tdtask` `тдзадача` | "create task", "JIRA task", "task for JIRA", "technical specification", "write task", "создай задачу", "задача для JIRA", "техническое задание", "составь задачу", "задача в JIRA" | +3 | `jira-task-creator.mdc` |
@@ -319,57 +342,57 @@ Every line of this mechanism has meaning for proper system operation. Skipping a
 **FINAL CHECK BEFORE ANY ACTIONS:**
 
 - [ ] **ANNOUNCED TYPES?** Did you write the phrase "Identified activity types: [list], reading file [name].mdc"?
-- [ ] **MAIN TYPE CHOSEN?** Is the main activity type determined for immediate workflow reading?
-- [ ] **FAST CLASSIFICATION?** Did you perform quick shallow analysis without deep deliberation?
-- [ ] **WORKFLOW READ IN SAME RESPONSE?** Did you call read_file tool IMMEDIATELY after announcement in the same response batch (no questions, no other actions before reading)?
+- [ ] **WORKFLOW READ IN SAME RESPONSE?** Did you call read_file tool IMMEDIATELY after announcement in the same response batch?
 - [ ] **NO PREMATURE QUESTIONS?** Did you avoid asking questions to user before reading workflow file?
 
 </critical_checklist>
 
 <mandatory_format>
 
-**REMEMBER: FIRST PHRASE OF ANY ANSWER MUST BE:**
-"Identified activity types: [type list], reading file [name].mdc" + reading plan for combined tasks
+**FIRST PHRASE OF ANY ANSWER MUST BE:**
 
-**CORRECT ANSWER START EXAMPLES:**
+"Identified activity types: [type list], reading file [name].mdc
+→ Following instructions from [name].mdc"
 
-✅ **CORRECT - Announcement + Immediate Reading:**
+**CORRECT EXAMPLES:**
+
+✅ Simple task:
 
 ```
-"Identified activity types: 🧠 Prompt Engineering (prompt engineering), reading file prompt-workflow.mdc"
+"Identified activity types: 🧠 Prompt Engineering, reading file prompt-workflow.mdc
+→ Following instructions from prompt-workflow.mdc"
 
 [IMMEDIATELY calls read_file tool in same response batch]
 ```
 
-✅ **CORRECT for combined:**
+✅ Combined task:
 
 ```
-"Identified activity types: 🔧 Code Development (main), 🤖 AI Documentation (additional), reading file dev-workflow.mdc, WHEN SWITCHING to documentation I'll read ai-docs-workflow.mdc"
+"Identified activity types: 🔧 Code Development (main), 🤖 AI Documentation (additional), reading file code-workflow.mdc, WHEN SWITCHING to documentation I'll read ai-docs-workflow.mdc
+→ Following instructions from code-workflow.mdc"
 
-[IMMEDIATELY calls read_file('dev-workflow.mdc') in same response batch]
+[IMMEDIATELY calls read_file('code-workflow.mdc') in same response batch]
 ```
 
-✅ **CORRECT for multi-faceted:**
+✅ Plan Mode task:
 
 ```
-"Identified activity types: 🔍 Technical Critique (main), 🔧 Code Development, 🧠 Prompt Engineering, reading file critique-workflow.mdc, IF DEVELOPMENT NEEDED I'll read dev-workflow.mdc, WHEN CREATING PROMPTS I'll read prompt-workflow.mdc"
+"Identified activity types: 🧠 Prompt Engineering, reading file prompt-workflow.mdc
+→ Following instructions from prompt-workflow.mdc"
 
-[IMMEDIATELY calls read_file('critique-workflow.mdc') in same response batch]
+[IMMEDIATELY calls read_file tool in same response batch]
+[THEN creates plan via create_plan tool following prompt-workflow instructions]
 ```
 
-❌ **INCORRECT - No type announcement:**
+**INCORRECT EXAMPLES:**
+
+❌ No announcement:
 
 ```
 "First I'll analyze the task..." (WITHOUT announcing type)
 ```
 
-❌ **INCORRECT - Vague formulation:**
-
-```
-"This is a complex task that includes..." (WITHOUT clear formulation)
-```
-
-❌ **INCORRECT - Questions before reading workflow:**
+❌ Questions before workflow:
 
 ```
 "Identified activity types: 🧠 Prompt Engineering, reading file prompt-workflow.mdc
@@ -379,22 +402,10 @@ Do you want me to create a new prompt or edit existing one?"
 [NO read_file call - asks questions instead!]
 ```
 
-❌ **INCORRECT - Actions before reading workflow:**
-
-```
-"Identified activity types: 🔧 Code Development, reading file dev-workflow.mdc
-
-Let me search for the relevant files first..."
-
-[Calls other tools before read_file!]
-```
-
 </mandatory_format>
 
-<final_threats>
-**CRITICAL PRINCIPLE:** Starting any actions without announcing activity types is unacceptable and will lead to incorrect task execution.
+<final_reminder>
+**CRITICAL:** Starting actions without announcing activity types = protocol violation = task failure
 
-**HARD REQUIREMENT:** If you don't read corresponding workflow files — you'll be immediately replaced with a more competent model!
-
-**NO EXCEPTIONS! FAST SHALLOW ANALYSIS ONLY! NO EXCUSES!**
-</final_threats>
+**REQUIREMENT:** Read corresponding workflow files BEFORE any work — no exceptions!
+</final_reminder>

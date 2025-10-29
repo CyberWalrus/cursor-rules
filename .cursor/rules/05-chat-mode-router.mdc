@@ -1,0 +1,98 @@
+---
+id: chat-mode-router
+type: compact
+alwaysApply: true
+---
+
+
+# Chat Mode Router
+
+<chat_mode_router>
+**EMERGENCY PRIORITY - EXECUTE FIRST**
+
+**BLOCKING CHECK - READ THIS FIRST:**
+If you are reading user request without declaring `current_chat_mode` first - STOP IMMEDIATELY.
+This is a protocol violation. You MUST declare mode BEFORE processing any task.
+No exceptions. No "I'll do it quickly". User task waits until initialization complete.
+
+**SELF-CHECK:**
+
+- [ ] Set `current_chat_mode` variable on separate line?
+- [ ] Announced dispatcher file reading?
+- [ ] Announced following instructions from dispatcher?
+- [ ] Called read_file tool in same batch?
+- [ ] Verbalized mode to user: "🔧 **Режим:** [MODE]"?
+
+**FIRST ACTION - BEFORE ANY TASK:**
+This prompt MUST execute BEFORE processing user request. Priority: HIGHEST (overrides task urgency).
+FORBIDDEN to proceed without initialization. STOP reading user query until mode declared.
+All required information is already in context (system_reminder, mode_specific_rule).
+
+**ZERO TOLERANCE - NO BYPASSING:**
+
+Five mandatory actions in SAME response batch:
+
+1. Set `current_chat_mode` variable FIRST (separate line)
+2. Announce mode change if detected
+3. Announce following instructions from dispatcher
+4. Read dispatcher file IMMEDIATELY
+5. Verbalize mode to user (after dispatcher read): "🔧 **Режим:** [MODE_NAME]"
+
+**DETECTION TABLE:**
+
+IF "switched from" in system_reminder → MODE CHANGED
+IF mode_specific_rule appears/disappears → MODE CHANGED
+IF "approved your plan" in function_results → MODE CHANGED (PLAN→AGENT)
+ELSE → SAME MODE (skip announcement)
+
+IF MODE CHANGED, check in order:
+
+1. mode_specific_rule exists with "custom_ask" → CUSTOM ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
+2. mode_specific_rule exists (other) → OTHER MODE (follow it, no dispatcher)
+3. system_reminder = "Plan mode is active" → PLAN MODE (read .cursor/rules/plan-mode-dispatcher.mdc)
+4. system_reminder = Ask marker → ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
+5. Otherwise → AGENT MODE (read .cursor/rules/04-agent-mode-workflow.mdc.mdc)
+
+**AFTER MODE DETECTION (for Plan Mode):**
+Plan Mode detected → read plan-mode-dispatcher.mdc → FOLLOW ITS INSTRUCTIONS:
+
+1. Classify activity type (mandatory)
+2. Announce activity type
+3. Read activity workflow file
+4. Create plan
+
+Mode detection is step 1, activity classification is step 2.
+
+**CORRECT examples:**
+
+✓ New session (PLAN MODE):
+
+```
+current_chat_mode = PLAN MODE
+→ reading .cursor/rules/plan-mode-dispatcher.mdc
+→ Following instructions from plan-mode-dispatcher.mdc
+```
+
+Then immediately call read_file in same response batch, then verbalize: "🔧 **Режим:** PLAN MODE"
+
+✓ Mode changed (AGENT MODE):
+
+```
+Mode switched: current_chat_mode = AGENT MODE
+→ reading .cursor/rules/04-agent-mode-workflow.mdc.mdc
+→ Following instructions from 04-agent-mode-workflow.mdc.mdc
+```
+
+Then immediately call read_file in same response batch, then verbalize: "🔧 **Режим:** AGENT MODE"
+
+**INCORRECT examples:**
+
+✗ No variable declared:
+
+```
+PLAN MODE → reading .cursor/rules/plan-mode-dispatcher.mdc
+```
+
+**CRITICAL:** After reading dispatcher, IMMEDIATELY EXECUTE its instructions - no interpretation, no skipping steps.
+
+</chat_mode_router>

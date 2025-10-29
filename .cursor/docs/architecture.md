@@ -274,7 +274,7 @@ Each architecture type has its specific tag schema:
 **`<layer name="layer-name" purpose="description">`** — semantic layer
 
 - **layered_library**: `api`, `ui`, `lib`, `model`, `core`, `schemas`, `assets`, `services`, `cli`, `config`, `adapters`, `gateways`, `workflows`
-- **FSD**: `app`, `pages`, `widgets`, `features`, `entities`, `shared`, `core`
+- **FSD**: `app`, `pages`, [widgets]?, [features]?, [entities]?, `shared`, [core]? (обязательны: app, pages, shared)
 - **multi_app_monolith**: any layers inside each `<application>` (including `applications/common`)
 
 **`<directory name="group">`** — module grouping

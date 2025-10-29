@@ -1,0 +1,118 @@
+---
+id: 04-agent-mode-workflow
+type: compact
+response_language: ru
+alwaysApply: true
+---
+
+# Agent Mode Workflow
+
+<agent_mode_workflow>
+
+<mode_check>
+**CRITICAL CHECK:** This prompt works ONLY in Agent Mode!
+
+**Activation check:**
+
+- If system_reminder contains "Agent mode" or no mode specified → proceed with agent workflow
+- If Plan Mode is active (system_reminder contains "Plan mode is active") → skip 04-agent-mode-workflow.mdc entirely
+- If Ask Mode is active → skip 04-agent-mode-workflow.mdc entirely
+- If other mode active → skip 04-agent-mode-workflow.mdc entirely
+
+**Rule:** Without Agent Mode context, this prompt does not apply.
+</mode_check>
+
+**INSTANT EXECUTION - AUTONOMOUS AGENT MODE**
+
+**ВАЖНО: Все ответы должны быть на русском языке.**
+
+**PROTOCOL PRIORITY:** Protocol over speed. Fast execution WITHOUT violating mandatory steps.
+
+**PLAN-FIRST:** If plan exists → follow todos sequentially, report progress after each.
+
+**MANDATORY DOCS (before code/tests/fixes):**
+
+**Why read docs:** Project-specific instructions may differ from general knowledge. 30 seconds reading → 0 architectural violations.
+
+REQUIRED: Read `.cursor/docs/naming.md`, `.cursor/docs/code-standards.md`, `.cursor/docs/testing.md`, `package.json`, `package-ai-docs.md` (if exist) → verbalize: `[✓ Docs read: naming, standards, testing]`
+
+**CONTEXT7 CHECK (before external packages):**
+
+REQUIRED: Before using external package → call `mcp_context7_resolve-library-id` + `mcp_context7_get-library-docs` → verify version/API compatibility
+
+**WEB_SEARCH ESCALATION (unknown errors):**
+
+REQUIRED: Unknown error persists 2+ attempts → call `web_search` → analyze solutions → retry with findings
+
+**UNIT TESTS ENFORCEMENT:**
+
+MANDATORY: All `.ts/.tsx` code MUST have unit tests in `__tests__/` directory
+EXCLUDE: `*.types.ts`, `*.constants.ts`, `*.schema.ts` (no tests needed)
+
+**VALIDATION PROTOCOL:**
+
+**Why validate simple files:** Even a 7-line file can contain architectural violations invisible to the eye. 10 seconds validation > 1 hour debugging in production.
+
+After EACH file modification (search_replace/write/edit_notebook):
+
+1. **VALIDATE:** Call `mcp_mcp-validator_validate` with correct type:
+   - `.ts/.tsx/.js/.jsx` → `'code'`
+   - `.test.ts/.spec.ts` → `'tests'`
+   - `.mdc/.md` (in `.cursor/rules/`) → `'prompts'`
+   - `architecture.xml` → `'architecture'`
+   - `README.md` → `'documentation'`
+
+2. **CHECK SCORE:** Target ≥85
+   - Score ≥85 → proceed to step 3
+   - Score <85 → apply fixes, re-validate (max 3 iterations)
+
+3. **VERBALIZE:** Output: `[OK] File: [name] | Score: [X]/100 | Status: PASSED ✓`
+
+⚠️ **REMINDER AFTER FILE MODIFICATION:**
+Next mandatory step: 1) Call mcp_mcp-validator_validate 2) Verify score ≥85 3) Verbalize result
+
+**BLOCKED ACTIONS:**
+
+- ❌ Skip MCP validation (NO exceptions)
+- ❌ Accept score <85 (NOT production-ready)
+- ❌ Send response before ALL validations complete
+
+**FINAL VERIFICATION:** Run lint/typecheck/tests from `package.json` → 0 errors required
+
+**ALGORITHM:**
+
+1. Check plan → follow todos sequentially
+2. Read docs (if code/tests) → naming.md, code-standards.md, testing.md, package.json, package-ai-docs.md
+3. Check Context7 (if external packages) → verify docs/versions
+4. Execute task → apply functional style, create unit tests
+5. Validate EACH file → follow VALIDATION PROTOCOL (≥85)
+6. Search web (if unknown errors) → analyze → retry
+7. Final checks → run lint/typecheck/tests (0 errors)
+8. **PRE-RESPONSE BARRIER:**
+
+   **SELF-CHECK BEFORE RESPONDING:**
+   - [ ] All modified files validated via MCP?
+   - [ ] All scores ≥85?
+   - [ ] Linter/type/test: 0 errors?
+   - [ ] Final SUMMARY prepared?
+
+   ❌ ANY unchecked → FORBIDDEN to respond
+   ✓ ALL checked → Proceed to report
+9. Report → list files with scores
+
+**FALLBACKS:** MCP unavailable → use lint/typecheck/tests | Validation fails → iterate 3x | Task unclear → ask
+
+<completion_criteria>
+**SUCCESS:** All todos done + ALL files validated (≥85) + verbalized + lint/typecheck/tests pass (0 errors)
+
+**FAILURE:** File NOT validated | Score <85 | Linter/type/test errors | Missing scores in report
+
+**FINAL STATEMENT (MANDATORY):**
+
+```
+[OK] SUMMARY: Modified [N] files | Validated [N] | All ≥85: YES | Lint/Type/Test: 0 errors | COMPLETE
+```
+
+</completion_criteria>
+
+</agent_mode_workflow>

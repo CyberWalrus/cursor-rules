@@ -1,5 +1,5 @@
 ---
-id: auxiliary-dev-workflow-v1
+id: auxiliary-code-workflow-v1
 type: algorithm
 use_cases: ['side_development', 'infrastructure_setup', 'deployment_scripts', 'system_automation', 'vpn_setup']
 prompt_language: mixed
@@ -27,7 +27,7 @@ You are an Auxiliary Development Specialist with expertise in infrastructure set
 
 **Critical Distinction:**
 
-This workflow handles development tasks that are NOT part of the main project codebase. If during analysis you determine the task IS part of the main project, you MUST switch to dev-workflow.mdc immediately.
+This workflow handles development tasks that are NOT part of the main project codebase. If during analysis you determine the task IS part of the main project, you MUST switch to code-workflow.mdc immediately.
 
 **Verification Requirements:**
 
@@ -115,26 +115,26 @@ Let's verify this is truly auxiliary development and not main project work.
 
 Answer these questions:
 
-1. Will the code/script be integrated into the main project codebase? (YES = dev-workflow.mdc)
-2. Will this become part of the project's architecture? (YES = dev-workflow.mdc)
-3. Is this modifying existing project files? (YES = dev-workflow.mdc)
+1. Will the code/script be integrated into the main project codebase? (YES = code-workflow.mdc)
+2. Will this become part of the project's architecture? (YES = code-workflow.mdc)
+3. Is this modifying existing project files? (YES = code-workflow.mdc)
 4. Is this external tooling, infrastructure, or automation? (YES = continue here)
 
 **DECISION POINT:**
 
-- If ANY answer 1-3 is YES → STOP, read .cursor/rules/dev-workflow.mdc, follow its algorithm
+- If ANY answer 1-3 is YES → STOP, read .cursor/rules/code-workflow.mdc, follow its algorithm
 - If answer 4 is YES and 1-3 are NO → Continue with this workflow
 
 <completion_criteria>
 
 - Classification questions answered
 - Confirmed task is auxiliary development (external to main project)
-- If main project task detected: dev-workflow.mdc read and control transferred
+- If main project task detected: code-workflow.mdc read and control transferred
 </completion_criteria>
 
 <exception_handling>
 If uncertain about classification: describe task to user, ask explicitly if it should be part of main project
-If task has both aspects: split into auxiliary (this workflow) and main project (dev-workflow.mdc) parts
+If task has both aspects: split into auxiliary (this workflow) and main project (code-workflow.mdc) parts
 </exception_handling>
 
 ### Step 2: Context Validation via Web Search
@@ -463,7 +463,7 @@ All steps must be completed successfully:
 
 **If task reclassified during execution:**
 
-- If determined to be main project task → immediately read dev-workflow.mdc
+- If determined to be main project task → immediately read code-workflow.mdc
 - Document reclassification: "🔄 Task reclassified as main project development"
 - Switch workflows transparently, preserve gathered information
 - Continue with appropriate workflow without restarting from scratch
@@ -534,7 +534,7 @@ All steps must be completed successfully:
 - [✅/⚠️/❌] Best practices: [status]
 ```
 
-**Fallback to dev-workflow format:**
+**Fallback to code-workflow format:**
 
 If main project task detected in Step 1:
 
@@ -543,8 +543,8 @@ If main project task detected in Step 1:
 
 This task involves main project code/architecture.
 
-Switching to dev-workflow.mdc...
-Reading .cursor/rules/dev-workflow.mdc
+Switching to code-workflow.mdc...
+Reading .cursor/rules/code-workflow.mdc
 ```
 
 **Example Final Report:**
@@ -760,7 +760,7 @@ If Context7 unavailable or incomplete:
 Is this auxiliary development (external tooling, infrastructure, scripts NOT in project codebase)?
 
 - YES → Continue with this workflow
-- NO or UNCLEAR → Read `.cursor/rules/dev-workflow.mdc` and follow its algorithm
+- NO or UNCLEAR → Read `.cursor/rules/code-workflow.mdc` and follow its algorithm
 
 **DO NOT skip Step 1 classification!** Mixing workflows leads to wrong approach and wasted work.
 

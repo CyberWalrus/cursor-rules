@@ -71,11 +71,11 @@ Before taking any action, ask yourself:
 ### P1--S1: Read project launch commands
 
 <task_list>
-**P1--S1--T1:** Read `.cursor/rules/project-start.mdc` for full launch instructions
-**P1--S1--T2:** Follow project-start.mdc to start dev server and extract PORT
+**P1--S1--T1:** Read `package.json` scripts section for dev server command
+**P1--S1--T2:** Read `package-ai-docs.md` (if exists) for project-specific launch instructions
 </task_list>
 
-<completion_criteria>project-start.mdc read, ready to launch project</completion_criteria>
+<completion_criteria>Launch commands identified, ready to start dev server</completion_criteria>
 <exception_handling>If missing: ask user for launch commands</exception_handling>
 
 ### P1--S2: Read system rules
@@ -101,15 +101,15 @@ Before taking any action, ask yourself:
 
 ### P1--S4: LAUNCH PROJECT
 
-**CRITICAL:** Follow `.cursor/rules/project-start.mdc` instructions to start dev server and extract PORT.
+**CRITICAL:** Use commands from `package.json` scripts to start dev server and extract PORT from output.
 
 <task_list>
-**P1--S4--T1:** Follow project-start.mdc to launch project
-**P1--S4--T2:** Extract PORT from server output (see project-start.mdc)
+**P1--S4--T1:** Run dev server command from package.json (typically `yarn start` or `npm run dev`)
+**P1--S4--T2:** Extract PORT from server output (look for "localhost:XXXX" in terminal)
 </task_list>
 
-<completion_criteria>Server started per project-start.mdc, PORT extracted</completion_criteria>
-<exception_handling>If fails: refer to project-start.mdc troubleshooting</exception_handling>
+<completion_criteria>Server started, PORT extracted from terminal output</completion_criteria>
+<exception_handling>If fails: check node_modules installed, verify Node.js version, check for port conflicts</exception_handling>
 
 ### P1--S5: OPEN BROWSER
 
@@ -127,7 +127,7 @@ Before taking any action, ask yourself:
 ## 🚨 CHECKPOINT: Pre-Inspection
 
 <checkpoint id="pre_inspection">
-Must confirm: ✅ project-start.mdc read, ✅ rules read, ✅ AI docs read, ✅ project launched (per project-start.mdc), ✅ browser opened
+Must confirm: ✅ package.json read, ✅ rules read, ✅ AI docs read, ✅ project launched, ✅ browser opened
 
 If ANY unchecked: STOP, complete, return to checkpoint.
 </checkpoint>
@@ -209,7 +209,7 @@ If ANY unchecked: STOP, complete, return to checkpoint.
 
 <task_list>
 **P3--S2--T1:** After each P2_R{n}: add P2_R{n}--S5--VERIFY browser check
-**P3--S2--T2:** Verification: restart server (per project-start.mdc) → browser_navigate → browser_snapshot → compare
+**P3--S2--T2:** Verification: restart server (using package.json command) → browser_navigate → browser_snapshot → compare
 **P3--S2--T3:** For responsive: add multi-viewport (mobile 375x667, desktop 1920x1080) verification
 </task_list>
 
@@ -250,7 +250,7 @@ If ANY unchecked: STOP, complete, return to checkpoint.
 
 ```markdown
 ## 🔄 Phase 1 Progress
-✅ P1--S1: project-start.mdc прочитан
+✅ P1--S1: package.json и launch команды изучены
 ✅ P1--S2: системные правила изучены
 ✅ P1--S3: AI документация прочитана
 ✅ P1--S4: проект запущен (PORT=5173)
@@ -362,7 +362,7 @@ User: c
 
 **IRON RULES (ZERO TOLERANCE):**
 
-- ❌ NO UI analysis without project launch (follow project-start.mdc)
+- ❌ NO UI analysis without project launch (use package.json commands)
 - ❌ NO plan without browser_snapshot
 - ❌ NO assumptions about user requirements (ask clarifying questions)
 - ❌ NO skipping MCP validation (code ≥85, tests ≥85, architecture ≥85)

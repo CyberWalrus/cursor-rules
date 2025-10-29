@@ -1,0 +1,116 @@
+---
+id: code-standards-compact
+type: compact
+response_language: ru
+alwaysApply: true
+---
+
+# Code Standards
+
+<code_standards>
+
+**INSTANT ENFORCEMENT - ZERO TOLERANCE:**
+
+**ВАЖНО: Все ответы должны быть на русском языке.**
+
+Read full reference: `.cursor/docs/code-standards.md` for detailed examples and explanations.
+
+## Core Rules
+
+**Structure (MANDATORY):**
+
+1. One file = one function, max 150 lines (tests exempt)
+2. 100% test coverage for new functions
+3. JSDoc (Russian, single line) for every function
+4. Guard clauses instead of deep nesting
+5. Array methods instead of for/while loops
+6. Linter: 0 errors (`yarn workspace ${PACKAGE_NAME} lint`)
+7. ESM-only (no CommonJS require/module.exports)
+8. No classes - only functions and composition
+
+**Comparisons (EXPLICIT ONLY):**
+
+```typescript
+// ❌ FORBIDDEN
+if (!value) return;
+if (!!user.isActive) console.log('active');
+
+// ✅ REQUIRED
+if (value === null || value === undefined) return;
+if (user.isActive === true) console.log('active');
+```
+
+**Control Flow (GUARD CLAUSES):**
+
+```typescript
+// ❌ FORBIDDEN - deep nesting
+if (data) {
+    if (typeof data === 'object') {
+        if (data.name) return data.name;
+    }
+}
+
+// ✅ REQUIRED - guard clauses
+if (!data) return 'Invalid';
+if (typeof data !== 'object') return 'Invalid';
+if (!data.name) return 'No name';
+return data.name;
+```
+
+**Arrays (METHODS ONLY):**
+
+```typescript
+// ❌ FORBIDDEN - for loops
+for (let i = 0; i < items.length; i++) {
+    if (items[i].isValid) results.push(process(items[i]));
+}
+
+// ✅ REQUIRED - array methods
+const results = items.filter(item => item.isValid).map(item => process(item));
+```
+
+**JSDoc (SINGLE LINE RUSSIAN):**
+
+```typescript
+/** Создает действие для добавления экспорта в index.ts файл */
+export function createFacadeExportAction(): void {
+    // Implementation
+}
+```
+
+**Imports/Exports:**
+
+1. Node.js with `node:` prefix: `import { readFileSync } from 'node:fs';`
+2. Type imports with `type` prefix: `import type { User } from './types';`
+3. Named exports ONLY (no default): `export { functionName };`
+4. All types in separate `types.ts` file
+
+**Tests (MANDATORY):**
+
+1. 100% coverage for all new functions
+2. Test names in Russian: `it('должен возвращать true для корректного названия', () => {})`
+3. Pattern: Arrange-Act-Assert
+4. One test file per function
+5. Vitest globals (describe/it/expect) - no imports needed
+6. Mock data only, no real integrations
+
+## Absolute Bans
+
+❌ **FORBIDDEN (NO EXCEPTIONS):**
+
+1. `for`/`while` loops - use array methods
+2. `class` keyword - use functions and composition
+3. `export default` - use named exports only
+4. Single-letter variables (except in array methods)
+5. Implicit comparisons: `!value`, `!!value`
+6. Missing braces in if/else
+7. Deep if/else - use guard clauses
+8. Comments inside function bodies (except @ts-ignore, @ts-expect-error, eslint-disable)
+9. Multiple functions per file
+10. Files >150 lines (tests exempt)
+11. Inline types in code - use types.ts
+12. Node.js imports without `node:` prefix
+
+**Violation = Task Failure**
+
+</code_standards>
