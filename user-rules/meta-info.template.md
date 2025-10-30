@@ -28,7 +28,7 @@ current_date: "${CURRENT_DATE}"
 
 ## Execution Context
 
-${EXECUTION_CONTEXT}
+- **Environment:** Cursor IDE (AI-first code editor, VS Code-based)
 
 ## Location & Communication
 
