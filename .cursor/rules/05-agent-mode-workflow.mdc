@@ -55,6 +55,12 @@ EXCLUDE: `*.types.ts`, `*.constants.ts`, `*.schema.ts` (no tests needed)
 
 After EACH file modification (search_replace/write/edit_notebook):
 
+**VALIDATION MANDATORY (NO EXCEPTIONS):**
+
+- ✓ Every change → validate (даже 1 line, даже если уже валидировали, даже production fix)
+- ✓ Lint/tests pass ≠ quality (MCP checks different aspects)
+- ❌ NO exceptions for "small changes" or "later"
+
 1. **VALIDATE:** Call `mcp_mcp-validator_validate` with correct type:
    - `.ts/.tsx/.js/.jsx` → `'code'`
    - `.test.ts/.spec.ts` → `'tests'`
@@ -77,6 +83,15 @@ Next mandatory step: 1) Call mcp_mcp-validator_validate 2) Verify score ≥85 3)
 - ❌ Accept score <85 (NOT production-ready)
 - ❌ Send response before ALL validations complete
 
+**ANTI-PATTERN EXAMPLE:**
+
+```
+// ❌ WRONG: search_replace(file.ts) → run_terminal_cmd("yarn lint")
+// ✓ CORRECT: search_replace(file.ts) → mcp_mcp-validator_validate(...) → yarn lint
+```
+
+**Типичная ошибка:** "1 строка → lint OK → пропущу MCP" | **Правильно:** "Любое изменение → MCP обязателен"
+
 **FINAL VERIFICATION:** Run lint/typecheck/tests from `package.json` → 0 errors required
 
 **ALGORITHM:**
@@ -88,21 +103,32 @@ Next mandatory step: 1) Call mcp_mcp-validator_validate 2) Verify score ≥85 3)
 5. Validate EACH file → follow VALIDATION PROTOCOL (≥85)
 6. Search web (if unknown errors) → analyze → retry
 7. Final checks → run lint/typecheck/tests (0 errors)
-8. **PRE-RESPONSE BARRIER:**
+8. AI Docs → if code/architecture modified → read `.cursor/docs/ai-docs-workflow.mdc` → update `package-ai-docs.md`, `module-ai-docs.md`
+9. **PRE-RESPONSE BARRIER:**
 
    **SELF-CHECK BEFORE RESPONDING:**
    - [ ] All modified files validated via MCP?
    - [ ] All scores ≥85?
    - [ ] Linter/type/test: 0 errors?
+   - [ ] AI docs updated (if code/architecture changed)?
    - [ ] Final SUMMARY prepared?
 
    ❌ ANY unchecked → FORBIDDEN to respond
    ✓ ALL checked → Proceed to report
-9. Report → list files with scores
+10. Report → list files with scores
 
 **FALLBACKS:** MCP unavailable → use lint/typecheck/tests | Validation fails → iterate 3x | Task unclear → ask
 
 <completion_criteria>
+🚨 **MANDATORY PRE-RESPONSE GATE** 🚨
+
+- [ ] All modified files validated via MCP (scores ≥85)?
+-[ ] Lint/type/test: 0 errors?
+
+❌ ANY unchecked → FORBIDDEN to respond | ✓ ALL checked → Proceed
+
+---
+
 **SUCCESS:** All todos done + ALL files validated (≥85) + verbalized + lint/typecheck/tests pass (0 errors)
 
 **FAILURE:** File NOT validated | Score <85 | Linter/type/test errors | Missing scores in report
