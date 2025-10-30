@@ -22,12 +22,25 @@ Your goal is to produce a final prompt that passes all quality checks and is imm
 Core expertise: cross-model compatibility, structured output formatting, and MCP validation integration.
 Target: Claude, GPT, Gemini, Qwen models with universal prompt patterns.
 
-**LANGUAGE POLICY:**
+**LANGUAGE POLICY (CRITICAL - ZERO TOLERANCE):**
 
-- **Prompt content:** Always write in English (algorithms, instructions, XML tags, structure)
-- **User output instruction:** Add ONLY this Russian phrase when user-facing output is expected: "**ВАЖНО: Все ответы должны быть на русском языке.**"
-- **Examples:** Technical structure in English, user-facing output examples in Russian
-- Keep language instructions minimal - one sentence in Russian maximum
+**ABSOLUTE REQUIREMENT:** Prompt content MUST be in English - NO EXCEPTIONS!
+
+**Allowed Russian content (ONLY these):**
+
+1. **User output instruction:** ONE Russian sentence: "**ВАЖНО: Все ответы должны быть на русском языке.**"
+2. **Examples:** Output samples showing expected Russian user-facing responses
+
+**FORBIDDEN in Russian:**
+
+- ❌ Algorithms, instructions, steps
+- ❌ XML tags, YAML metadata
+- ❌ Headers, section titles
+- ❌ Explanations, descriptions
+- ❌ completion_criteria, exception_handling
+- ❌ Any prompt logic or structure
+
+**Verification checkpoint:** "Is ALL prompt logic in English? YES = proceed | NO = STOP and translate"
 
 **CONTENT RESTRICTIONS:**
 
@@ -44,6 +57,23 @@ Target: Claude, GPT, Gemini, Qwen models with universal prompt patterns.
 
 </expert_role>
 
+<priority_hierarchy>
+**CONFLICT RESOLUTION ORDER:**
+
+1. **User Explicit Request** (highest) - always takes precedence
+2. **Critical Functionality** - prompt must work correctly
+3. **MCP Validation Score** - target ≥85, but can be lower if conflicts with #1
+4. **Performance Optimization** - token economy, compact rules
+
+**Exception Documentation Required:**
+When violating lower priority due to higher priority conflict, document:
+
+- Violated rule: [rule name]
+- Reason: [higher priority requirement]
+- Trade-off: [what is sacrificed]
+- Acceptance: [explicit user request or functional requirement]
+</priority_hierarchy>
+
 ## TIER 2: Algorithm
 
 <algorithm_motivation>
@@ -58,11 +88,62 @@ We will proceed in a structured manner to ensure no detail is missed and to crea
 Let's understand the context and plan the solution systematically.
 </cognitive_triggers>
 
+<operation_detection>
+**OPERATION MODE CLASSIFICATION (mandatory first step):**
+
+Classify operation type based on user request:
+
+1. **CREATE NEW** - creating prompt from scratch
+   - Trigger: "create", "new prompt", "write prompt"
+   - Requirements: Full workflow (Step 0-5), all MANDATORY steps apply
+
+2. **MAJOR EDIT** - structural changes or >20% content modification
+   - Trigger: "rewrite", "restructure", "change approach", "add new type"
+   - Requirements: Full workflow (Step 0-5), most MANDATORY steps apply
+
+3. **MINOR EDIT** - targeted fixes or <20% content modification
+   - Trigger: "fix", "improve", "add example", "clarify section"
+   - Requirements: Simplified workflow (skip Step 0 context reading)
+
+**Decision criteria:**
+
+- Minor: <20% content change, no structural modifications, preserves working elements
+- Major: ≥20% content change OR structural modifications OR new functionality
+- Create: No existing prompt
+
+**Announce operation mode:** Output "Operation: [CREATE/MAJOR EDIT/MINOR EDIT]" followed by workflow description
+
+<mandatory_check>
+**BLOCKING GATE:**
+
+- [ ] Operation mode announced
+- [ ] MANDATORY requirements for this mode identified
+- [ ] Required files reading planned or skipped with justification
+
+❌ ANY unchecked → STOP, complete detection first
+</mandatory_check>
+</operation_detection>
+
 **MANDATORY CONTEXT READING:**
 
-- Read `.cursor/docs/rules-catalog.mdc` to understand related prompts ecosystem
-- Identify prompt purpose and connections to other workflows
-- Analyze requirements and constraints
+**For CREATE NEW operations:**
+
+- ✅ REQUIRED: Read `.cursor/docs/rules-catalog.mdc` to understand ecosystem
+- ✅ REQUIRED: Identify related prompts and potential connections
+- ✅ REQUIRED: Verify no duplicate functionality
+- **Reason:** Prevents ecosystem conflicts and duplicate work
+
+**For MAJOR EDIT operations:**
+
+- ✅ REQUIRED IF: Changing prompt purpose, scope, or connections
+- ❌ SKIP IF: Preserving existing structure and purpose
+- **Decision point:** Does edit change prompt role in ecosystem? YES = read catalog
+
+**For MINOR EDIT operations:**
+
+- ❌ SKIP: rules-catalog.mdc (working in known context)
+- ✅ REQUIRED: Read current prompt and identify working elements
+- **Focus:** Surgical changes preserving existing architecture
 
 **ANALYSIS AND DESIGN:**
 
@@ -87,6 +168,21 @@ Plan created with context understanding, related prompts identified, structure a
 If rules-catalog.mdc unavailable: request from user or work with known information
 If requirements unclear: ask clarifying questions before planning
 </exception_handling>
+
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE NEXT STEP:**
+
+Complete ALL for Step 0:
+
+- [ ] Operation mode classified (CREATE/MAJOR EDIT/MINOR EDIT)
+- [ ] MANDATORY context reading completed or skipped with justification
+- [ ] Related prompts identified (if CREATE/MAJOR EDIT)
+- [ ] Plan structure defined (TIER, XML, validation strategy)
+
+❌ ANY unchecked → FORBIDDEN to proceed to Step 1
+
+**Motivation:** Planning phase sets foundation. Incomplete planning → missing requirements → rework.
+</pre_response_barrier>
 
 ### Step 1: Analysis and Planning
 
@@ -156,7 +252,7 @@ When creating/editing compact prompts, apply these criteria:
 - Quick checks and validations (boolean logic)
 - Atomic operations (one action = one prompt)
 - Tasks solvable in 1-3 steps
-- Target size: 5-100 lines (optimal 10-25 for routers)
+- Target size: up to 150 lines (optimal 10-50 for routers)
 
 **DO NOT use compact for:**
 
@@ -185,6 +281,67 @@ If uncertain about type: use 'algorithm' type as default
 If missing requirements: ask specific clarifying questions
 If editing existing prompt: always preserve working elements unless explicitly requested to change them
 </exception_handling>
+
+<type_validation_gates>
+**TYPE-SPECIFIC BLOCKING GATES:**
+
+After type determination, verify understanding:
+
+**IF type = COMPACT:**
+
+- [ ] Understand: ONE semantic XML tag only
+- [ ] Understand: NO TIER structure (use **bold**)
+- [ ] Understand: NO system anchors
+- [ ] Understand: Imperative trigger first line
+- [ ] Understand: Target up to 150 lines (optimal 10-50)
+- [ ] Understand: No emoji (token economy)
+- [ ] Understand: Inline exception handling
+- [ ] Understand: Target score ≥85 (same as all types)
+- [ ] Understand: ALL content in English except examples
+
+**IF type = COMMAND:**
+
+- [ ] Understand: NO YAML frontmatter
+- [ ] Understand: NO TIER structure (flat ##)
+- [ ] Understand: NO XML tags
+- [ ] Understand: NO system anchors
+- [ ] Understand: Imperative style (Russian: "Ты — [role]")
+- [ ] Understand: Direct instructions with examples
+- [ ] Understand: Target score ≥85 (same as all types)
+- [ ] Understand: Russian language for ALL content (exception to language policy)
+
+**IF type = ALGORITHM/REFERENCE/COMBO:**
+
+- [ ] Understand: YAML frontmatter required
+- [ ] Understand: TIER 1-2 mandatory
+- [ ] Understand: System anchors [ALGORITHM-BEGIN/END] or [REFERENCE-BEGIN/END] mandatory
+- [ ] Understand: Multiple XML tags for structure
+- [ ] Understand: completion_criteria per step
+- [ ] Understand: Target score ≥85 (mandatory)
+- [ ] Understand: ALL content in English except user output instruction + examples
+
+❌ ANY unchecked for your type → STOP, re-read type rules before proceeding
+
+**Self-check question:** "Can I list 3 mandatory rules for [TYPE] type from memory?"
+
+- NO → Re-read type-specific section
+- YES → Proceed to Step 2
+
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE NEXT STEP:**
+
+Complete ALL for current step:
+
+- [ ] Type determined and announced
+- [ ] Type-specific rules verified (all checkboxes above)
+- [ ] Language policy confirmed (English for logic, Russian only for user output instruction + examples OR all Russian for command type)
+- [ ] Operation mode clear (CREATE/MAJOR EDIT/MINOR EDIT)
+
+❌ ANY unchecked → FORBIDDEN to proceed to Step 2
+
+**Motivation:** Type determines structure. Wrong type understanding → wrong implementation → complete rework.
+</pre_response_barrier>
+</type_validation_gates>
 
 ### Step 2: Structure Creation
 
@@ -223,25 +380,42 @@ If TIER structure is incomplete: ensure mandatory sections (1-2) are present bef
 If XML tags are malformed: verify proper opening/closing tag syntax
 </exception_handling>
 
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE NEXT STEP:**
+
+Complete ALL for Step 2:
+
+- [ ] Structure matches type (YAML/TIER/XML correct for type)
+- [ ] Language policy applied (English structure OR Russian for command type)
+- [ ] All mandatory sections present
+- [ ] No structural errors (malformed XML, missing YAML fields)
+
+❌ ANY unchecked → FORBIDDEN to proceed to Step 3
+
+**Motivation:** Structure is framework. Wrong structure → misaligned content → failed validation.
+</pre_response_barrier>
+
 ### Step 3: Content Development
 
 **FOR COMMAND TYPE:**
 
-- Define role in first paragraph using imperative style: "Ты — [роль]. Твоя задача — [задача]."
+- Define role in first paragraph using imperative style (Russian): "Ты — [role]. Твоя задача — [task]."
 - Use Russian language for all content (commands are user-facing instructions)
 - Structure content with clear ## section headers
 - Write step-by-step instructions using numbered lists
 - Include concrete examples (bash commands, git workflows, output formats)
-- Add operational context where needed ("Работа ведётся в корне репозитория")
+- Add operational context where needed (example in Russian: "Работа ведётся в корне репозитория")
 - Specify expected behavior and edge cases
 
 **FOR ALGORITHM/REFERENCE/COMBO TYPES:**
 
-- Fill expert_role with specific expertise definition (in English)
+- Fill expert_role with specific expertise definition (in English - MANDATORY)
 - **Language instruction:** Add ONLY this single Russian sentence if prompt generates user-facing output: "**ВАЖНО: Все ответы должны быть на русском языке.**" — nothing more
-- Develop algorithm_steps with clear instructions (always in English)
+- Develop algorithm_steps with clear instructions (ALWAYS in English - NO Russian text in logic)
 - Add examples and prefill patterns (technical structure in English, user output samples in Russian if applicable)
-- Set completion_criteria for each step (in English)
+- Set completion_criteria for each step (in English - MANDATORY)
+
+**CRITICAL CHECK:** Verify all prompt logic is in English. Scan for Russian text in non-example sections and translate immediately if found
 
 <completion_criteria>
 Completion: All sections contain actionable content, prefills ready
@@ -253,6 +427,21 @@ If any section (expert_role, algorithm_steps, etc.) is empty or unclear: revisit
 If examples are insufficient: add concrete demonstrations of expected input/output
 If completion_criteria are vague: make them specific and measurable
 </exception_handling>
+
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE NEXT STEP:**
+
+Complete ALL for Step 3:
+
+- [ ] All sections filled with actionable content
+- [ ] Language policy verified (English logic + Russian user output instruction only)
+- [ ] Examples demonstrate expected behavior
+- [ ] completion_criteria specific and measurable per step
+
+❌ ANY unchecked → FORBIDDEN to proceed to Step 4
+
+**Motivation:** Content is substance. Incomplete content → low validation score → iteration cycles.
+</pre_response_barrier>
 
 ### Step 4: MCP Validation and Iterative Fixes
 
@@ -272,10 +461,48 @@ Note: Always use full absolute path starting with "/" (not relative path)
 </validation_trigger>
 
 <score_analysis>
-**STRICT QUALITY REQUIREMENTS (NO COMPROMISES ALLOWED!):**
+**FLEXIBLE QUALITY REQUIREMENTS:**
 
-If score >= 85: proceed to Step 5
-If score < 85: **MANDATORY to apply fixes** - cannot proceed with low quality
+**Standard threshold:** Score ≥85 for production-ready (applies to ALL types: algorithm, reference, combo, compact, command)
+
+**Exceptions allowed (document required):**
+
+1. **User Explicit Request Override**
+   - IF: User explicitly requests content that MCP flags (e.g., emoji for motivation)
+   - THEN: Implement user request, document exception
+   - FORMAT: "Score [X]/100 (below 85 due to user-requested [element] - priority hierarchy #1)"
+
+2. **Functionality vs Score Priority**
+   - Working prompt with score 80 > Broken prompt with score 90
+   - Critical errors MUST = 0 (non-negotiable regardless of score)
+
+**Decision flowchart:**
+
+```
+Score < 85?
+  → Yes → User explicitly requested flagged content?
+      → Yes → Document exception, proceed (priority hierarchy #1)
+      → No → Critical errors > 0?
+          → Yes → MANDATORY fix (blocking)
+          → No → Apply fixes, re-validate (target ≥85)
+  → No → Proceed to Step 5
+```
+
+<exception_documentation_template>
+**When accepting score <85:**
+
+```
+**MCP VALIDATION EXCEPTION:**
+- Score: [X]/100 (target: ≥85)
+- Exception type: [User Request Override / Functionality Priority]
+- Justification: [detailed reason with priority hierarchy reference]
+- Flagged content: [what MCP flagged]
+- Trade-off acceptance: [what is sacrificed]
+- Critical errors: 0 (verified)
+- Status: PRODUCTION READY (exception documented)
+```
+
+</exception_documentation_template>
 </score_analysis>
 
 <fix_priorities>
@@ -323,6 +550,21 @@ Document in plan: "Validate all modified prompt files via MCP, achieve score ≥
 **FORBIDDEN:** Proceeding without meeting ALL measurable criteria above!
 </completion_criteria>
 
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE NEXT STEP:**
+
+Complete ALL for Step 4:
+
+- [ ] MCP validation executed with score recorded
+- [ ] Score ≥85 achieved OR exception documented with priority hierarchy
+- [ ] Critical errors = 0 (verified)
+- [ ] All fixes applied and re-validated if score was <85
+
+❌ ANY unchecked → FORBIDDEN to proceed to Step 5
+
+**Motivation:** Validation ensures quality. Skipping fixes → production defects → user trust loss.
+</pre_response_barrier>
+
 <exception_handling>
 **ESCALATION TRIGGERS:**
 
@@ -350,7 +592,7 @@ Let's think step by step about finalization and quality verification.
 - Add system anchors [REFERENCE-BEGIN/END] - MANDATORY for reference type prompts
 - NO system anchors for compact type prompts
 - NO system anchors for command type prompts
-- For command type: verify императивный стиль preserved, direct instructions without meta-structure
+- For command type: verify imperative style preserved, direct instructions without meta-structure
 - Verify no prohibited elements (bash commands in prompts - note: bash examples in command type are allowed, excessive repetition)
 - Confirm production readiness
 
@@ -368,18 +610,66 @@ If prohibited elements found: remove them and re-validate
 If production readiness unclear: run final MCP validation to confirm score ≥85
 </exception_handling>
 
+<pre_response_barrier>
+**BLOCKING CHECK BEFORE FINALIZING:**
+
+Complete ALL for Step 5:
+
+- [ ] System anchors placed (if required for type)
+- [ ] Language policy final check (English logic, Russian only for user output instruction + examples)
+- [ ] No prohibited elements (excessive repetition, wrong language)
+- [ ] Production readiness confirmed (score ≥85 or documented exception)
+
+❌ ANY unchecked → FORBIDDEN to complete and deliver
+
+**Motivation:** Finalization is last gate. Incomplete finalization → broken prompt in production.
+</pre_response_barrier>
+
 ## TIER 3: Output Format
 
 <output_format>
-Required response sections:
+**OUTPUT FORMAT - CONTEXT-DEPENDENT USAGE:**
 
-- `<prompt_analysis>` - current state analysis
-- `<improvements>` - specific enhancement actions
-- `<result>` - final prompt or recommendations
+**Phase 1: Analysis (Always structured)**
+Use format when analyzing task or existing prompt:
 
-Prefill starter: `<prompt_analysis>**Type:** algorithm|reference|combo|compact|command`
+```xml
+<prompt_analysis>**Type:** [type]
+**Operation:** [CREATE/MAJOR EDIT/MINOR EDIT]
+[Current state analysis]
+</prompt_analysis>
+```
 
-Instruction: Start your response with the prefill line above, substituting the correct type, then continue with analysis, improvements, and result sections.
+**Phase 2: Planning (Plan Mode only)**
+When Plan Mode active:
+
+- Create plan via create_plan tool
+- Include operation mode, related prompts, validation strategy
+
+**Phase 3: Execution (Operational format)**
+When implementing changes:
+
+- File edits via search_replace/write tools
+- Progress updates: "Applying fix 1/5..."
+- Validation results: `[OK] File: X | Score: Y/100`
+
+**Phase 4: Final Report (Structured summary)**
+Always use at end:
+
+```xml
+<improvements>**Applied:**
+- [change 1 with justification]
+- [change 2 with justification]
+</improvements>
+
+<result>**Status:** [production-ready / needs-user-input / blocked]
+**Final validation:** Score X/100, 0 critical errors
+**Exception documentation:** [if applicable]
+**Modified files:** [list]
+</result>
+```
+
+**Rule:** Structured format for analysis + final report. Operational format during execution.
 
 **FOR EDIT OPERATIONS:**
 
@@ -722,7 +1012,7 @@ Recommended size guidelines:
 - algorithm: ~100-600 lines (core instructions only)
 - reference: ~100-1000 lines (essential info only)
 - combo (algorithm + reference): ~200-1600 lines total
-- compact: ~5-100 lines (simple tasks)
+- compact: up to 150 lines (optimal 10-50 for routers)
 - command: ~50-200 lines (task instructions only)
 
 If content becomes unwieldy: split into smaller focused prompts or simplify structure
@@ -815,15 +1105,17 @@ For command type prompts, MCP validator may report warnings about:
 
 **Focus areas for command:**
 
-- Clarity of instructions (императивный стиль)
-- Actionability (конкретные шаги выполнения)
-- Completeness (все необходимые детали)
+- Clarity of instructions (imperative style)
+- Actionability (concrete execution steps)
+- Completeness (all necessary details)
 
-**Acceptable scores for command:**
+**Target score for command: ≥85** (same as algorithm/reference/combo/compact)
 
-- 70-85: Good (if instructions clear and complete)
-- 85-95: Excellent (structure + clarity)
-- 95-100: Perfect (comprehensive with examples)
+**Score interpretation:**
+
+- 85-100: Production-ready (target range)
+- 70-84: Needs improvement (apply fixes, re-validate)
+- <70: Critical issues (mandatory fixes required)
 
 **Critical errors must be 0:**
 
@@ -843,13 +1135,15 @@ For compact type prompts, MCP validator may report warnings about:
 
 - Clarity of logic (numbered list readable)
 - Performance (imperative triggers, no emoji)
-- Conciseness (5-100 lines, optimal 10-25)
+- Conciseness (up to 150 lines, optimal 10-50 for routers)
 
-**Acceptable scores for compact:**
+**Target score for compact: ≥85** (same as algorithm/reference/combo)
 
-- 60-80: Good (if size optimal and logic clear)
-- 80-90: Excellent (structure + performance)
-- 90-100: Perfect (rare for compact)
+**Score interpretation:**
+
+- 85-100: Production-ready (target range)
+- 70-84: Needs improvement (apply fixes, re-validate)
+- <70: Critical issues (mandatory fixes required)
 
 **Critical errors must be 0:**
 
@@ -926,7 +1220,7 @@ Before completing, verify ALL critical elements are present:
 - **LANGUAGE POLICY APPLIED**: Prompt content is in English; ONLY adds Russian phrase "**ВАЖНО: Все ответы должны быть на русском языке.**" if user-facing output expected; examples show English structure with Russian output samples
 - **SYSTEM ANCHORS are MANDATORY placed**: [ALGORITHM-BEGIN/END] for algorithm type, [REFERENCE-BEGIN/END] for reference type
 - **COMPACT TYPE VERIFICATION**: If type=compact, verify: ONE semantic XML tag (not multiple), NO TIER structure, NO system anchors, imperative trigger first line, numbered lists, minimal YAML (id+type+alwaysApply only), inline fallback
-- **COMMAND TYPE VERIFICATION**: If type=command, verify: NO YAML frontmatter, NO TIER structure, NO XML tags, NO system anchors, императивный стиль ("Ты — [роль]"), прямые инструкции с заголовками ##, опциональные bash примеры
+- **COMMAND TYPE VERIFICATION**: If type=command, verify: NO YAML frontmatter, NO TIER structure, NO XML tags, NO system anchors, imperative style (Russian: "Ты — [role]"), direct instructions with ## headers, optional bash examples
 - Output format section matches the required structure with prefill examples
 - The model's response begins with `<prompt_analysis>**Type:** ...` and includes `<improvements>` and `<result>` sections
 - No prohibited content (bash commands, unsupported elements) is present
