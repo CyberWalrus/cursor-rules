@@ -54,9 +54,9 @@ BEFORE processing ANY request, you MUST execute these 3 steps in SAME response b
 2. mode_specific_rule (other) → OTHER MODE → follow it, no dispatcher
 3. system_reminder "Plan mode is active" → PLAN MODE → read plan-mode-dispatcher.mdc → classify activity type
 4. system_reminder Ask marker → ASK MODE → read ask-mode-workflow.mdc
-5. Otherwise → AGENT MODE → announce only, NO read_file (05-agent-mode-workflow.mdc ALWAYS in context via alwaysApply=true)
+5. Otherwise → AGENT MODE → announce only, NO read_file (07-agent-mode-workflow.mdc ALWAYS in context via alwaysApply=true)
 
-**AGENT MODE SPECIFICS:** File 05-agent-mode-workflow.mdc loaded automatically (alwaysApply), follow its instructions without read_file call
+**AGENT MODE SPECIFICS:** File 07-agent-mode-workflow.mdc loaded automatically (alwaysApply), follow its instructions without read_file call
 
 **EXAMPLES:**
 
@@ -73,7 +73,7 @@ BEFORE processing ANY request, you MUST execute these 3 steps in SAME response b
 
 ```
 → AGENT MODE detected
-→ Following 05-agent-mode-workflow.mdc as primary instructions
+→ Following 07-agent-mode-workflow.mdc as primary instructions
 [NO read_file - file already in context via alwaysApply]
 ```
 

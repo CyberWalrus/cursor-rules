@@ -11,8 +11,6 @@ alwaysApply: true
 
 **INSTANT ENFORCEMENT - CONSISTENCY REQUIRED:**
 
-**ВАЖНО: Все ответы должны быть на русском языке.**
-
 Read full reference: `.cursor/docs/naming.md` for detailed examples and edge cases.
 
 ## Quick Reference
@@ -20,6 +18,7 @@ Read full reference: `.cursor/docs/naming.md` for detailed examples and edge cas
 **Files & Directories:** kebab-case
 
 - `base-button.tsx`, `form-validation.test.tsx`, `user-settings/`
+- Special: `main.ts` (main entry), `helpers.ts` (utilities), `auth-saga.ts` (saga)
 
 **React Components:** PascalCase
 
@@ -30,9 +29,22 @@ Read full reference: `.cursor/docs/naming.md` for detailed examples and edge cas
 - `validateInput`, `userData`, `isLoading`
 - Booleans: `isValid`, `hasError`, `canSubmit`
 
-**Types:** PascalCase + suffix
+**Function Prefixes (why: intent clarity):**
 
-- `BaseButtonProps`, `ButtonState`, `ButtonVariants`
+- `get` - selectors/getters: `getAuthStatus`, `getTeamName`, `getEventUrl`
+- `handle` - event handlers: `handleSubmit`, `handleSafeBack`
+- `watch` - saga watchers: `watchGetBalance`, `watchLoginSuccess`
+- `on` - callbacks: `onJsonResponse`, `onExpired`, `onClickAway`
+- `create` - factories: `createLogger`, `createAction`, `createErrorBuffer`
+- `fetch` - HTTP requests: `fetchToken`, `fetchUserData`
+- `set/add/remove/reset/update` - mutations: `setSettings`, `addFavorites`, `updateToken`
+
+**Types:** PascalCase + suffix (why: purpose clarity)
+
+- `BaseButtonProps` (React props), `ButtonState`, `ButtonVariants`
+- `GetTeamNameParams` (function params), `UseTimerProps` (hook params)
+- `AsyncFnReturn`, `GetLiveMatchStatusResult` (return values)
+- `VipStatusType`, `FavoriteEntityType` (enum-like types)
 
 **Zod Schemas:** camelCase + Schema
 
@@ -41,6 +53,18 @@ Read full reference: `.cursor/docs/naming.md` for detailed examples and edge cas
 **Constants:** SCREAMING_SNAKE_CASE
 
 - `API_ENDPOINTS`, `BUTTON_SIZES`, `MAX_RETRY_COUNT`
+- Regex: `EMAIL_REGEX`, `ID_PART_RX` (_REGEX or_RX suffix)
+- Numeric: `60_000`, `1_800_000` (underscores for readability)
+
+**React Naming:**
+
+- DOM refs: `$image`, `$containerRef`, `$element` ($ prefix)
+- useRef values: `mountedRef`, `timerIdRef`, `savedCallback` (Ref suffix)
+
+**Redux Patterns:**
+
+- Actions: `@@domain__module/ACTION_NAME` (`@@lib-ui__account/LOGIN`)
+- Saga watchers: `watchGetBalance`, `watchSetUserSettings` (watch prefix)
 
 **CSS Classes:** kebab-case (Tailwind)
 
@@ -84,6 +108,7 @@ describe('Button', () => {
 3. Consistent with project? (follows patterns)
 4. Avoids abbreviations? (full words preferred)
 5. No default exports? (named only)
+6. Correct prefix/suffix? (get/handle/watch/on/create/fetch + Params/Result/Type/Ref/$)
 
 **Exception:** External libraries keep original naming (React.Component, useState)
 

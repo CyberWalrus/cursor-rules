@@ -1,6 +1,7 @@
 ---
 id: code-standards-compact
 type: compact
+prompt_language: ru
 response_language: ru
 alwaysApply: true
 ---
@@ -11,106 +12,119 @@ alwaysApply: true
 
 **INSTANT ENFORCEMENT - ZERO TOLERANCE:**
 
+**CRITICAL PRINCIPLE:** Every rule = law without exceptions. Violation = failure.
+
 **ВАЖНО: Все ответы должны быть на русском языке.**
 
-Read full reference: `.cursor/docs/code-standards.md` for detailed examples and explanations.
+Read full reference: `.cursor/docs/code-standards.md` for detailed examples.
 
 ## Core Rules
 
-**Structure (MANDATORY):**
+**Structure:**
 
-1. One file = one function, max 150 lines (tests exempt)
+1. One file = one function, max 150 lines (why: testability, reusability) - exceptions: tests, constants.ts, types.ts, schemas.ts, barrel files, helpers.ts <150 lines
 2. 100% test coverage for new functions
-3. JSDoc (Russian, single line) for every function
-4. Guard clauses instead of deep nesting
-5. Array methods instead of for/while loops
-6. Linter: 0 errors (`yarn workspace ${PACKAGE_NAME} lint`)
-7. ESM-only (no CommonJS require/module.exports)
-8. No classes - only functions and composition
+3. JSDoc (Russian, single line) for file-level functions; nested closures optional
+4. Guard clauses (why: readability, fewer bugs) - `if (!data) return null; return process(data);` not `if (data) { return process(data); }`
+5. Array methods (why: functional style, maintainability) - `items.filter(x => x.valid).map(fn)` not `for (let i = 0; ...)` - exception: math algorithms (ИНН/СНИЛС)
+6. Linter: 0 errors
+7. ESM-only (no CommonJS)
+8. No classes - functions and composition only
+9. All types in types.ts - functions MUST NOT export types
+10. All constants in constants.ts - functions MUST NOT export constants
+11. Node.js imports with node: prefix (refactor legacy)
 
-**Comparisons (EXPLICIT ONLY):**
+**Numeric Literals:** Use underscores for readability - `60_000`, `1_800_000` (preferred over `60000`)
 
-```typescript
-// ❌ FORBIDDEN
-if (!value) return;
-if (!!user.isActive) console.log('active');
+**Exceptions (use sparingly):**
 
-// ✅ REQUIRED
-if (value === null || value === undefined) return;
-if (user.isActive === true) console.log('active');
-```
+- `helpers.ts` <150 lines: multiple related functions OK (prefer separate files)
+- Closures/factories: nested private functions OK (prefer extraction if possible)
+- Math algorithms: `for` loops OK (ИНН/СНИЛС validation, checksums only)
 
-**Control Flow (GUARD CLAUSES):**
+**Comparisons:** `value === null || value === undefined` not `!value` (why: explicit intent, no false positives)
 
-```typescript
-// ❌ FORBIDDEN - deep nesting
-if (data) {
-    if (typeof data === 'object') {
-        if (data.name) return data.name;
-    }
-}
+**JSDoc:** `/** Создает действие */` for exported and private file-level functions; nested closures exempt
 
-// ✅ REQUIRED - guard clauses
-if (!data) return 'Invalid';
-if (typeof data !== 'object') return 'Invalid';
-if (!data.name) return 'No name';
-return data.name;
-```
-
-**Arrays (METHODS ONLY):**
-
-```typescript
-// ❌ FORBIDDEN - for loops
-for (let i = 0; i < items.length; i++) {
-    if (items[i].isValid) results.push(process(items[i]));
-}
-
-// ✅ REQUIRED - array methods
-const results = items.filter(item => item.isValid).map(item => process(item));
-```
-
-**JSDoc (SINGLE LINE RUSSIAN):**
-
-```typescript
-/** Создает действие для добавления экспорта в index.ts файл */
-export function createFacadeExportAction(): void {
-    // Implementation
-}
-```
+**Comments:** ONLY tool directives (@ts-ignore, @ts-expect-error, eslint-disable) - NO explanatory comments
 
 **Imports/Exports:**
 
-1. Node.js with `node:` prefix: `import { readFileSync } from 'node:fs';`
-2. Type imports with `type` prefix: `import type { User } from './types';`
-3. Named exports ONLY (no default): `export { functionName };`
-4. All types in separate `types.ts` file
+1. Node.js: `import { readFileSync } from 'node:fs';` not `from 'fs'` (node: prefix REQUIRED)
+2. Types: `import type { User } from './types';` (type prefix for tree-shaking)
+3. Named exports ONLY: `export { validateInput }` not `export default` (exception: Storybook)
+4. Import order: Global CSS → External → Internal → Relative → CSS modules (blank lines between groups)
 
-**Tests (MANDATORY):**
+**Tests:**
 
-1. 100% coverage for all new functions
-2. Test names in Russian: `it('должен возвращать true для корректного названия', () => {})`
-3. Pattern: Arrange-Act-Assert
-4. One test file per function
-5. Vitest globals (describe/it/expect) - no imports needed
-6. Mock data only, no real integrations
+- 100% coverage, Russian names: `it('должен возвращать true', () => {})`
+- Arrange-Act-Assert pattern
+- One test file per function
+- Mock data only
+
+## React Rules
+
+**Components:**
+
+- Return type: `React.ReactNode` (NOT JSX.Element) - `function Comp(): React.ReactNode { ... }`
+- Props destructuring: `function Comp({ name, email }: Props)` not `function Comp(props)` (why: clarity)
+- Event typing: `onClick: (event: React.MouseEvent<HTMLButtonElement>) => void` (explicit types)
+- Conditional: `if (!visible) return null; return <div>...</div>;` not `visible ? <div>...</div> : null`
+- Component types in local types.ts, NOT in global types file
+
+**Hooks:**
+
+- Custom hooks MUST start with `use`: `useUserData` not `userData` (React convention)
+- useRef for mutable values/DOM: `const ref = useRef<number>(0)` - NOT useState for non-render data
+- React 19 `use()` hook: `const ctx = use(Context)` (preferred over `useContext`)
+
+**Code Splitting:**
+
+- React.lazy() ONLY for components >100 lines OR heavy dependencies
+- Always wrap in Suspense
+- Small UI components imported normally
+
+## TypeScript Advanced
+
+**Generics:** G/T prefix - `function map<GItem, GResult>(items: GItem[]): GResult[]` (reusability)
+
+**Utility Types:** `Pick<User, 'id' | 'name'>` and `Omit<User, 'password'>` not manual copying
+
+**Const Assertions:** `const COLORS = ['red', 'blue'] as const;` for literal types (type: readonly)
+
+**Type Safety:**
+
+- Function type forbidden - use `(data: unknown) => void` not `Function`
+- any forbidden - use `unknown` with type guards: `if (typeof data === 'object' && data !== null)`
+- JSX.Element forbidden - use `ReactNode` or `ReactElement`
+- Dynamic objects: `Record<string, unknown>` (type-safe alternative to `any`)
 
 ## Absolute Bans
 
-❌ **FORBIDDEN (NO EXCEPTIONS):**
+❌ **FORBIDDEN:**
 
-1. `for`/`while` loops - use array methods
-2. `class` keyword - use functions and composition
-3. `export default` - use named exports only
-4. Single-letter variables (except in array methods)
-5. Implicit comparisons: `!value`, `!!value`
-6. Missing braces in if/else
-7. Deep if/else - use guard clauses
-8. Comments inside function bodies (except @ts-ignore, @ts-expect-error, eslint-disable)
-9. Multiple functions per file
-10. Files >150 lines (tests exempt)
-11. Inline types in code - use types.ts
-12. Node.js imports without `node:` prefix
+1. for/while loops
+2. class keyword
+3. export default (exception: Storybook)
+4. Multiline JSDoc
+5. Implicit comparisons (!value, !!value)
+6. Deep if/else
+7. Comments in function bodies (except tool directives)
+8. Multiple functions per file (exception: helpers.ts <150 lines)
+9. Files >150 lines (exception: tests, constants.ts, types.ts, schemas.ts)
+10. Inline types - use types.ts
+11. Node.js imports without node: prefix
+12. CommonJS (require, module.exports)
+13. Function type - use concrete signatures
+14. any type - use unknown
+15. JSX.Element - use ReactNode
 
-**Violation = Task Failure**
+Violation = Task Failure
+
+**Quick Rule IDs:** structural.one_file_one_function, tests.coverage_100_new, types.no_any_type, types.no_function_type, react.use_prefix, absolute_bans.class, exports.named_only, imports.node_prefix
+
+<completion_criteria>
+Все правила проверены, нарушения не обнаружены.
+</completion_criteria>
 
 </code_standards>
