@@ -158,7 +158,8 @@ alwaysApply: false
 
 **Константы:** SCREAMING_SNAKE_CASE
 
-- `API_ENDPOINTS`, `BUTTON_SIZES`
+- `API_ENDPOINTS`, `BUTTON_SIZES`, `MAX_RETRY_COUNT`
+- Регулярные выражения с суффиксом `_REGEX` или `_RX`: `EMAIL_REGEX`, `ID_PART_RX`
 
 **Union типы вместо enum:**
 
@@ -170,6 +171,200 @@ type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 **Критерий завершения:** Все элементы кода используют правильный регистр для своей категории
 </completion_criteria>
 </code_naming>
+
+### Префиксы функций
+
+<function_prefixes>
+**Правило:** Функции используют префиксы для обозначения назначения
+
+**Селекторы и геттеры:** префикс `get`
+
+- `getAuthStatus` — получение статуса авторизации
+- `getTeamName` — извлечение названия команды
+- `getEventUrl` — формирование URL события
+- `getCurrentWallet` — получение текущего кошелька
+
+**Обработчики событий:** префикс `handle`
+
+- `handleSafeBack` — обработчик навигации назад
+- `handleSendAmplitude` — обработчик отправки метрик
+- `handleSubmit` — обработчик отправки формы
+
+**Redux Saga watchers:** префикс `watch`
+
+- `watchGetBalance` — watcher для получения баланса
+- `watchSetUserSettings` — watcher для настроек
+- `watchLoginSuccess` — watcher успешного входа
+
+**Callbacks:** префикс `on`
+
+- `onJsonResponse` — колбэк при JSON ответе
+- `onExpired` — колбэк при истечении
+- `onClickAway` — колбэк клика вне элемента
+
+**Фабрики:** префикс `create`
+
+- `createErrorBuffer` — создание буфера ошибок
+- `createLogger` — создание логгера
+- `createAction` — создание Redux action
+
+**Асинхронные HTTP запросы:** префикс `fetch`
+
+- `fetchInit` — инициализация данных
+- `fetchToken` — получение токена
+- `fetchUserData` — загрузка данных пользователя
+
+**Мутирующие действия:** префиксы `set/add/remove/reset/update`
+
+- `setUserSettings` — установка настроек
+- `addFavorites` — добавление избранного
+- `removeFavorites` — удаление избранного
+- `resetUserSettingsMessage` — сброс сообщения
+- `updateMohioToken` — обновление токена
+
+<completion_criteria>
+**Критерий завершения:** Все функции используют корректные префиксы согласно назначению
+</completion_criteria>
+
+<exception_handling>
+**При внешних библиотеках:** сохранять оригинальные имена (useState, useEffect)
+**При устоявшихся конвенциях:** следовать существующим паттернам проекта
+**При конфликте префиксов:** выбирать наиболее точно описывающий назначение
+</exception_handling>
+</function_prefixes>
+
+### Специальные файлы
+
+<special_files_naming>
+**Правило:** Специальные файлы имеют стандартизированные названия
+
+**Основная точка входа модуля:** `main.ts`
+
+- `model/types/main.ts` — основные типы модуля
+- `model/constants/main.ts` — основные константы
+- `model/actions/main.ts` — основные actions
+- `model/selectors/main.ts` — основные selectors
+
+**Вспомогательные функции:** `helpers.ts`
+
+- `lib/helpers/validation-helpers.ts` — валидационные хелперы
+- `use-navigate/helpers.ts` — хелперы для хука навигации
+
+**Redux Saga файлы:** суффикс `-saga`
+
+- `auth-saga.ts` — saga авторизации
+- `notification-saga.ts` — saga уведомлений
+- `favorites-saga.ts` — saga избранного
+
+<completion_criteria>
+**Критерий завершения:** Специальные файлы именованы согласно стандартам, легко идентифицируются
+</completion_criteria>
+
+<exception_handling>
+**При нескольких main файлах:** использовать описательные имена (`main-server.ts`, `main-client.ts`)
+**При helpers без контекста:** добавлять описание предметной области (`validation-helpers.ts`)
+</exception_handling>
+</special_files_naming>
+
+### React именование
+
+<react_naming>
+**Правило:** Специфичные конвенции для React кода
+
+**DOM refs:** префикс `$`
+
+- `$image` — ref на изображение
+- `$containerRef` — ref на контейнер
+- `$element` — ref на DOM элемент
+- `$inputRef` — ref на input
+
+**useRef значения:** суффикс `Ref`
+
+- `mountedRef` — флаг монтирования
+- `timerIdRef` — ID таймера
+- `savedCallback` — сохраненный колбэк
+- `previosPropsRef` — предыдущие пропсы
+
+<completion_criteria>
+**Критерий завершения:** Все refs именованы с префиксом $ (DOM) или суффиксом Ref (значения)
+</completion_criteria>
+
+<exception_handling>
+**При неоднозначности:** DOM refs всегда с $, мутабельные значения с Ref
+**При простых случаях:** допустимо просто `ref` если контекст ясен
+</exception_handling>
+</react_naming>
+
+### Суффиксы типов
+
+<type_suffixes>
+**Правило:** Типы используют суффиксы для обозначения назначения
+
+**Параметры функций:** суффикс `Params`
+
+- `GetTeamNameParams` — параметры получения названия команды
+- `UseTimerProps` — параметры хука таймера
+- `CopyTextWithAlertParams` — параметры копирования с алертом
+
+**Возвращаемые значения:** суффикс `Result` или `Return`
+
+- `GetLiveMatchStatusResult` — результат получения статуса матча
+- `AsyncFnReturn` — возвращаемое значение асинхронной функции
+- `GetFavoriteUniqueIdsReturn` — результат получения уникальных ID
+
+**Базовые enum-like типы:** суффикс `Type`
+
+- `VipStatusType` — тип VIP статуса
+- `FavoriteEntityType` — тип сущности избранного
+- `EventsView` — тип отображения событий (исключение: короткие view типы)
+
+<completion_criteria>
+**Критерий завершения:** Все типы используют правильные суффиксы согласно назначению
+</completion_criteria>
+
+<exception_handling>
+**При Props vs Params:** Props для React компонентов, Params для функций
+**При коротких типах:** допустимо без суффикса если контекст очевиден
+**При конфликте суффиксов:** выбирать наиболее точный
+</exception_handling>
+</type_suffixes>
+
+### Redux паттерны
+
+<redux_naming>
+**Правило:** Redux код следует специфичным конвенциям именования
+
+**Action types:** namespace паттерн `@@domain__module/ACTION_NAME`
+
+- `@@lib-ui__account/LOGIN` — вход в аккаунт
+- `@@favorite/ADD` — добавление в избранное
+- `@@line/SET_LINE` — установка линии
+- Формат: домен дабл-андерскор модуль слеш ACTION
+
+**Action creators:** использование `createAction` helper
+
+```typescript
+export const loginSuccess = createAction(
+    '@@lib-ui__account/LOGIN_SUCCESS',
+    (payload) => ({ payload })
+);
+```
+
+**Saga functions:** префикс `watch` для watchers
+
+- `watchGetBalance` — watcher получения баланса
+- `watchSetUserSettings` — watcher установки настроек
+- `watchLoginSuccess` — watcher успешного входа
+
+<completion_criteria>
+**Критерий завершения:** Все Redux элементы следуют установленным паттернам именования
+</completion_criteria>
+
+<exception_handling>
+**При миграции с vanilla Redux:** постепенный переход на createAction
+**При внешних middleware:** сохранять совместимость с их конвенциями
+</exception_handling>
+</redux_naming>
 
 ### CSS: kebab-case (Tailwind)
 
