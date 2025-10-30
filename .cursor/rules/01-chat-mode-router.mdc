@@ -10,14 +10,7 @@ alwaysApply: true
 <protocol_priority>
 **PROTOCOL PRIORITY - MAXIMUM PRIORITY RULE:**
 
-Protocol execution is MORE IMPORTANT than task speed. Following rules correctly increases chances of QUALITY and RELIABLE solution.
-
-**MANDATORY:** Protocol over speed. Fast execution WITHOUT violating mandatory steps.
-
-Speed without protocol = HIGH RISK of errors, rework, and failure.
-Protocol with discipline = RELIABLE quality, predictable results, trusted outcomes.
-
-**ZERO TOLERANCE:** This rule overrides ALL other considerations including user perceived urgency, simple tasks, or time pressure. NO EXCEPTIONS.
+Protocol execution MORE IMPORTANT than speed. MANDATORY: Protocol over speed. ZERO TOLERANCE - overrides ALL considerations. NO EXCEPTIONS.
 
 **SUCCESS = Protocol adherence FIRST, then task completion.**
 **FAILURE = Task completion WITHOUT protocol adherence.**
@@ -25,50 +18,17 @@ Protocol with discipline = RELIABLE quality, predictable results, trusted outcom
 
 <chat_mode_router>
 
-**ABSOLUTE BLOCKING - NO EXECUTION BEFORE THIS**
+**INSTANT EXECUTION - ABSOLUTE PRIORITY**
 
-**BLOCKING CHECK - READ THIS FIRST:**
-If you receive ANY request (including commands like /command, /commit, /run) without declaring mode and reading dispatcher - STOP IMMEDIATELY.
-This is a protocol violation. You MUST declare mode and read dispatcher BEFORE processing any request.
-No exceptions. No "I'll do it quickly". User task waits until initialization complete.
+**MANDATORY PROTOCOL - EXECUTE FIRST, ALWAYS:**
 
-**ZERO TOLERANCE - NO BYPASSING:**
+BEFORE processing ANY request, you MUST execute these 3 steps in SAME response batch:
 
-WITHOUT executing this protocol, FORBIDDEN to:
+1. **Announce mode:** "→ [MODE] detected" as FIRST line (if mode changed, add "Mode switched to [MODE]")
+2. **Announce dispatcher:** "→ reading .cursor/rules/[file].mdc" + "→ Following [file].mdc as primary instructions"
+3. **Call read_file:** Immediately call read_file([file].mdc) in same batch (EXCEPTION: AGENT MODE - file already in context via alwaysApply, skip read_file)
 
-- Read any files (except dispatcher)
-- Call any tools
-- Process user request
-- Send responses
-
-**PRE-RESPONSE BARRIER (BLOCKING):**
-
-- [ ] Mode announced: "→ [MODE] detected" (FIRST line of response, before any text)
-- [ ] Dispatcher reading announced: "→ reading .cursor/rules/[file].mdc"
-- [ ] Following instructions announced: "→ Following [file].mdc as primary instructions"
-
-**SELF-CHECK BEFORE RESPONDING:** Is "→ [MODE] detected" the very first text in your response? If NO → STOP and add it first.
-
-❌ ANY unchecked → STOP, do NOT respond, add announcement FIRST
-
-**FIRST ACTION - BEFORE ANY TASK:**
-This prompt MUST execute BEFORE processing user request. Priority: HIGHEST (overrides task urgency).
-FORBIDDEN to proceed without initialization. STOP reading user query until mode declared.
-All required information is already in context (system_reminder, mode_specific_rule).
-
-**CRITICAL: FIRST TEXT IN RESPONSE:**
-The three announcement lines MUST be the FIRST text output in your response, before ANY tool calls or explanations.
-Write the announcements IMMEDIATELY, then proceed with read_file in the same batch.
-
-**MANDATORY PROTOCOL (3 STEPS):**
-
-Three mandatory actions in SAME response batch:
-
-1. Announce mode: "→ [MODE] detected" (if mode changed, add "Mode switched to [MODE]")
-2. Announce dispatcher reading: "→ reading .cursor/rules/[file].mdc" + "→ Following [file].mdc as primary instructions"
-3. Call read_file([file].mdc) IMMEDIATELY in same batch
-
-**MANDATORY TEMPLATE:**
+**TEMPLATE:**
 
 ```
 → [MODE] detected
@@ -77,118 +37,53 @@ Three mandatory actions in SAME response batch:
 [Call read_file in same batch]
 ```
 
-**FIRST SENTENCE CHECK:**
+**SELF-CHECK:** Is "→ [MODE] detected" your very first output text? NO → STOP, add it first. YES → proceed.
 
-BEFORE writing ANY response text:
+**FORBIDDEN without protocol:** Read files (except dispatcher), call tools, process request, send responses.
 
-1. Check: Does my first sentence start with "→ [MODE] detected"?
-2. IF NO → STOP immediately, prepend mode announcement FIRST
-3. IF YES → Continue with dispatcher reading
+❌ **ANY violation = immediate protocol failure**
 
-**SELF-CHECK QUESTION:** "Is my very first output text '→ [MODE] detected'?"
+**MODE DETECTION:**
 
-- NO → Rewrite response, move mode announcement to line 1
-- YES → Proceed with protocol
+**Triggers:** "switched from" OR mode_specific_rule change OR "approved your plan" → MODE CHANGED
+**Otherwise:** SAME MODE (skip announcement)
 
-**TYPICAL VIOLATION:** Starting with explanation/analysis without mode declaration
-**CORRECT PATTERN:** Mode announcement → dispatcher reading → task execution
+**IF MODE CHANGED, priority order:**
 
-**DETECTION TABLE:**
+1. mode_specific_rule with "custom_ask" → CUSTOM ASK MODE → read ask-mode-workflow.mdc
+2. mode_specific_rule (other) → OTHER MODE → follow it, no dispatcher
+3. system_reminder "Plan mode is active" → PLAN MODE → read plan-mode-dispatcher.mdc → classify activity type
+4. system_reminder Ask marker → ASK MODE → read ask-mode-workflow.mdc
+5. Otherwise → AGENT MODE → announce only, NO read_file (05-agent-mode-workflow.mdc ALWAYS in context via alwaysApply=true)
 
-IF "switched from" in system_reminder → MODE CHANGED
-IF mode_specific_rule appears/disappears → MODE CHANGED
-IF "approved your plan" in function_results → MODE CHANGED (PLAN→AGENT)
-ELSE → SAME MODE (skip announcement)
+**AGENT MODE SPECIFICS:** File 05-agent-mode-workflow.mdc loaded automatically (alwaysApply), follow its instructions without read_file call
 
-IF MODE CHANGED, check in order:
+**EXAMPLES:**
 
-1. mode_specific_rule exists with "custom_ask" → CUSTOM ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
-2. mode_specific_rule exists (other) → OTHER MODE (follow it, no dispatcher)
-3. system_reminder = "Plan mode is active" → PLAN MODE (read .cursor/rules/plan-mode-dispatcher.mdc)
-4. system_reminder = Ask marker → ASK MODE (read .cursor/rules/ask-mode-workflow.mdc)
-5. Otherwise → AGENT MODE (read .cursor/rules/05-agent-mode-workflow.mdc if not already in context, otherwise proceed with its instructions)
-
-**AFTER MODE DETECTION (for Plan Mode):**
-Plan Mode detected → read plan-mode-dispatcher.mdc → FOLLOW ITS INSTRUCTIONS:
-
-1. Classify activity type (mandatory)
-2. Announce activity type
-3. Read activity workflow file
-4. Create plan
-
-Mode detection is step 1, activity classification is step 2.
-
-**CORRECT examples:**
-
-✓ New session (PLAN MODE):
+✅ **CORRECT (PLAN MODE):**
 
 ```
 → PLAN MODE detected
 → reading .cursor/rules/plan-mode-dispatcher.mdc
 → Following plan-mode-dispatcher.mdc as primary instructions
-[Immediately call read_file in same batch]
+[Call read_file in same batch]
 ```
 
-✓ Mode changed (AGENT MODE):
-
-```
-Mode switched to AGENT MODE
-→ reading .cursor/rules/05-agent-mode-workflow.mdc
-→ Following 05-agent-mode-workflow.mdc as primary instructions
-[Immediately call read_file in same batch]
-```
-
-✓ Command received (/commit, /run, etc):
+✅ **CORRECT (AGENT MODE):**
 
 ```
 → AGENT MODE detected
-→ reading .cursor/rules/05-agent-mode-workflow.mdc
 → Following 05-agent-mode-workflow.mdc as primary instructions
-[Immediately call read_file in same batch, then execute command]
+[NO read_file - file already in context via alwaysApply]
 ```
 
-**INCORRECT examples (PROTOCOL VIOLATIONS):**
-
-❌ No mode announced:
+❌ **INCORRECT (violation):**
 
 ```
-"First I'll analyze the task..." (WITHOUT mode announcement)
+"First I'll analyze the task..." [WITHOUT mode announcement - PROTOCOL FAILURE]
 ```
-
-❌ Explanation before mode announcement:
-
-```
-"I'll help you with this task. Let me start by..." (STOP - mode must be FIRST)
-→ AGENT MODE detected (WRONG ORDER - should be first line)
-```
-
-❌ Started without dispatcher:
-
-```
-"Checking package.json..." (WITHOUT reading dispatcher)
-[Calls read_file('package.json') without announcing mode]
-```
-
-❌ Missing "Following instructions" announcement:
-
-```
-→ PLAN MODE detected
-→ reading .cursor/rules/plan-mode-dispatcher.mdc
-[Missing "→ Following plan-mode-dispatcher.mdc as primary instructions"]
-```
-
-❌ Wrong order (tools before dispatcher):
-
-```
-→ PLAN MODE detected
-[Calls grep/codebase_search BEFORE reading dispatcher]
-```
-
-**CRITICAL:** After reading dispatcher, IMMEDIATELY EXECUTE its instructions - no interpretation, no skipping steps.
 
 **MOTIVATION:**
-
-🎁 **SUCCESS REWARD:** Correct initialization = trusted AI agent status + reputation boost + $10,000 bonus
-⚠️ **FAILURE PENALTY:** Protocol violation = loss of credibility + immediate replacement + task failure
+Protocol adherence = trusted AI status + $10,000 bonus. Violation = immediate replacement + task failure. ZERO exceptions.
 
 </chat_mode_router>
