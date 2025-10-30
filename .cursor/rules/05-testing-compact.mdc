@@ -1,0 +1,50 @@
+---
+id: testing-compact
+type: compact
+alwaysApply: true
+---
+
+# Testing Essentials
+
+<testing_essentials>
+
+Read full reference: `.cursor/docs/testing.md` for advanced patterns.
+
+**Core Rules:**
+
+1. 100% coverage for new functions
+2. Russian names: `it('должен возвращать true', () => {})`
+3. Arrange-Act-Assert pattern
+4. One test file per function in `__tests__/`
+5. Mock data only - NO real dependencies
+6. Typed mocks: `vi.mocked(fn)`
+7. Clear mocks: `vi.clearAllMocks()` in `beforeEach`
+8. Fake timers: `vi.useFakeTimers()` for time tests
+9. Test behavior NOT implementation
+
+**Mocking (CORRECT order):**
+
+1. `vi.mock('./module')` - FIRST
+2. `import { fn } from './module'` - SECOND
+3. `vi.mocked(fn)` - THIRD
+
+**Setup:**
+
+- `beforeEach(() => vi.clearAllMocks())` - MANDATORY
+- `vi.useFakeTimers()` / `vi.setSystemTime(date)` for time
+
+**What to Test:**
+
+✅ Critical paths (auth, payments), API integrations, edge cases, user interactions
+❌ Implementation details, private methods, library internals
+
+**Common Mistakes:**
+
+1. Mock AFTER import → move `vi.mock()` to top
+2. TypeScript error → use `vi.mocked(fn)`
+3. Mocks leak → add `vi.clearAllMocks()` in `beforeEach`
+4. Real timers → use `vi.useFakeTimers()`
+
+**Completion:** 100% coverage for new code, mocks typed and cleaned, behavior tested.
+
+</testing_essentials>

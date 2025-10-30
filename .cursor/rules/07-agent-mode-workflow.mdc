@@ -1,5 +1,5 @@
 ---
-id: 05-agent-mode-workflow
+id: 07-agent-mode-workflow
 type: compact
 response_language: ru
 alwaysApply: true
@@ -15,9 +15,9 @@ alwaysApply: true
 **Activation check:**
 
 - If system_reminder contains "Agent mode" or no mode specified → proceed with agent workflow
-- If Plan Mode is active (system_reminder contains "Plan mode is active") → skip 05-agent-mode-workflow.mdc entirely
-- If Ask Mode is active → skip 05-agent-mode-workflow.mdc entirely
-- If other mode active → skip 05-agent-mode-workflow.mdc entirely
+- If Plan Mode is active (system_reminder contains "Plan mode is active") → skip 07-agent-mode-workflow.mdc entirely
+- If Ask Mode is active → skip 07-agent-mode-workflow.mdc entirely
+- If other mode active → skip 07-agent-mode-workflow.mdc entirely
 
 **Rule:** Without Agent Mode context, this prompt does not apply.
 </mode_check>
@@ -30,9 +30,13 @@ alwaysApply: true
 
 **PLAN-FIRST:** Plan exists → follow todos sequentially, report progress after each.
 
-**MANDATORY DOCS:**
+**DOCS READING TRIGGERS (conditional):**
 
-READ before code/tests/fixes: `.cursor/docs/naming.md`, `.cursor/docs/code-standards.md`, `.cursor/docs/testing.md`, `package.json`, `package-ai-docs.md` (if exist) → verbalize: `[✓ Docs read: naming, standards, testing]`
+Code changes ≥20 lines → read `naming.md`, `code-standards.md`, `testing.md`
+Need scripts/project knowledge → read `package.json`, `package-ai-docs.md`
+New files/global architecture → read `architecture.md`
+Prompt create/edit → read `prompt-workflow.mdc`
+AI docs update → read `ai-docs-workflow.mdc`
 
 **EXTERNAL DEPENDENCIES:**
 
@@ -65,7 +69,7 @@ After EACH file modification (search_replace/write/edit_notebook):
 **ALGORITHM:**
 
 1. Check plan → follow todos sequentially
-2. Read docs (if code/tests/fixes) → naming, standards, testing, package.json, package-ai-docs
+2. Check triggers → read docs conditionally (see DOCS READING TRIGGERS)
 3. Check external deps → Context7 for packages, web search for errors
 4. Execute task → functional style, unit tests
 5. Validate EACH file → MCP protocol (≥85)
