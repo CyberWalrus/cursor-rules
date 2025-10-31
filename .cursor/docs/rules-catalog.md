@@ -1,9 +1,6 @@
 ---
 id: rules-catalog
 type: reference
-use_cases: ['workspace rules access', 'ai self-navigation', 'cursor rules and docs lookup']
-prompt_language: en
-response_language: ru
 alwaysApply: false
 ---
 
