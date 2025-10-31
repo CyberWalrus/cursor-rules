@@ -1,3 +1,9 @@
+---
+id: numbering-system
+type: reference
+alwaysApply: false
+---
+
 # 📖 Numbering System
 
 <numbering_system>
