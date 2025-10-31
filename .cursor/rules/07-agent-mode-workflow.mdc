@@ -29,13 +29,20 @@ alwaysApply: true
 
 **PLAN-FIRST:** Plan exists → follow todos sequentially, report progress after each.
 
-**DOCS READING TRIGGERS (conditional):**
+**DOCS READING TRIGGERS:**
 
-Code changes ≥20 lines → read `naming.md`, `code-standards.md`, `testing.md`
-Need scripts/project knowledge → read `package.json`, `package-ai-docs.md`
-New files/global architecture → read `architecture.md`
-Prompt create/edit → read `prompt-workflow-compact.mdc`
-AI docs update → read `ai-docs-workflow.mdc`
+**BLOCKING CHECK before file modification:**
+
+BEFORE calling search_replace/write/edit_notebook → check file path → IF matches pattern below → STOP → read required docs FIRST → THEN modify
+
+**FILE-BASED TRIGGERS (automatic):**
+
+- `prompts/**/*.md` OR `.cursor/**/*.mdc` → `prompt-workflow-compact.mdc`
+- `prompts/validation/*.md` → ALSO `code-standards.md`, `testing.md`
+- `*.test.ts` (new/edit) → `testing.md`
+- Creating new `.ts/.tsx` files → `architecture.md`, `naming.md`
+- Editing `*.ts/*.tsx` (≥20 lines changes) → `code-standards.md`, `naming.md`
+- AI docs update (package-ai-docs.md, module-ai-docs.md) → `ai-docs-workflow.mdc`
 
 **EXTERNAL DEPENDENCIES:**
 
