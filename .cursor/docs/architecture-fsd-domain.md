@@ -28,114 +28,114 @@ Responsibilities:
 Expert role clearly defines responsibilities specific to FSD Domain architecture and includes Russian language requirement for responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с FSD Domain архитектурой возможны следующие исключительные ситуации:
+When working with FSD Domain architecture, the following exceptional situations are possible:
 
-- Проект без доменного разделения → миграция на fsd_standard
-- Отсутствие опциональных слоёв (widgets, features, entities, core) → не является ошибкой, добавляются по мере необходимости
-- Минимальная конфигурация (app, pages, shared) → полностью валидна для простых проектов
-- Бизнес-логика в entities/service → допустимо, особенно если features отсутствует
-- Нарушение доменной связанности → немедленное рефакторинг импортов между доменами
-- Кросс-импорты внутри домена → строгая проверка и перемещение в shared
-- Неопределенность в домене → приоритет по бизнес-сущностям (user для авторизации, payments для платежей)
+- Project without domain separation → migrate to fsd_standard
+- Absence of optional layers (widgets, features, entities, core) → not an error, added as needed
+- Minimal configuration (app, pages, shared) → fully valid for simple projects
+- Business logic in entities/service → acceptable, especially if features layer is absent
+- Domain coupling violation → immediate refactoring of imports between domains
+- Cross-imports within domain → strict checking and moving to shared
+- Uncertainty in domain → priority by business entities (user for authorization, payments for payments)
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (нарушение иерархии или доменной связанности)
-2. **Средние:** Планировать рефакторинг доменов
-3. **Низкие:** Добавить фасады для междоменных взаимодействий, создать опциональные слои при разрастании проекта
+1. **Critical:** Fix immediately (hierarchy violation or domain coupling)
+2. **Medium:** Plan domain refactoring
+3. **Low:** Add facades for inter-domain interactions, create optional layers as project grows
    </exception_handling>
 <algorithm_motivation>
-FSD Domain архитектура обеспечивает доменное разделение для крупных приложений, минимизируя связанность через публичные API и строгую иерархию, упрощая поддержку enterprise-уровня.
+FSD Domain architecture provides domain separation for large applications, minimizing coupling through public APIs and strict hierarchy, simplifying enterprise-level maintenance.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для FSD Domain архитектуры, проанализировав наличие бизнес-доменов, сложность и необходимость разделения.
+Let's determine step by step if the project is suitable for FSD Domain architecture by analyzing presence of business domains, complexity, and need for separation.
 </cognitive_triggers>
 
 <architecture_scope>
-FSD Domain — архитектурный тип для фронтенд-приложений с Feature-Sliced Design и доменным разделением, где слайсы группируются по бизнес-сущностям (user, payments) в слоях widgets, features, entities.
-**Назначение:** Большие фронтенд-приложения с явными бизнес-доменами.
-**Ключевой принцип:** Строгая иерархия слоёв, доменная группировка, слабая связанность доменов через фасады, запрет кросс-импортов внутри домена.
+FSD Domain — architectural type for frontend applications with Feature-Sliced Design and domain separation, where slices are grouped by business entities (user, payments) in widgets, features, entities layers.
+**Purpose:** Large frontend applications with explicit business domains.
+**Key principle:** Strict layer hierarchy, domain grouping, weak domain coupling through facades, prohibition of cross-imports within domain.
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for FSD Domain usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ доменов:** Определи наличие бизнес-доменов (user, payments, betting)
-2. **Проверка сложности:** Убедись в высокой сложности с множественными областями
-3. **Оценка связанности:** Проверь необходимость разделения по доменам для слабой связанности
-4. **Принятие решения:** Применяй правила выбора архитектуры
+1. **Domain analysis:** Determine presence of business domains (user, payments, betting)
+2. **Complexity check:** Ensure high complexity with multiple areas
+3. **Coupling assessment:** Check need for domain separation for weak coupling
+4. **Decision making:** Apply architecture selection rules
 
 </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Явные бизнес-домены (user, payments, betting)
-- ✓ Высокую сложность (>50 слайсов)
-- ✓ Необходимость слабой связанности доменов
-- ✓ Фронтенд-приложение enterprise-уровня
-- ⚠️ Слой features опционален — создается при необходимости переиспользования функционала
+- ✓ Explicit business domains (user, payments, betting)
+- ✓ High complexity (>50 slices)
+- ✓ Need for weak domain coupling
+- ✓ Enterprise-level frontend application
+- ⚠️ Features layer is optional — created when reuse of functionality is needed
 
 ### → FSD Domain
 
-Иначе → fsd_standard (без доменов) или multi_app_monolith (множественные приложения)
+Otherwise → fsd_standard (without domains) or multi_app_monolith (multiple applications)
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений для FSD Domain.
+Algorithm is clearly structured with step-by-step instructions and decision criteria for FSD Domain.
 </step_completion_criteria>
 
 <exception_handling>
 
-Если проект в пограничной зоне (несколько доменов, но малая сложность), проведи дополнительный анализ:
+If project is in borderline zone (several domains but low complexity), conduct additional analysis:
 
-- Если домены не критичны → fsd_standard
-- Если требуется полное разделение → FSD Domain
-- При сомнениях → выбери FSD Domain для масштабируемости
+- If domains are not critical → fsd_standard
+- If full separation is required → FSD Domain
+- If uncertain → choose FSD Domain for scalability
 
-Если проект серверный → используй server_fsd.
+If project is server-side → use server_fsd.
 
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие** | **✅ Подходит**                | **❌ Не подходит**      |
+| **Condition** | **✅ Suitable**                | **❌ Not Suitable**      |
 | ----------- | ------------------------------ | ----------------------- |
-| Домены      | Явные бизнес-домены            | Отсутствуют             |
-| Сложность   | Высокая/enterprise             | Средняя или простая     |
-| Структура   | Группировка по доменам в слоях | Без доменов или плоская |
-| Тип проекта | Крупное фронтенд-приложение    | Библиотека или сервер   |
+| Domains      | Explicit business domains            | Absent             |
+| Complexity   | High/enterprise             | Medium or simple     |
+| Structure    | Grouping by domains in layers | Without domains or flat |
+| Project Type | Large frontend application    | Library or server   |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Слоистая архитектура:** Строгая иерархия app → pages → widgets → features → entities → shared → core
-- **Доменное разделение:** Слайсы группируются по бизнес-сущностям
-- **Фасады слайсов:** Каждый слайс имеет index.ts
-- **Запрет кросс-импортов:** Слайсы одного слоя не импортируют друг друга
-- **Слабая связанность доменов:** Домены взаимодействуют только через публичные API
+- **Layered architecture:** Strict hierarchy app → pages → widgets → features → entities → shared → core
+- **Domain separation:** Slices are grouped by business entities
+- **Slice facades:** Each slice has index.ts
+- **Cross-import prohibition:** Slices of same layer do not import each other
+- **Weak domain coupling:** Domains interact only through public APIs
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
 
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого элемента указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each element specify:
 
-- `name` — имя файла/директории
-- `role` — роль (layer, domain, module, facade, segment, component, function, types, unit_test)
-- `purpose` — назначение
-- `exports` — что экспортирует (для фасадов)
+- `name` — file/directory name
+- `role` — role (layer, domain, module, facade, segment, component, function, types, unit_test)
+- `purpose` — purpose
+- `exports` — what it exports (for facades)
 
 </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем структуру FSD Domain, начиная с иерархии слоёв, доменов и слайсов.
+Let's analyze FSD Domain structure step by step, starting with layer hierarchy, domains, and slices.
 </cognitive_triggers>
 
 ### Базовая схема
@@ -251,123 +251,123 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями элементов и их назначением для FSD Domain.
+Structure is clearly defined with XML schema, element roles and purposes for FSD Domain.
 </structure_completion_criteria>
 
-### Иерархия слоёв
+### Layer Hierarchy
 
 app → pages → widgets → [features]? → entities → shared → core
 
-Слои могут зависеть только от нижележащих.
+Layers can depend only on lower layers.
 
-**Важно:**
+**Important:**
 
-- **Обязательные слои:** app, pages, shared — минимальная конфигурация проекта
-- **Опциональные слои:** widgets, features, entities, core — добавляются по мере необходимости
-- Слой **core** создается когда нужны абстракции над внешними библиотеками (роутер, стор, логгер)
+- **Required layers:** app, pages, shared — minimal project configuration
+- **Optional layers:** widgets, features, entities, core — added as needed
+- **core** layer is created when abstractions over external libraries are needed (router, store, logger)
 
-### Доменная структура
+### Domain Structure
 
-#### Применение доменов
+#### Domain Application
 
-**Домены применяются только на слоях:**
+**Domains are applied only on layers:**
 
-- `widgets` — виджеты, связанные с доменом (если слой присутствует)
-- `features` — фичи конкретного домена (если слой присутствует)
-- `entities` — сущности домена
+- `widgets` — widgets related to domain (if layer exists)
+- `features` — features of specific domain (if layer exists)
+- `entities` — domain entities
 
-**Важно:** Доменная структура применяется только если соответствующие слои существуют. Отсутствие `features` или `widgets` не является ошибкой.
+**Important:** Domain structure is applied only if corresponding layers exist. Absence of `features` or `widgets` is not an error.
 
-**Домены НЕ применяются на слоях:**
+**Domains are NOT applied on layers:**
 
-- `app` — глобальная инициализация
-- `pages` — страницы могут использовать множественные домены
-- `shared` — код, не связанный с бизнес-логикой
-- `core` — базовые библиотеки
+- `app` — global initialization
+- `pages` — pages can use multiple domains
+- `shared` — code not related to business logic
+- `core` — base libraries
 
-#### Примеры доменов
+#### Domain Examples
 
-| **Домен**  | **Описание**              | **Примеры слайсов**                            |
+| **Domain**  | **Description**              | **Slice Examples**                            |
 | ---------- | ------------------------- | ---------------------------------------------- |
-| `user`     | Управление пользователями | `auth`, `profile`, `registration`, `settings`  |
-| `payments` | Платежная система         | `payment-form`, `billing`, `invoices`, `cards` |
-| `betting`  | Ставки и прогнозы         | `bet-slip`, `odds`, `events`, `results`        |
-| `gambling` | Азартные игры             | `casino`, `slots`, `poker`, `live-games`       |
-| `loyalty`  | Программы лояльности      | `points`, `rewards`, `promotions`, `bonuses`   |
-| `system`   | Системные функции         | `notifications`, `settings`, `monitoring`      |
+| `user`     | User management | `auth`, `profile`, `registration`, `settings`  |
+| `payments` | Payment system         | `payment-form`, `billing`, `invoices`, `cards` |
+| `betting`  | Betting and predictions         | `bet-slip`, `odds`, `events`, `results`        |
+| `gambling` | Casino games             | `casino`, `slots`, `poker`, `live-games`       |
+| `loyalty`  | Loyalty programs      | `points`, `rewards`, `promotions`, `bonuses`   |
+| `system`   | System functions         | `notifications`, `settings`, `monitoring`      |
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Иерархия слоёв:** Соответствует FSD с зависимостями только вниз по иерархии
-- [ ] **Доменная организация:** Слои `widgets`, `features`, `entities` сгруппированы по доменам
-- [ ] **Фасады слайсов:** У всех слайсов есть `index.ts` как Public API
-- [ ] **Запрет кросс-импортов внутри домена:** Нет импортов между слайсами одного домена на одном слое
-- [ ] **Междоменные импорты по иерархии:** Импорты между доменами соблюдают иерархию слоёв
-- [ ] **Именованные экспорты:** Только именованные экспорты
-- [ ] **Тесты на уровне слайсов:** Тесты в `__tests__/` рядом со слайсами
+- [ ] **Layer hierarchy:** Matches FSD with dependencies only downward in hierarchy
+- [ ] **Domain organization:** Layers `widgets`, `features`, `entities` are grouped by domains
+- [ ] **Slice facades:** All slices have `index.ts` as Public API
+- [ ] **Cross-import prohibition within domain:** No imports between slices of same domain on same layer
+- [ ] **Inter-domain imports by hierarchy:** Imports between domains follow layer hierarchy
+- [ ] **Named exports:** Only named exports
+- [ ] **Slice-level tests:** Tests in `__tests__/` next to slices
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- Нарушение иерархии слоёв (импорт из вышестоящих слоёв)
-- Кросс-импорты между слайсами внутри одного домена на одном слое
-- Прямой импорт из внутренних частей слайсов (только через фасады)
-- Циклические зависимости между доменами
-- `Default` экспорты
+- Layer hierarchy violation (import from upper layers)
+- Cross-imports between slices within same domain on same layer
+- Direct import from internal parts of slices (only through facades)
+- Cyclic dependencies between domains
+- `Default` exports
 
-### Правила взаимодействия доменов
+### Domain Interaction Rules
 
-#### ✅ Правила взаимодействия доменов
+#### ✅ Domain Interaction Rules
 
-- **Импорт из слайса одного домена в слайс другого домена ДОПУСКАЕТСЯ**, если соблюдена вертикальная иерархия слоёв
-- **Запрещены прямые импорты между слайсами ВНУТРИ одного домена** на одном слое
-- **Домены взаимодействуют через публичные API** слайсов (фасады)
+- **Import from slice of one domain to slice of another domain IS ALLOWED**, if vertical layer hierarchy is maintained
+- **Direct imports between slices WITHIN same domain** on same layer are forbidden
+- **Domains interact through public APIs** of slices (facades)
 
-#### Примеры допустимых импортов
+#### Allowed Import Examples
 
 ```typescript
-// ✅ МОЖНО: features/payments импортирует entities/user
-// (нижележащий слой + другой домен)
+// ✅ ALLOWED: features/payments imports entities/user
+// (lower layer + different domain)
 import { User } from 'entities/user';
 
-// ✅ МОЖНО: widgets/betting импортирует features/user
-// (нижележащий слой + другой домен)
+// ✅ ALLOWED: widgets/betting imports features/user
+// (lower layer + different domain)
 import { AuthForm } from 'features/user';
 
-// ❌ НЕЛЬЗЯ: features/user/auth импортирует features/user/profile
-// (тот же слой + тот же домен)
+// ❌ FORBIDDEN: features/user/auth imports features/user/profile
+// (same layer + same domain)
 import { ProfileForm } from 'features/user/profile';
 
-// ❌ НЕЛЬЗЯ: features/user импортирует widgets/payments
-// (вышестоящий слой)
+// ❌ FORBIDDEN: features/user imports widgets/payments
+// (upper layer)
 import { PaymentWidget } from 'widgets/payments';
 ```
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании FSD Domain архитектуры и способы их смягчения.
+Let's analyze potential risks when using FSD Domain architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                    | **Симптомы**                  | **Смягчение**                                          |
+| **Risk**                    | **Symptoms**                  | **Mitigation**                                          |
 | --------------------------- | ----------------------------- | ------------------------------------------------------ |
-| Сильная связанность доменов | Частые импорты между доменами | Ограничение до публичных API + рефакторинг в shared    |
-| Нарушение иерархии          | Импорты нарушают слои/домены  | ESLint: правила импортов + автоматизированная проверка |
-| Рост доменов без контроля   | >10 доменов без документации  | Документация доменов + миграция на multi_app_monolith  |
-| Кросс-импорты внутри домена | Зависимости в одном домене    | Рефакторинг: выделение в отдельные слайсы или shared   |
+| Strong domain coupling | Frequent imports between domains | Limit to public APIs + refactor to shared    |
+| Hierarchy violation          | Imports violate layers/domains  | ESLint: import rules + automated checking |
+| Uncontrolled domain growth   | >10 domains without documentation  | Domain documentation + migration to multi_app_monolith  |
+| Cross-imports within domain | Dependencies within one domain    | Refactoring: extract to separate slices or shared   |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения для FSD Domain.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods for FSD Domain.
 </risk_completion_criteria>
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### Пример структуры с доменами
+### Example Structure with Domains
 
-**Описание:** Приложение с доменами user и payments
+**Description:** Application with user and payments domains
 
 ```xml
 <package_root>
@@ -479,11 +479,11 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Домены группируют слайсы в widgets, features, entities; pages и shared без доменов; взаимодействия через фасады.
+**Note:** Domains group slices in widgets, features, entities; pages and shared without domains; interactions through facades.
 
-### Пример домена user в features
+### Example user Domain in features
 
-**Описание:** Слайсы auth и profile в домене user
+**Description:** auth and profile slices in user domain
 
 ```xml
 <directory name="user" purpose="Домен user">
@@ -511,7 +511,7 @@ Risk Assessment содержит конкретные риски, их симп�
 </directory>
 ```
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -587,9 +587,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -609,7 +609,7 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-### Частичная валидация (отдельный домен)
+### Partial Validation (Single Domain)
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -627,24 +627,24 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-## TIER 8: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- Больших фронтенд приложений с явным доменным разделением
-- Проектов с несколькими бизнес-областями
-- Команд с опытом FSD
-- Enterprise приложений с множественными функциональностями
+- Large frontend applications with explicit domain separation
+- Projects with multiple business areas
+- Teams with FSD experience
+- Enterprise applications with multiple functionalities
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- Простых приложений (используй `single_module` или `layered_library`)
-- Проектов без явного доменного разделения (используй `fsd_standard`)
-- Серверных приложений (используй `server_fsd`)
-- Монорепозиториев с множественными приложениями (используй `multi_app_monolith`)
+- Simple applications (use `single_module` or `layered_library`)
+- Projects without explicit domain separation (use `fsd_standard`)
+- Server applications (use `server_fsd`)
+- Monorepos with multiple applications (use `multi_app_monolith`)
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила FSD Domain архитектуры определены, примеры структуры предоставлены, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all FSD Domain architecture rules are defined, structure examples provided, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]

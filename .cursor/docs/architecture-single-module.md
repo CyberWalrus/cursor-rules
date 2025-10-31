@@ -27,110 +27,110 @@ Responsibilities:
 Expert role clearly defines responsibilities and language requirements for Russian responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с Single Module архитектурой возможны следующие исключительные ситуации:
+When working with Single Module architecture, the following exceptional situations are possible:
 
-- Проект превышает лимит файлов → миграция на Layered Library
-- Нарушение фасада → немедленное исправление через ESLint правила
-- Смешивание ответственностей → рефакторинг на отдельные модули
-- Неопределенность в выборе архитектуры → приоритет простоты (Single Module)
+- Project exceeds file limit → migrate to Layered Library
+- Facade violation → immediate fix through ESLint rules
+- Mixed responsibilities → refactor into separate modules
+- Uncertainty in architecture selection → priority simplicity (Single Module)
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (нарушение фасада)
-2. **Средние:** Планировать рефакторинг в следующем спринте
-3. **Низкие:** Добавить в технический долг
+1. **Critical:** Fix immediately (facade violation)
+2. **Medium:** Plan refactoring in next sprint
+3. **Low:** Add to technical debt
    </exception_handling>
 
 <algorithm_motivation>
-Single Module архитектура ускоряет разработку простых пакетов, обеспечивает предсказуемую структуру и упрощает onboarding новых разработчиков. Минимизирует когнитивную нагрузку через единый фасад и четкие правила организации.
+Single Module architecture accelerates development of simple packages, provides predictable structure and simplifies onboarding of new developers. Minimizes cognitive load through single facade and clear organization rules.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для Single Module архитектуры, проанализировав его размер, функциональность и область ответственности.
+Let's determine step by step if the project is suitable for Single Module architecture by analyzing its size, functionality, and responsibility area.
 </cognitive_triggers>
 
 <architecture_scope>
-Single Module — архитектурный тип для простых пакетов, где весь проект представляет одну модульную единицу с единым фасадом.
+Single Module — architectural type for simple packages, where entire project represents one module unit with single facade.
 
-**Назначение:** Минимальная архитектура для библиотек, утилит, компонентов, хуков.
-**Ключевой принцип:** Все через единый фасад `src/index.ts` (Facade Pattern — единая точка входа для всех публичных API)
+**Purpose:** Minimal architecture for libraries, utilities, components, hooks.
+**Key principle:** Everything through single facade `src/index.ts` (Facade Pattern — single entry point for all public APIs)
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for Single Module usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ функциональности:** Определи количество основных функций/компонентов/хуков
-2. **Подсчет файлов:**
+1. **Functionality analysis:** Determine number of main functions/components/hooks
+2. **File count:**
     - Unix/Linux: `find src -name "*.ts" -not -name "*.test.ts" -not -name "*.spec.ts" -not -name "types.ts" -not -name "constants.ts" -not -name "*.config.*" | wc -l`
     - Windows: `dir /s /b src\*.ts | findstr /v "test spec types constants config" | find /c /v ""`
-3. **Оценка ответственности:** Проверь, решает ли проект одну четко определенную задачу
-4. **Принятие решения:** Применяй правила выбора архитектуры
+3. **Responsibility assessment:** Check if project solves one clearly defined task
+4. **Decision making:** Apply architecture selection rules
    </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Одну основную функцию/компонент/хук
-- ✓ Менее 20 файлов с бизнес-логикой (исключая `types.ts`, `constants.ts`, `*.config.*`, `*.test.*`, `*.spec.*`)
-- ✓ Единую область ответственности
+- ✓ One main function/component/hook
+- ✓ Less than 20 files with business logic (excluding `types.ts`, `constants.ts`, `*.config.*`, `*.test.*`, `*.spec.*`)
+- ✓ Single responsibility area
 
 ### → Single Module
 
-Иначе → рассмотри Layered Library или FSD
+Otherwise → consider Layered Library or FSD
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений.
+Algorithm is clearly structured with step-by-step instructions and decision criteria.
 </step_completion_criteria>
 
 <exception_handling>
-Если количество файлов находится в пограничной зоне (8-9 файлов), проведи дополнительный анализ:
+If number of files is in borderline zone (8-9 files), conduct additional analysis:
 
-- Если файлы тесно связаны функционально → Single Module
-- Если есть четкие группы функций → Layered Library
-- При сомнениях → выбери более простую архитектуру (Single Module)
+- If files are closely related functionally → Single Module
+- If there are clear function groups → Layered Library
+- If uncertain → choose simpler architecture (Single Module)
 
-Если файлов 20 или больше → обязательно используй Layered Library или FSD.
+If 20 or more files → must use Layered Library or FSD.
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие**      | **✅ Подходит**            | **❌ Не подходит**         |
+| **Condition**      | **✅ Suitable**            | **❌ Not Suitable**         |
 | ---------------- | -------------------------- | -------------------------- |
-| Функциональность | Валидатор email, React хук | UI-кит, сложное приложение |
-| Размер           | < 20 файлов                | > 30 файлов                |
-| Ответственность  | Одна четкая задача         | Множественные задачи       |
-| Зависимости      | Минимальные                | Сложные взаимосвязи        |
+| Functionality | Email validator, React hook | UI kit, complex application |
+| Size           | < 20 files                | > 30 files                |
+| Responsibility  | One clear task         | Multiple tasks       |
+| Dependencies      | Minimal                | Complex interconnections        |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Простота:** Одна модульная единица на весь пакет
-- **Инкапсуляция:** Публичный API только через `src/index.ts`
-- **Минимализм:** Только необходимые файлы
-- **Самодостаточность:** Содержит свои types/constants/helpers
+- **Simplicity:** One module unit for entire package
+- **Encapsulation:** Public API only through `src/index.ts`
+- **Minimalism:** Only necessary files
+- **Self-sufficiency:** Contains own types/constants/helpers
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого файла указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each file specify:
 
-- `name` — имя файла
-- `role` — роль (function, types, config, helper, unit_test)
-- `purpose` — назначение файла
-- `exports` — что экспортирует (для entrypoint)
+- `name` — file name
+- `role` — role (function, types, config, helper, unit_test)
+- `purpose` — file purpose
+- `exports` — what it exports (for entrypoint)
   </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем обязательную структуру Single Module, начиная с entrypoint и добавляя необходимые файлы.
+Let's analyze mandatory Single Module structure step by step, starting with entrypoint and adding necessary files.
 </cognitive_triggers>
 
-### Обязательная структура
+### Required Structure
 
 ```xml
 <package_root>
@@ -145,10 +145,10 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями файлов и их назначением.
+Structure is clearly defined with XML schema, file roles and purposes.
 </structure_completion_criteria>
 
-### Дополнительные файлы (опционально)
+### Additional Files (Optional)
 
 ```xml
 <optional_files>
@@ -159,56 +159,56 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 </optional_files>
 ```
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Фасад:** Обязательный `src/index.ts` — точка входа/реэкспорт
-- [ ] **Именованные экспорты:** Только именованные экспорты
-- [ ] **Одна функция на файл:** Каждый файл содержит одну основную функцию
-- [ ] **Инкапсуляция типов:** При наличии типов выносить в `src/types.ts`
-- [ ] **Тесты рядом:** Тесты в `src/__tests__/`
+- [ ] **Facade:** Required `src/index.ts` — entry point/re-export
+- [ ] **Named exports:** Only named exports
+- [ ] **One function per file:** Each file contains one main function
+- [ ] **Type encapsulation:** If types exist, extract to `src/types.ts`
+- [ ] **Tests nearby:** Tests in `src/__tests__/`
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- `Default` экспорты
-- FSD-слои (`pages/`, `widgets/`, `features/`)
-- Множественные модульные единицы
-- Экспорт helper-функций через фасад
-- Тесты в корне проекта
+- `Default` exports
+- FSD layers (`pages/`, `widgets/`, `features/`)
+- Multiple module units
+- Export helper functions through facade
+- Tests in project root
 
-### Основные запреты
+### Main Prohibitions
 
-- ❌ `Default` экспорты — только `export { functionName }`
-- ❌ FSD-слои (`pages/`, `widgets/`, `features/`) — используй плоскую структуру в `src/`
-- ❌ Множественные основные функции — разбей на Layered Library
-- ❌ Экспорт helper-функций — скрывай за фасадом
-- ❌ Тесты в корне — размещай в `src/__tests__/`
+- ❌ `Default` exports — only `export { functionName }`
+- ❌ FSD layers (`pages/`, `widgets/`, `features/`) — use flat structure in `src/`
+- ❌ Multiple main functions — split into Layered Library
+- ❌ Export helper functions — hide behind facade
+- ❌ Tests in root — place in `src/__tests__/`
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании Single Module архитектуры и способы их смягчения.
+Let's analyze potential risks when using Single Module architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                    | **Симптомы**                        | **Смягчение**                                                 |
+| **Risk**                    | **Symptoms**                        | **Mitigation**                                                 |
 | --------------------------- | ----------------------------------- | ------------------------------------------------------------- |
-| Нарушение единого фасада    | Прямые импорты из внутренних файлов | ESLint: `import/no-restricted-paths` + `eslint-plugin-import` |
-| Превышение лимита файлов    | >20 файлов с бизнес-логикой         | Миграция на Layered Library                                   |
-| Смешивание ответственностей | Множественные функции в одном файле | Рефакторинг: одна функция на файл                             |
-| Утечка внутренних API       | Экспорт helper-функций              | Скрытие через фасад, только публичный API                     |
+| Single facade violation    | Direct imports from internal files | ESLint: `import/no-restricted-paths` + `eslint-plugin-import` |
+| File limit exceeded    | >20 files with business logic         | Migration to Layered Library                                   |
+| Mixed responsibilities | Multiple functions in one file | Refactoring: one function per file                             |
+| Internal API leak       | Export of helper functions              | Hiding through facade, public API only                     |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods.
 </risk_completion_criteria>
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### Библиотека валидации email
+### Email Validation Library
 
-**Описание:** Простая библиотека для валидации email адресов
+**Description:** Simple library for email address validation
 
 ```xml
 <package_root>
@@ -224,9 +224,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Структура может варьироваться в зависимости от сложности. Для простейших утилит допустимо совмещение фасада и реализации в одном файле `index.ts`.
+**Note:** Structure may vary depending on complexity. For simplest utilities, combining facade and implementation in single `index.ts` file is acceptable.
 
-**Описание:** React хук для безопасной навигации назад
+**Description:** React hook for safe back navigation
 
 ```xml
 <package_root>
@@ -242,9 +242,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-### Простая утилитарная функция
+### Simple Utility Function
 
-**Описание:** Минимальная структура для простых утилит
+**Description:** Minimal structure for simple utilities
 
 ```xml
 <package_root>
@@ -257,9 +257,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Для простейших утилит допустимо совмещение фасада и реализации в одном файле `index.ts`, но это исключение из общего правила.
+**Note:** For simplest utilities, combining facade and implementation in single `index.ts` file is acceptable, but this is exception to general rule.
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -273,9 +273,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -308,25 +308,25 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-## TIER 6: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- Простых утилитарных библиотек
-- Отдельных React-хуков
-- Валидаторов и парсеров
-- Математических функций
-- API клиентов с одной областью ответственности
+- Simple utility libraries
+- Individual React hooks
+- Validators and parsers
+- Mathematical functions
+- API clients with single responsibility
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- Сложных приложений
-- Пакетов с множественным функционалом
-- UI-китов с множественными компонентами
-- Приложений с роутингом и состоянием
+- Complex applications
+- Packages with multiple functionalities
+- UI kits with multiple components
+- Applications with routing and state
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила Single Module архитектуры определены, примеры структуры предоставлены, таблицы запретов и исправлений содержат конкретные примеры кода, Risk Assessment покрывает основные риски, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all Single Module architecture rules are defined, structure examples provided, prohibition and fix tables contain concrete code examples, Risk Assessment covers main risks, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]

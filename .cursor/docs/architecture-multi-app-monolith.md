@@ -4,7 +4,7 @@ type: reference
 alwaysApply: false
 ---
 
-# Multi App Monolith — Многоприложенческий монолит
+# Multi App Monolith — Multi-Application Monolith
 
 [REFERENCE-BEGIN]
 
@@ -28,116 +28,116 @@ Responsibilities:
 Expert role clearly defines responsibilities specific to Multi App Monolith architecture and includes Russian language requirement for responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с Multi App Monolith архитектурой возможны следующие исключительные ситуации:
+When working with Multi App Monolith architecture, the following exceptional situations are possible:
 
-- Проект превышает лимит приложений (более 5–7) → разделение на отдельные пакеты
-- Нарушение изоляции → немедленное удаление прямых импортов между приложениями
-- Смешивание зависимостей → строгая проверка на импорт только через common
-- Неопределенность в выборе внутренней архитектуры → приоритет FSD для фронтенда, Layered Library для common
+- Project exceeds application limit (more than 5–7) → split into separate packages
+- Isolation violation → immediate removal of direct imports between applications
+- Dependency mixing → strict check for imports only through common
+- Uncertainty in internal architecture selection → priority FSD for frontend, Layered Library for common
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (прямые импорты между приложениями)
-2. **Средние:** Планировать миграцию приложений в отдельные пакеты
-3. **Низкие:** Добавить документацию для новых приложений
+1. **Critical:** Fix immediately (direct imports between applications)
+2. **Medium:** Plan migration of applications to separate packages
+3. **Low:** Add documentation for new applications
    </exception_handling>
 
 <algorithm_motivation>
-Multi App Monolith архитектура позволяет объединить несколько самостоятельных приложений в одном пакете, обеспечивая изоляцию и переиспользование общего кода через common, что упрощает монолитную разработку fullstack проектов.
+Multi App Monolith architecture allows combining several independent applications in one package, ensuring isolation and code reuse through common, simplifying monolithic development of fullstack projects.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для Multi App Monolith архитектуры, проанализировав количество приложений, их изоляцию и наличие общего кода.
+Let's determine step by step if the project is suitable for Multi App Monolith architecture by analyzing number of applications, their isolation, and presence of common code.
 </cognitive_triggers>
 
 <architecture_scope>
-Multi App Monolith — архитектурный тип для пакетов, содержащих несколько самостоятельных приложений (фронтенд, бэкенд, CLI), каждое с собственной архитектурой и точкой входа, с общими модулями в applications/common.
-**Назначение:** Монорепозитории с множественными точками входа, fullstack проекты.
-**Ключевой принцип:** Изоляция приложений (только через common), слабая связанность, собственные entrypoints.
+Multi App Monolith — architectural type for packages containing several independent applications (frontend, backend, CLI), each with own architecture and entry point, with common modules in applications/common.
+**Purpose:** Monorepos with multiple entry points, fullstack projects.
+**Key principle:** Application isolation (only through common), weak coupling, own entrypoints.
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for Multi App Monolith usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ приложений:** Определи количество самостоятельных приложений (фронтенд, бэкенд, CLI)
-2. **Подсчет entrypoints:**
+1. **Application analysis:** Determine number of independent applications (frontend, backend, CLI)
+2. **Entrypoint count:**
     - Unix/Linux: `find src/applications -name "index.ts" | wc -l`
-    - Проверь наличие common для общих модулей
-3. **Оценка изоляции:** Проверь отсутствие прямых импортов между приложениями
-4. **Принятие решения:** Применяй правила выбора архитектуры
+    - Check for common for shared modules
+3. **Isolation assessment:** Check absence of direct imports between applications
+4. **Decision making:** Apply architecture selection rules
 
 </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Несколько (2–7) самостоятельных приложений
-- ✓ Общий код в applications/common
-- ✓ Изоляцию (импорты только через common)
-- ✓ Собственные entrypoints для каждого приложения
+- ✓ Several (2–7) independent applications
+- ✓ Common code in applications/common
+- ✓ Isolation (imports only through common)
+- ✓ Own entrypoints for each application
 
 ### → Multi App Monolith
 
-Иначе → отдельные пакеты (для микросервисов) или FSD (для одного приложения)
+Otherwise → separate packages (for microservices) or FSD (for one application)
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений для Multi App Monolith.
+Algorithm is clearly structured with step-by-step instructions and decision criteria for Multi App Monolith.
 </step_completion_criteria>
 
 <exception_handling>
 
-Если количество приложений в пограничной зоне (1–2), проведи дополнительный анализ:
+If number of applications is in borderline zone (1–2), conduct additional analysis:
 
-- Если приложения тесно связаны общим кодом → Multi App Monolith
-- Если независимы → отдельные пакеты
-- При сомнениях → выбери монолит для упрощения разработки
+- If applications are closely related by common code → Multi App Monolith
+- If independent → separate packages
+- If uncertain → choose monolith to simplify development
 
-Если приложений более 7 → обязательно разделить на микросервисы или отдельные репозитории.
+If more than 7 applications → must split into microservices or separate repositories.
 
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие**  | **✅ Подходит**         | **❌ Не подходит**    |
+| **Condition**  | **✅ Suitable**         | **❌ Not Suitable**    |
 | ------------ | ----------------------- | --------------------- |
-| Приложения   | 2–7 самостоятельных     | 1 или >10             |
-| Изоляция     | Только через common     | Прямые импорты        |
-| Общий код    | В applications/common   | Нет переиспользования |
-| Entry points | Собственные для каждого | Один общий            |
+| Applications   | 2–7 independent     | 1 or >10             |
+| Isolation     | Only through common     | Direct imports        |
+| Common Code    | In applications/common   | No reuse |
+| Entry points | Own for each | One common            |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Множественные приложения:** Каждое приложение — самостоятельный проект
-- **Слабая связанность:** Приложения взаимодействуют только через публичные API common
-- **Собственные архитектуры:** Каждое приложение может использовать любую внутреннюю архитектуру
-- **Общие модули:** Переиспользуемый код в приложении common
-- **Множественные точки входа:** Каждое приложение имеет собственный entrypoint
+- **Multiple applications:** Each application — independent project
+- **Weak coupling:** Applications interact only through public APIs of common
+- **Own architectures:** Each application can use any internal architecture
+- **Common modules:** Reusable code in common application
+- **Multiple entry points:** Each application has own entrypoint
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
 
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого элемента указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each element specify:
 
-- `name` — имя файла/директории
-- `role` — роль (application, layer, module, facade, function, types, unit_test)
-- `purpose` — назначение
-- `exports` — что экспортирует (для фасадов)
+- `name` — file/directory name
+- `role` — role (application, layer, module, facade, function, types, unit_test)
+- `purpose` — purpose
+- `exports` — what it exports (for facades)
 
 </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем обязательную структуру Multi App Monolith, начиная с applications, добавляя внутренние слои и common.
+Let's analyze mandatory Multi App Monolith structure step by step, starting with applications, adding internal layers and common.
 </cognitive_triggers>
 
-### Базовая схема
+### Basic Schema
 
 ```xml
 <package_root>
@@ -275,97 +275,97 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями элементов и их назначением для Multi App Monolith.
+Structure is clearly defined with XML schema, element roles and purposes for Multi App Monolith.
 </structure_completion_criteria>
 
-### Варианты внутренних архитектур приложений
+### Internal Architecture Options for Applications
 
-#### Frontend приложения
+#### Frontend Applications
 
-Могут использовать любую архитектуру:
+Can use any architecture:
 
-- **FSD** (`fsd_standard`, `fsd_domain`) — для сложных интерфейсов
-- **Server FSD** (`server_fsd`) — для серверных приложений
-- **Layered Library** — для простых приложений с группировкой по слоям
-- **Single Module** — для очень простых одностраничных приложений
+- **FSD** (`fsd_standard`, `fsd_domain`) — for complex interfaces
+- **Server FSD** (`server_fsd`) — for server applications
+- **Layered Library** — for simple applications with layer grouping
+- **Single Module** — for very simple single-page applications
 
-#### Backend приложения
+#### Backend Applications
 
-- **Server FSD** (`server_fsd`) — для сложных серверных приложений
-- **Layered Library** — группировка по `controllers/`, `services/`, `models/`, `routes/`
-- **Single Module** — для простых API с одной областью ответственности
+- **Server FSD** (`server_fsd`) — for complex server applications
+- **Layered Library** — grouping by `controllers/`, `services/`, `models/`, `routes/`
+- **Single Module** — for simple APIs with single responsibility
 
-#### CLI приложения
+#### CLI Applications
 
-- **Server FSD** (`server_fsd`) — для сложных CLI с множественными командами
-- **Single Module** — для простых утилит
-- **Layered Library** — для CLI с группировкой по функциональности
+- **Server FSD** (`server_fsd`) — for complex CLI with multiple commands
+- **Single Module** — for simple utilities
+- **Layered Library** — for CLI with functional grouping
 
-#### Common приложение
+#### Common Application
 
-Рекомендуется **Layered Library** архитектура для организации общего кода по слоям.
+**Layered Library** architecture is recommended for organizing common code by layers.
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Множественные entrypoints:** У каждого приложения собственный `index.ts`
-- [ ] **Фасады приложений:** Каждое приложение имеет публичный API
-- [ ] **Изоляция приложений:** Нет прямых импортов между приложениями (кроме `common`)
-- [ ] **Common как медиатор:** Все межприложенческие зависимости через `applications/common`
-- [ ] **Собственные архитектуры:** Каждое приложение может иметь свою внутреннюю структуру
-- [ ] **Тесты на уровне приложений:** Тесты в `__tests__/` каждого приложения
-- [ ] **Нет циклов:** Отсутствие циклических зависимостей между приложениями
+- [ ] **Multiple entrypoints:** Each application has own `index.ts`
+- [ ] **Application facades:** Each application has public API
+- [ ] **Application isolation:** No direct imports between applications (except `common`)
+- [ ] **Common as mediator:** All inter-application dependencies through `applications/common`
+- [ ] **Own architectures:** Each application can have its own internal structure
+- [ ] **Application-level tests:** Tests in `__tests__/` of each application
+- [ ] **No cycles:** Absence of cyclic dependencies between applications
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- Прямые импорты между приложениями (минуя `common`)
-- Импорт внутренних деталей других приложений
-- Циклические зависимости между приложениями
-- Экспорт внутренних модулей `common` без фасадов
-- Нарушение архитектурных правил внутри каждого приложения
+- Direct imports between applications (bypassing `common`)
+- Import of internal details of other applications
+- Cyclic dependencies between applications
+- Export of internal `common` modules without facades
+- Violation of architectural rules within each application
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании Multi App Monolith архитектуры и способы их смягчения.
+Let's analyze potential risks when using Multi App Monolith architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                | **Симптомы**                      | **Смягчение**                                                       |
+| **Risk**                | **Symptoms**                      | **Mitigation**                                                       |
 | ----------------------- | --------------------------------- | ------------------------------------------------------------------- |
-| Нарушение изоляции      | Прямые импорты между приложениями | ESLint: запрет импортов по путям + проверка зависимостей            |
-| Превышение приложений   | >7 приложений                     | Разделение на микросервисы или отдельные пакеты                     |
-| Утечка внутренних API   | Экспорт приватных модулей         | Фасады только для публичного API, скрытие internals                 |
-| Циклические зависимости | Взаимные импорты приложений       | Граф зависимостей + инструменты анализа (madge, dependency-cruiser) |
+| Isolation violation      | Direct imports between applications | ESLint: import path restrictions + dependency checking            |
+| Application limit exceeded   | >7 applications                     | Split into microservices or separate packages                     |
+| Internal API leak   | Export of private modules         | Facades only for public API, hide internals                 |
+| Cyclic dependencies | Mutual imports of applications       | Dependency graph + analysis tools (madge, dependency-cruiser) |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения для Multi App Monolith.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods for Multi App Monolith.
 </risk_completion_criteria>
 
-### Примеры импортов
+### Import Examples
 
 ```typescript
-// ✅ МОЖНО: из любого приложения импортировать common
+// ✅ ALLOWED: from any application import common
 import { formatDate, User, validateUser } from 'applications/common';
 
-// ✅ МОЖНО: внешние библиотеки
+// ✅ ALLOWED: external libraries
 import { z } from 'zod';
 import React from 'react';
 
-// ❌ НЕЛЬЗЯ: прямой импорт между приложениями
+// ❌ FORBIDDEN: direct import between applications
 import { AdminPanel } from 'applications/admin-frontend';
 
-// ❌ НЕЛЬЗЯ: импорт внутренних деталей common
+// ❌ FORBIDDEN: import internal details of common
 import { formatDateHelper } from 'applications/common/lib/helpers/format-date/helpers';
 ```
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### E-commerce платформа
+### E-commerce Platform
 
-**Описание:** Полноценная e-commerce система с несколькими фронтендами и бэкендом
+**Description:** Full e-commerce system with multiple frontends and backend
 
 ```xml
 <package_root>
@@ -423,9 +423,9 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
 </package_root>
 ```
 
-### Betting платформа
+### Betting Platform
 
-**Описание:** Букмекерская платформа с операторским и игроковским интерфейсами
+**Description:** Betting platform with operator and player interfaces
 
 ```xml
 <package_root>
@@ -512,9 +512,9 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
 </package_root>
 ```
 
-**Примечание:** Каждое приложение использует подходящую внутреннюю архитектуру; common — Layered Library.
+**Note:** Each application uses appropriate internal architecture; common — Layered Library.
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -589,9 +589,9 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
 </package_root>
 ```
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -616,7 +616,7 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
 </architecture_metadata>
 ```
 
-### Частичная валидация (отдельное приложение)
+### Partial Validation (Single Application)
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -633,25 +633,25 @@ import { formatDateHelper } from 'applications/common/lib/helpers/format-date/he
 </architecture_metadata>
 ```
 
-## TIER 8: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- Монорепозиториев с множественными точками входа
-- Fullstack проектов (фронтенд + бэкенд + CLI в одном пакете)
-- Enterprise решений с административными и публичными интерфейсами
-- Проектов с общими библиотеками для разных приложений
-- Development environments с shared tooling
+- Monorepos with multiple entry points
+- Fullstack projects (frontend + backend + CLI in one package)
+- Enterprise solutions with administrative and public interfaces
+- Projects with common libraries for different applications
+- Development environments with shared tooling
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- Простых одно-приложенческих проектов (используй соответствующий FSD тип)
-- Микросервисной архитектуры (каждый сервис — отдельный пакет)
-- Проектов без общего кода между приложениями
-- Случаев, когда приложения развиваются независимыми командами
+- Simple single-application projects (use corresponding FSD type)
+- Microservice architecture (each service — separate package)
+- Projects without common code between applications
+- Cases where applications are developed by independent teams
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила Multi App Monolith архитектуры определены, примеры структуры предоставлены, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all Multi App Monolith architecture rules are defined, structure examples provided, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]

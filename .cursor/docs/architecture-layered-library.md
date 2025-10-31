@@ -4,7 +4,7 @@ type: reference
 alwaysApply: false
 ---
 
-# Layered Library — Многомодульный пакет
+# Layered Library — Multi-Module Package
 
 [REFERENCE-BEGIN]
 
@@ -28,115 +28,115 @@ Responsibilities:
 Expert role clearly defines responsibilities specific to Layered Library architecture and includes Russian language requirement for responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с Layered Library архитектурой возможны следующие исключительные ситуации:
+When working with Layered Library architecture, the following exceptional situations are possible:
 
-- Проект превышает лимит модульных единиц (более 10–15) → миграция на FSD или multi_app_monolith
-- Нарушение слоистости → немедленное перемещение модулей в соответствующие слои
-- Смешивание FSD-слоёв → строгая проверка на отсутствие pages/widgets/features/entities
-- Неопределенность в выборе слоя → приоритет тематической группировки (api для интеграций, ui для компонентов)
+- Project exceeds module unit limit (more than 10–15) → migrate to FSD or multi_app_monolith
+- Layer violation → immediate move of modules to corresponding layers
+- Mixing FSD layers → strict check for absence of pages/widgets/features/entities
+- Uncertainty in layer selection → priority by thematic grouping (api for integrations, ui for components)
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (нарушение фасадов или слоёв)
-2. **Средние:** Планировать рефакторинг модулей
-3. **Низкие:** Добавить документацию для новых слоёв
+1. **Critical:** Fix immediately (facade or layer violation)
+2. **Medium:** Plan module refactoring
+3. **Low:** Add documentation for new layers
    </exception_handling>
 
 <algorithm_motivation>
-Layered Library архитектура обеспечивает модульность и слоистую организацию для библиотек, упрощая поддержку и расширение без нарушения инкапсуляции. Группировка по тематическим слоям минимизирует зависимости и ускоряет поиск кода.
+Layered Library architecture provides modularity and layered organization for libraries, simplifying maintenance and expansion without breaking encapsulation. Grouping by thematic layers minimizes dependencies and speeds up code search.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для Layered Library архитектуры, проанализировав количество модульных единиц, тематическую группировку и отсутствие FSD-структуры.
+Let's determine step by step if the project is suitable for Layered Library architecture by analyzing number of module units, thematic grouping, and absence of FSD structure.
 </cognitive_triggers>
 
 <architecture_scope>
-Layered Library — архитектурный тип для пакетов, содержащих несколько независимых модульных единиц, сгруппированных по тематическим слоям без FSD-слоёв.
-**Назначение:** Библиотеки компонентов, shared-слои, утилитарные пакеты, API-клиенты.
-**Ключевой принцип:** Фасады везде (каждый модуль имеет index.ts), общий вход через src/index.ts, слоистая группировка (api, ui, lib, model).
+Layered Library — architectural type for packages containing several independent module units, grouped by thematic layers without FSD layers.
+**Purpose:** Component libraries, shared layers, utility packages, API clients.
+**Key principle:** Facades everywhere (each module has index.ts), common entry through src/index.ts, layered grouping (api, ui, lib, model).
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for Layered Library usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ модульности:** Определи количество независимых модульных единиц (функции/компоненты/хуки)
-2. **Подсчет файлов и слоёв:**
-    - Unix/Linux: `find src -type f -name "*.ts*" | wc -l` (исключая тесты, types, configs)
-    - Проверь наличие тематических групп (api, ui и т.д.)
-3. **Оценка слоистости:** Проверь, можно ли сгруппировать по темам без FSD-структуры
-4. **Принятие решения:** Применяй правила выбора архитектуры
+1. **Modularity analysis:** Determine number of independent module units (functions/components/hooks)
+2. **File and layer count:**
+    - Unix/Linux: `find src -type f -name "*.ts*" | wc -l` (excluding tests, types, configs)
+    - Check for thematic groups (api, ui, etc.)
+3. **Layer assessment:** Check if grouping by themes without FSD structure is possible
+4. **Decision making:** Apply architecture selection rules
 
 </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Несколько (3–15) независимых модульных единиц
-- ✓ Тематическую группировку (api для интеграций, ui для компонентов)
-- ✓ Отсутствие FSD-слоёв (pages, features и т.д.)
-- ✓ Общий фасад src/index.ts
+- ✓ Several (3–15) independent module units
+- ✓ Thematic grouping (api for integrations, ui for components)
+- ✓ Absence of FSD layers (pages, features, etc.)
+- ✓ Common facade src/index.ts
 
 ### → Layered Library
 
-Иначе → single_module (для 1–2 единиц) или FSD (для сложных приложений)
+Otherwise → single_module (for 1–2 units) or FSD (for complex applications)
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений для Layered Library.
+Algorithm is clearly structured with step-by-step instructions and decision criteria for Layered Library.
 </step_completion_criteria>
 
 <exception_handling>
 
-Если количество модулей в пограничной зоне (2–3), проведи дополнительный анализ:
+If number of modules is in borderline zone (2–3), conduct additional analysis:
 
-- Если модули тематически разные → Layered Library
-- Если тесно связаны → single_module
-- При сомнениях → выбери слоистую архитектуру для масштабируемости
+- If modules are thematically different → Layered Library
+- If closely related → single_module
+- If uncertain → choose layered architecture for scalability
 
-Если модулей более 15 → обязательно используй FSD или multi_app_monolith.
+If more than 15 modules → must use FSD or multi_app_monolith.
 
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие** | **✅ Подходит**                 | **❌ Не подходит**             |
+| **Condition** | **✅ Suitable**                 | **❌ Not Suitable**             |
 | ----------- | ------------------------------- | ------------------------------ |
-| Модульность | 3–15 независимых единиц         | 1 единица или >20              |
-| Слои        | Тематическая группировка        | FSD-слои или плоская структура |
-| Назначение  | Библиотеки, shared, API-клиенты | Полноценные приложения         |
-| Зависимости | Минимальные внутри слоёв        | Сложные кросс-слоевые          |
+| Modularity | 3–15 independent units         | 1 unit or >20              |
+| Layers        | Thematic grouping        | FSD layers or flat structure |
+| Purpose  | Libraries, shared, API clients | Full applications         |
+| Dependencies | Minimal within layers        | Complex cross-layer          |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Модульность:** Множество независимых модульных единиц
-- **Слоистость:** Группировка по тематическим слоям (api, ui, lib, model)
-- **Фасады везде:** Каждая модульная единица имеет index.ts
-- **Общий вход:** Единый фасад пакета src/index.ts
+- **Modularity:** Multiple independent module units
+- **Layering:** Grouping by thematic layers (api, ui, lib, model)
+- **Facades everywhere:** Each module unit has index.ts
+- **Common entry:** Single package facade src/index.ts
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
 
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого элемента указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each element specify:
 
-- `name` — имя файла/директории
-- `role` — роль (layer, module, facade, function, types, unit_test)
-- `purpose` — назначение
-- `exports` — что экспортирует (для фасадов)
+- `name` — file/directory name
+- `role` — role (layer, module, facade, function, types, unit_test)
+- `purpose` — purpose
+- `exports` — what it exports (for facades)
 
 </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем обязательную структуру Layered Library, начиная с общего фасада и слоёв, добавляя модули и файлы.
+Let's analyze mandatory Layered Library structure step by step, starting with common facade and layers, adding modules and files.
 </cognitive_triggers>
 
-### Базовая схема
+### Basic Schema
 
 ```xml
 <package_root>
@@ -205,83 +205,83 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями элементов и их назначением для Layered Library.
+Structure is clearly defined with XML schema, element roles and purposes for Layered Library.
 </structure_completion_criteria>
 
-### Разрешённые слои
+### Allowed Layers
 
-#### Основные слои
+#### Core Layers
 
-- `api/` — интеграции с внешними сервисами
-- `ui/` — компоненты пользовательского интерфейса
-- `lib/` — утилиты, хуки, хелперы
-- `model/` — типы, схемы, константы. Subdirs (constants/schemas/types): single main.ts preferred; nested modules allowed for sub-groups (e.g., constants/default-values/index.ts)
+- `api/` — integrations with external services
+- `ui/` — user interface components
+- `lib/` — utilities, hooks, helpers
+- `model/` — types, schemas, constants. Subdirs (constants/schemas/types): single main.ts preferred; nested modules allowed for sub-groups (e.g., constants/default-values/index.ts)
 
-#### Дополнительные слои (до 10)
+#### Additional Layers (up to 10)
 
-- `core/` — базовые утилиты и модули
-- `schemas/` — схемы валидации (Zod, JSON Schema)
-- `assets/` — статические ресурсы
-- `services/` — сквозные сервисы пакета
-- `cli/` — интерфейсы командной строки
-- `config/` — конфигурационные модули
-- `adapters/` — адаптеры внешних систем
-- `gateways/` — доступ к инфраструктуре
-- `workflows/` — бизнес-процессы
-- `handlers/` — обработчики событий
+- `core/` — base utilities and modules
+- `schemas/` — validation schemas (Zod, JSON Schema)
+- `assets/` — static resources
+- `services/` — cross-cutting package services
+- `cli/` — command line interfaces
+- `config/` — configuration modules
+- `adapters/` — external system adapters
+- `gateways/` — infrastructure access
+- `workflows/` — business processes
+- `handlers/` — event handlers
 
-#### Произвольные слои
+#### Custom Layers
 
-Допускается 0–3 дополнительных слоя с осмысленными названиями по проекту.
+0–3 additional layers with meaningful names according to project are allowed.
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Фасад пакета:** `src/index.ts` как общая точка входа
-- [ ] **Фасады модулей:** У каждой модульной единицы есть `index.ts` фасад
-- [ ] **Инкапсуляция:** Нет экспорта внутренних хелперов наружу
-- [ ] **Именованные экспорты:** Только именованные экспорты
-- [ ] **Тесты рядом:** Тесты в `__tests__/` на уровне модуля
-- [ ] **Одна функция на файл:** Каждый файл — одна основная функция/компонент
-- [ ] **Слоистая организация:** Модули сгруппированы по тематическим слоям
-- [ ] **Фасады index.ts:** Re-exports OR single main function (simple modules ≤10 lines total; no multiple functions/helpers)
-- [ ] **Helpers:** Отдельный файл если exported или >10 строк; private — inline в main function file
+- [ ] **Package facade:** `src/index.ts` as common entry point
+- [ ] **Module facades:** Each module unit has `index.ts` facade
+- [ ] **Encapsulation:** No export of internal helpers outward
+- [ ] **Named exports:** Only named exports
+- [ ] **Tests nearby:** Tests in `__tests__/` at module level
+- [ ] **One function per file:** Each file — one main function/component
+- [ ] **Layered organization:** Modules grouped by thematic layers
+- [ ] **Facades index.ts:** Re-exports OR single main function (simple modules ≤10 lines total; no multiple functions/helpers)
+- [ ] **Helpers:** Separate file if exported or >10 lines; private — inline in main function file
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- FSD-слои (`pages`, `widgets`, `features`, `entities`)
-- Прямые импорты из внутренних частей модульных единиц
-- Экспорт вспомогательных элементов через главный фасад
-- Кросс-импорты между модульными единицами внутри слоя
-- `Default` экспорты
-- Фасады с несколькими функциями/logic (god facades)
-- Экспорт helpers наружу через фасад
+- FSD layers (`pages`, `widgets`, `features`, `entities`)
+- Direct imports from internal parts of module units
+- Export of auxiliary elements through main facade
+- Cross-imports between module units within layer
+- `Default` exports
+- Facades with multiple functions/logic (god facades)
+- Export helpers outward through facade
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании Layered Library архитектуры и способы их смягчения.
+Let's analyze potential risks when using Layered Library architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                  | **Симптомы**                | **Смягчение**                                                    |
+| **Risk**                  | **Symptoms**                | **Mitigation**                                                    |
 | ------------------------- | --------------------------- | ---------------------------------------------------------------- |
-| Нарушение слоистости      | Модули в неправильных слоях | ESLint: правила для путей импортов + проверка тематики           |
-| Превышение модулей        | >15 модульных единиц        | Миграция на FSD или multi_app_monolith                           |
-| Утечка внутренних API     | Экспорт helper-функций      | Скрытие через фасады, только публичный API                       |
-| Кросс-слоевые зависимости | Импорты нарушают тематику   | Ограничение импортов по слоям (lib → ui разрешено, ui → lib нет) |
+| Layer violation      | Modules in wrong layers | ESLint: import path rules + thematic checking           |
+| Module limit exceeded        | >15 module units        | Migration to FSD or multi_app_monolith                           |
+| Internal API leak     | Export of helper functions      | Hiding through facades, public API only                       |
+| Cross-layer dependencies | Imports violate themes   | Limit imports by layers (lib → ui allowed, ui → lib not) |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения для Layered Library.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods for Layered Library.
 </risk_completion_criteria>
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### UI Kit библиотека
+### UI Kit Library
 
-**Описание:** Библиотека компонентов с слоями ui, lib, model
+**Description:** Component library with ui, lib, model layers
 
 ```xml
 <package_root>
@@ -360,9 +360,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-### API интеграционная библиотека
+### API Integration Library
 
-**Описание:** Библиотека для нескольких внешних сервисов
+**Description:** Library for multiple external services
 
 ```xml
 <package_root>
@@ -432,9 +432,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Каждый слой содержит только релевантные модули; тесты всегда рядом с кодом.
+**Note:** Each layer contains only relevant modules; tests always next to code.
 
-### Пример фасада
+### Facade Example
 
 **✅ Correct facade (re-exports only):**
 
@@ -473,7 +473,7 @@ constants/main.ts — exports DEFAULT_CONFIG etc. (self-contained, no facade dir
 **Nested sub-module:**
 constants/default-values/index.ts — facade re-exports from sub-files (complex).
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -521,9 +521,9 @@ constants/default-values/index.ts — facade re-exports from sub-files (complex)
 
 > Примечание: для больших пакетов допускается разбиение структуры на несколько XML-файлов (формат `bundle` в папке `architecture/`). Для простых пакетов используется один файл `architecture.xml` в корне пакета (формат `single`). Валидатор объединяет такие файлы детерминированно и проверяет согласованность метаданных.
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -542,7 +542,7 @@ constants/default-values/index.ts — facade re-exports from sub-files (complex)
 </architecture_metadata>
 ```
 
-### Частичная валидация (отдельный модуль)
+### Partial Validation (Single Module)
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -559,24 +559,24 @@ constants/default-values/index.ts — facade re-exports from sub-files (complex)
 </architecture_metadata>
 ```
 
-## TIER 8: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- UI-библиотек и дизайн-систем
-- Shared-слоёв в FSD приложениях
-- Утилитарных библиотек с разными областями
-- API клиентов для множественных сервисов
-- Библиотек хуков и хелперов
+- UI libraries and design systems
+- Shared layers in FSD applications
+- Utility libraries with different areas
+- API clients for multiple services
+- Hook and helper libraries
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- Простых пакетов с одной функцией (используй `single_module`)
-- Полноценных приложений (используй `fsd_*`)
-- Монолитов с множественными приложениями (используй `multi_app_monolith`)
+- Simple packages with one function (use `single_module`)
+- Full applications (use `fsd_*`)
+- Monoliths with multiple applications (use `multi_app_monolith`)
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила Layered Library архитектуры определены, примеры структуры предоставлены, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all Layered Library architecture rules are defined, structure examples provided, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]

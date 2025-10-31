@@ -28,131 +28,131 @@ Responsibilities:
 Expert role clearly defines responsibilities specific to Server FSD architecture and includes Russian language requirement for responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с Server FSD архитектурой возможны следующие исключительные ситуации:
+When working with Server FSD architecture, the following exceptional situations are possible:
 
-- Проект превышает лимит слоёв (более 7) → упрощение или миграция на layered_library
-- Нарушение иерархии → немедленное корректировка зависимостей между слоями
-- Смешивание фронтенд/бэкенд слоёв → строгая проверка на серверные слои (controllers, services)
-- Неопределенность в именовании слоёв → приоритет осмысленным названиям по предметной области
+- Project exceeds layer limit (more than 7) → simplification or migration to layered_library
+- Hierarchy violation → immediate correction of dependencies between layers
+- Mixing frontend/backend layers → strict check for server layers (controllers, services)
+- Uncertainty in layer naming → priority to meaningful names by domain
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (кросс-импорты в слоях)
-2. **Средние:** Планировать рефакторинг слоёв
-3. **Низкие:** Документировать кастомные слои
+1. **Critical:** Fix immediately (cross-imports in layers)
+2. **Medium:** Plan layer refactoring
+3. **Low:** Document custom layers
    </exception_handling>
 
 <algorithm_motivation>
-Server FSD архитектура адаптирует принципы FSD для серверных приложений, обеспечивая гибкую слоистость и модульность, что упрощает масштабирование бэкенда без нарушения инкапсуляции.
+Server FSD architecture adapts FSD principles for server applications, providing flexible layering and modularity, simplifying backend scaling without breaking encapsulation.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для Server FSD архитектуры, проанализировав тип приложения, слои и модульность.
+Let's determine step by step if the project is suitable for Server FSD architecture by analyzing application type, layers, and modularity.
 </cognitive_triggers>
 
 <architecture_scope>
-Server FSD — FSD-подобная архитектура для серверных и консольных приложений с произвольными именами слоёв, адаптированными под бэкенд. Внутри слоёв — модульные единицы с фасадами и сегментами.
-**Назначение:** Node.js серверы, API, CLI, микросервисы.
-**Ключевой принцип:** Гибкие слои (controllers, services), запрет кросс-импортов, фасады для модулей.
+Server FSD — FSD-like architecture for server and console applications with arbitrary layer names adapted for backend. Within layers — module units with facades and segments.
+**Purpose:** Node.js servers, API, CLI, microservices.
+**Key principle:** Flexible layers (controllers, services), cross-import prohibition, facades for modules.
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for Server FSD usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ типа:** Определи, является ли проект серверным/CLI (Node.js, Express, CLI)
-2. **Подсчет слоёв:**
-    - Unix/Linux: `find src -type d -maxdepth 1 | grep -v __tests__ | wc -l` (исключая src)
-    - Проверь наличие серверных слоёв (controllers, services)
-3. **Оценка модульности:** Проверь фасады в модулях и отсутствие кросс-импортов
-4. **Принятие решения:** Применяй правила выбора архитектуры
+1. **Type analysis:** Determine if project is server-side/CLI (Node.js, Express, CLI)
+2. **Layer count:**
+    - Unix/Linux: `find src -type d -maxdepth 1 | grep -v __tests__ | wc -l` (excluding src)
+    - Check for server layers (controllers, services)
+3. **Modularity assessment:** Check facades in modules and absence of cross-imports
+4. **Decision making:** Apply architecture selection rules
 
 </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Серверный/CLI код без UI
-- ✓ 3–7 кастомных слоёв (controllers, services, models)
-- ✓ Модульные единицы с фасадами
-- ✓ Отсутствие кросс-импортов в слоях
+- ✓ Server-side/CLI code without UI
+- ✓ 3–7 custom layers (controllers, services, models)
+- ✓ Module units with facades
+- ✓ Absence of cross-imports in layers
 
 ### → Server FSD
 
-Иначе → layered_library (для библиотек) или fsd_standard (для фронтенда)
+Otherwise → layered_library (for libraries) or fsd_standard (for frontend)
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений для Server FSD.
+Algorithm is clearly structured with step-by-step instructions and decision criteria for Server FSD.
 </step_completion_criteria>
 
 <exception_handling>
 
-Если слои в пограничной зоне (2–3), проведи дополнительный анализ:
+If layers are in borderline zone (2–3), conduct additional analysis:
 
-- Если слои тематически серверные → Server FSD
-- Если универсальные → layered_library
-- При сомнениях → выбери Server FSD для бэкенда
+- If layers are thematically server-side → Server FSD
+- If universal → layered_library
+- If uncertain → choose Server FSD for backend
 
-Если слоёв более 7 → обязательно упростить или разделить проект.
+If more than 7 layers → must simplify or split project.
 
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие** | **✅ Подходит**                | **❌ Не подходит**     |
+| **Condition** | **✅ Suitable**                | **❌ Not Suitable**     |
 | ----------- | ------------------------------ | ---------------------- |
-| Тип проекта | Сервер/CLI (Node.js, API)      | Фронтенд/UI            |
-| Слои        | 3–7 кастомных (controllers)    | FSD-стандарт или <3    |
-| Модульность | С фасадами, без кросс-импортов | Плоская структура      |
-| Назначение  | API серверы, микросервисы      | Библиотеки компонентов |
+| Project Type | Server/CLI (Node.js, API)      | Frontend/UI            |
+| Layers        | 3–7 custom (controllers)    | FSD standard or <3    |
+| Modularity | With facades, without cross-imports | Flat structure      |
+| Purpose  | API servers, microservices      | Component libraries |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Серверная адаптация:** Слои адаптированы под бэкенд (controllers, services, models, routes)
-- **Гибкая слоистость:** Произвольные имена слоёв по потребностям проекта
-- **Модульные единицы:** Каждый модуль имеет фасад `index.ts`
-- **Запрет кросс-импортов:** Модули одного слоя не импортируют друг друга
-- **Сегментация:** Сложные модули разделяются на сегменты
-- **Точка входа:** `src/index.ts` или `src/app/index.ts`
+- **Server adaptation:** Layers adapted for backend (controllers, services, models, routes)
+- **Flexible layering:** Arbitrary layer names by project needs
+- **Module units:** Each module has `index.ts` facade
+- **Cross-import prohibition:** Modules of same layer do not import each other
+- **Segmentation:** Complex modules are divided into segments
+- **Entry point:** `src/index.ts` or `src/app/index.ts`
 
-### Типичные серверные слои
+### Typical Server Layers
 
-| **Слой**       | **Назначение**           | **Содержимое**                 |
+| **Layer**       | **Purpose**           | **Content**                 |
 | -------------- | ------------------------ | ------------------------------ |
-| `controllers`  | HTTP контроллеры и роуты | REST API endpoints, middleware |
-| `services`     | Бизнес-логика и сервисы  | Бизнес-процессы, workflow      |
-| `models`       | Модели данных и схемы    | TypeScript типы, Zod схемы     |
-| `repositories` | Доступ к данным          | Database queries, ORM          |
-| `middleware`   | Промежуточное ПО         | Auth, logging, validation      |
-| `config`       | Конфигурация приложения  | Environment, settings          |
-| `utils`        | Утилиты и хелперы        | Вспомогательные функции        |
-| `adapters`     | Адаптеры внешних систем  | External API clients           |
-| `gateways`     | Шлюзы к внешним сервисам | Database, message queues       |
+| `controllers`  | HTTP controllers and routes | REST API endpoints, middleware |
+| `services`     | Business logic and services  | Business processes, workflow      |
+| `models`       | Data models and schemas    | TypeScript types, Zod schemas     |
+| `repositories` | Data access          | Database queries, ORM          |
+| `middleware`   | Middleware         | Auth, logging, validation      |
+| `config`       | Application configuration  | Environment, settings          |
+| `utils`        | Utilities and helpers        | Helper functions        |
+| `adapters`     | External system adapters  | External API clients           |
+| `gateways`     | External service gateways | Database, message queues       |
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
 
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого элемента указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each element specify:
 
-- `name` — имя файла/директории
-- `role` — роль (layer, module, facade, segment, function, types, unit_test)
-- `purpose` — назначение
-- `exports` — что экспортирует (для фасадов)
+- `name` — file/directory name
+- `role` — role (layer, module, facade, segment, function, types, unit_test)
+- `purpose` — purpose
+- `exports` — what it exports (for facades)
 
 </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем обязательную структуру Server FSD, начиная с слоёв, добавляя модули и сегменты.
+Let's analyze mandatory Server FSD structure step by step, starting with layers, adding modules and segments.
 </cognitive_triggers>
 
-### Базовая структура
+### Basic Structure
 
 ```xml
 <package_root>
@@ -283,10 +283,10 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями элементов и их назначением для Server FSD.
+Structure is clearly defined with XML schema, element roles and purposes for Server FSD.
 </structure_completion_criteria>
 
-### Пример архитектуры для консольного приложения
+### Example Architecture for Console Application
 
 ```xml
 <package_root>
@@ -395,56 +395,56 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 </package_root>
 ```
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Фасады модулей:** У каждого модуля есть `index.ts` как Public API
-- [ ] **Запрет кросс-импортов:** Модули одного слоя не импортируют друг друга
-- [ ] **Сегментная организация:** Сложные модули разделяются на сегменты
-- [ ] **Именованные экспорты:** Только именованные экспорты
-- [ ] **Инкапсуляция:** Внутренние детали модулей скрыты
-- [ ] **Тесты рядом:** Тесты в `__tests__/` на уровне модулей
+- [ ] **Module facades:** Each module has `index.ts` as Public API
+- [ ] **Cross-import prohibition:** Modules of same layer do not import each other
+- [ ] **Segment organization:** Complex modules are divided into segments
+- [ ] **Named exports:** Only named exports
+- [ ] **Encapsulation:** Internal module details are hidden
+- [ ] **Tests nearby:** Tests in `__tests__/` at module level
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- Кросс-импорты между модулями одного слоя
-- Прямой импорт из внутренних частей модулей
-- Экспорт вспомогательных элементов через главные фасады
-- `Default` экспорты
-- Циклические зависимости между слоями
+- Cross-imports between modules of same layer
+- Direct import from internal parts of modules
+- Export of auxiliary elements through main facades
+- `Default` exports
+- Cyclic dependencies between layers
 
-### Рекомендации по слоям
+### Layer Recommendations
 
-- **Определи иерархию:** Установи чёткую иерархию зависимостей между слоями
-- **Документируй правила:** Явно опиши в команде, какой слой от какого может зависеть
-- **Ограничь количество:** Не более 5-7 слоёв для поддержания простоты
-- **Осмысленные названия:** Используй термины предметной области проекта
+- **Define hierarchy:** Establish clear dependency hierarchy between layers
+- **Document rules:** Explicitly describe in team which layer can depend on which
+- **Limit quantity:** No more than 5-7 layers to maintain simplicity
+- **Meaningful names:** Use project domain terminology
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании Server FSD архитектуры и способы их смягчения.
+Let's analyze potential risks when using Server FSD architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                  | **Симптомы**                | **Смягчение**                                         |
+| **Risk**                  | **Symptoms**                | **Mitigation**                                         |
 | ------------------------- | --------------------------- | ----------------------------------------------------- |
-| Нарушение иерархии слоёв  | Неправильные зависимости    | ESLint: правила импортов по слоям + граф зависимостей |
-| Превышение слоёв          | >7 слоёв, сложность         | Упрощение или миграция на layered_library             |
-| Кросс-импорты в слоях     | Импорты между модулями слоя | Запрет в ESLint + рефакторинг модулей                 |
-| Неосмысленные имена слоёв | Смешение ответственностей   | Документация + team review слоёв                      |
+| Layer hierarchy violation  | Incorrect dependencies    | ESLint: import rules by layers + dependency graph |
+| Layer limit exceeded          | >7 layers, complexity         | Simplification or migration to layered_library             |
+| Cross-imports in layers     | Imports between modules of layer | Prohibition in ESLint + module refactoring                 |
+| Meaningless layer names | Mixed responsibilities   | Documentation + team review of layers                      |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения для Server FSD.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods for Server FSD.
 </risk_completion_criteria>
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### API сервер с контроллерами и сервисами
+### API Server with Controllers and Services
 
-**Описание:** REST API сервер для аутентификации пользователей
+**Description:** REST API server for user authentication
 
 ```xml
 <package_root>
@@ -498,9 +498,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-### CLI утилита для миграций БД
+### CLI Utility for Database Migrations
 
-**Описание:** Консольное приложение для управления миграциями
+**Description:** Console application for managing migrations
 
 ```xml
 <package_root>
@@ -609,9 +609,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Слои адаптированы для CLI; тесты рядом с модулями.
+**Note:** Layers adapted for CLI; tests next to modules.
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -643,9 +643,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -663,7 +663,7 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-### Частичная валидация
+### Partial Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -680,27 +680,27 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-## TIER 8: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- **Серверных приложений** (Node.js, Express, Fastify, NestJS)
-- **Консольных приложений** (CLI утилиты, скрипты)
-- **API серверов** с REST/GraphQL endpoints
-- **Микросервисов** с собственной архитектурой
-- **Backend библиотек** и SDK
-- **Проектов с уникальными архитектурными требованиями**
-- **Команд с установленными практиками именования слоёв**
+- **Server applications** (Node.js, Express, Fastify, NestJS)
+- **Console applications** (CLI utilities, scripts)
+- **API servers** with REST/GraphQL endpoints
+- **Microservices** with own architecture
+- **Backend libraries** and SDK
+- **Projects with unique architectural requirements**
+- **Teams with established layer naming practices**
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- **Фронтенд приложений** (используй `fsd_standard` или `fsd_domain`)
-- **Простых утилит** (используй `single_module`)
-- **Библиотек компонентов** (используй `layered_library`)
-- **Проектов без чёткой слоистой архитектуры**
+- **Frontend applications** (use `fsd_standard` or `fsd_domain`)
+- **Simple utilities** (use `single_module`)
+- **Component libraries** (use `layered_library`)
+- **Projects without clear layered architecture**
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила Server FSD архитектуры определены, примеры структуры предоставлены, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all Server FSD architecture rules are defined, structure examples provided, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]

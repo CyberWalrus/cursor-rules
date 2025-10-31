@@ -28,114 +28,114 @@ Responsibilities:
 Expert role clearly defines responsibilities specific to FSD Standard architecture and includes Russian language requirement for responses.
 </expert_completion_criteria>
 
-## TIER 2: Назначение и применение
+## TIER 2: Purpose and Application
 
 <exception_handling>
-При работе с FSD Standard архитектурой возможны следующие исключительные ситуации:
+When working with FSD Standard architecture, the following exceptional situations are possible:
 
-- Проект требует доменного разделения → миграция на fsd_domain
-- Отсутствие опциональных слоёв (widgets, features, entities, core) → не является ошибкой, добавляются по мере необходимости
-- Минимальная конфигурация (app, pages, shared) → полностью валидна для простых проектов
-- Бизнес-логика в entities/service → допустимо, особенно если features отсутствует
-- Нарушение иерархии слоёв → немедленное исправление зависимостей
-- Кросс-импорты в одном слое → строгая проверка и рефакторинг импортов
-- Неопределенность в размещении кода → приоритет по иерархии (pages для страниц, features для фич если слой есть)
+- Project requires domain separation → migrate to fsd_domain
+- Absence of optional layers (widgets, features, entities, core) → not an error, added as needed
+- Minimal configuration (app, pages, shared) → fully valid for simple projects
+- Business logic in entities/service → acceptable, especially if features layer is absent
+- Layer hierarchy violation → immediate dependency correction
+- Cross-imports in same layer → strict checking and import refactoring
+- Uncertainty in code placement → priority by hierarchy (pages for pages, features for features if layer exists)
 
-Приоритеты исправления:
+Fix priorities:
 
-1. **Критичные:** Немедленно исправить (нарушение иерархии или кросс-импорты)
-2. **Средние:** Планировать рефакторинг слайсов
-3. **Низкие:** Добавить фасады для новых слайсов, создать опциональные слои при разрастании проекта
+1. **Critical:** Fix immediately (hierarchy violation or cross-imports)
+2. **Medium:** Plan slice refactoring
+3. **Low:** Add facades for new slices, create optional layers as project grows
    </exception_handling>
 
 <algorithm_motivation>
-FSD Standard архитектура обеспечивает строгую иерархию слоёв для фронтенд-приложений средней сложности, упрощая масштабирование без доменов и минимизируя зависимости через фасады слайсов.
+FSD Standard architecture provides strict layer hierarchy for medium-complexity frontend applications, simplifying scaling without domains and minimizing dependencies through slice facades.
 </algorithm_motivation>
 
 <cognitive_triggers>
-Давайте пошагово определим, подходит ли проект для FSD Standard архитектуры, проанализировав сложность, отсутствие доменов и необходимость слоистой иерархии.
+Let's determine step by step if the project is suitable for FSD Standard architecture by analyzing complexity, absence of domains, and need for layered hierarchy.
 </cognitive_triggers>
 
 <architecture_scope>
-FSD Standard — архитектурный тип для фронтенд-приложений с Feature-Sliced Design без доменов, где слайсы организуются по функционалу с иерархией app → pages → widgets → features → entities → shared → core.
-**Назначение:** Средние и сложные фронтенд-приложения без явного доменного разделения.
-**Ключевой принцип:** Строгая иерархия слоёв с зависимостями только вниз, фасады слайсов, запрет кросс-импортов в слое.
+FSD Standard — architectural type for frontend applications with Feature-Sliced Design without domains, where slices are organized by functionality with hierarchy app → pages → widgets → features → entities → shared → core.
+**Purpose:** Medium and complex frontend applications without explicit domain separation.
+**Key principle:** Strict layer hierarchy with downward dependencies only, slice facades, prohibition of cross-imports within layer.
 </architecture_scope>
 
 <scope_completion_criteria>
 Architecture scope clearly defines purpose, key principle, and decision criteria for FSD Standard usage.
 </scope_completion_criteria>
 
-### Алгоритм определения архитектуры
+### Architecture Selection Algorithm
 
 <algorithm_steps>
 
-1. **Анализ сложности:** Определи наличие страниц, виджетов, фич и сущностей
-2. **Проверка доменов:** Убедись в отсутствии явного доменного разделения
-3. **Оценка иерархии:** Проверь необходимость строгой слоистой структуры
-4. **Принятие решения:** Применяй правила выбора архитектуры
+1. **Complexity analysis:** Determine presence of pages, widgets, features, and entities
+2. **Domain check:** Ensure absence of explicit domain separation
+3. **Hierarchy assessment:** Check need for strict layered structure
+4. **Decision making:** Apply architecture selection rules
 
 </algorithm_steps>
 
-Если проект содержит:
+If project contains:
 
-- ✓ Среднюю/высокую сложность (множество фич, страниц)
-- ✓ Функциональную группировку без доменов
-- ✓ Иерархические зависимости (pages могут зависеть от features, если они есть)
-- ✓ Фронтенд-приложение
-- ⚠️ Слой features опционален — создается при необходимости переиспользования функционала между страницами
+- ✓ Medium/high complexity (multiple features, pages)
+- ✓ Functional grouping without domains
+- ✓ Hierarchical dependencies (pages can depend on features if they exist)
+- ✓ Frontend application
+- ⚠️ Features layer is optional — created when reuse of functionality between pages is needed
 
 ### → FSD Standard
 
-Иначе → layered_library (для библиотек) или fsd_domain (с доменами)
+Otherwise → layered_library (for libraries) or fsd_domain (with domains)
 
 <step_completion_criteria>
-Алгоритм четко структурирован с пошаговыми инструкциями и критериями принятия решений для FSD Standard.
+Algorithm is clearly structured with step-by-step instructions and decision criteria for FSD Standard.
 </step_completion_criteria>
 
 <exception_handling>
 
-Если проект в пограничной зоне (малое количество фич), проведи дополнительный анализ:
+If project is in borderline zone (small number of features), conduct additional analysis:
 
-- Если требуется доменное разделение → fsd_domain
-- Если простая структура → layered_library
-- При сомнениях → выбери FSD Standard для масштабируемости
+- If domain separation is required → fsd_domain
+- If simple structure → layered_library
+- If uncertain → choose FSD Standard for scalability
 
-Если проект серверный → используй server_fsd.
+If project is server-side → use server_fsd.
 
 </exception_handling>
 
-### Быстрая проверка пригодности
+### Quick Suitability Check
 
-| **Условие** | **✅ Подходит**            | **❌ Не подходит**            |
+| **Condition** | **✅ Suitable**                    | **❌ Not Suitable**                    |
 | ----------- | -------------------------- | ----------------------------- |
-| Сложность   | Средняя/высокая            | Простая или библиотека        |
-| Домены      | Отсутствуют                | Явные домены                  |
-| Структура   | Слои: app, pages, features | Без иерархии или с доменами   |
-| Тип проекта | Фронтенд-приложение        | Сервер или монолит приложений |
+| Complexity   | Medium/high                | Simple or library            |
+| Domains      | Absent                     | Explicit domains            |
+| Structure    | Layers: app, pages, features | Without hierarchy or with domains |
+| Project Type | Frontend application       | Server or monolithic applications |
 
-### Основные характеристики
+### Key Characteristics
 
-- **Слоистая архитектура:** Строгая иерархия app → pages → widgets → features → entities → shared → core
-- **Без доменов:** Слайсы по функционалу, не по бизнес-сущностям
-- **Фасады слайсов:** Каждый слайс имеет index.ts
-- **Запрет кросс-импортов:** Слайсы одного слоя не импортируют друг друга
+- **Layered architecture:** Strict hierarchy app → pages → widgets → features → entities → shared → core
+- **Without domains:** Slices by functionality, not by business entities
+- **Slice facades:** Each slice has index.ts
+- **Cross-import prohibition:** Slices of same layer do not import each other
 
-## TIER 3: Структура проекта
+## TIER 3: Project Structure
 
 <output_format>
 
-При описании структуры проекта используй XML-схему с четкими ролями файлов и их назначением. Для каждого элемента указывай:
+When describing project structure, use XML schema with clear file roles and purposes. For each element specify:
 
-- `name` — имя файла/директории
-- `role` — роль (layer, module, facade, segment, component, function, types, unit_test)
-- `purpose` — назначение
-- `exports` — что экспортирует (для фасадов)
+- `name` — file/directory name
+- `role` — role (layer, module, facade, segment, component, function, types, unit_test)
+- `purpose` — purpose
+- `exports` — what it exports (for facades)
 
 </output_format>
 
 <cognitive_triggers>
-Давайте пошагово разберем структуру FSD Standard, начиная с иерархии слоёв, слайсов и сегментов.
+Let's analyze FSD Standard structure step by step, starting with layer hierarchy, slices, and segments.
 </cognitive_triggers>
 
 ### Базовая схема
@@ -258,146 +258,146 @@ Architecture scope clearly defines purpose, key principle, and decision criteria
 ```
 
 <structure_completion_criteria>
-Структура четко определена с XML-схемой, ролями элементов и их назначением для FSD Standard.
+Structure is clearly defined with XML schema, element roles and purposes for FSD Standard.
 </structure_completion_criteria>
 
-### Иерархия слоёв
+### Layer Hierarchy
 
 app → pages → widgets → [features]? → entities → shared → core
 
-Слои могут зависеть только от нижележащих.
+Layers can depend only on lower layers.
 
-**Важно:**
+**Important:**
 
-- **Обязательные слои:** app, pages, shared — минимальная конфигурация проекта
-- **Опциональные слои:** widgets, features, entities, core — добавляются по мере необходимости
-- Слой **core** создается когда нужны абстракции над внешними библиотеками (роутер, стор, логгер)
+- **Required layers:** app, pages, shared — minimal project configuration
+- **Optional layers:** widgets, features, entities, core — added as needed
+- **core** layer is created when abstractions over external libraries are needed (router, store, logger)
 
-### Описание слоёв
+### Layer Description
 
-| **Слой**   | **Назначение**                                    | **Может зависеть от**                            | **Кросс-импорт** |
+| **Layer**   | **Purpose**                                    | **Can depend on**                            | **Cross-import** |
 | ---------- | ------------------------------------------------- | ------------------------------------------------ | ---------------- |
-| `app`      | Точка входа, инициализация, глобальные провайдеры | pages, widgets, features, entities, shared, core | ✅               |
-| `pages`    | Конкретные страницы приложения                    | widgets, features, entities, shared, core        | ❌               |
-| `widgets`  | Композиции фич, самостоятельные блоки             | features, entities, shared, core                 | ❌               |
-| `features` | Отдельные части функциональности                  | entities, shared, core                           | ❌               |
-| `entities` | Модели предметной области                         | shared, core                                     | ❌               |
-| `shared`   | Код не связанный с бизнес-логикой                 | core                                             | ✅               |
-| `core`     | Базовые библиотеки и модули                       | -                                                | ✅               |
+| `app`      | Entry point, initialization, global providers | pages, widgets, features, entities, shared, core | ✅               |
+| `pages`    | Concrete application pages                    | widgets, features, entities, shared, core        | ❌               |
+| `widgets`  | Feature compositions, standalone blocks             | features, entities, shared, core                 | ❌               |
+| `features` | Separate functionality parts                  | entities, shared, core                           | ❌               |
+| `entities` | Domain models                         | shared, core                                     | ❌               |
+| `shared`   | Code not related to business logic                 | core                                             | ✅               |
+| `core`     | Base libraries and modules                       | -                                                | ✅               |
 
-### Сегменты слайсов
+### Slice Segments
 
-#### ui/ — Пользовательский интерфейс
+#### ui/ — User Interface
 
 ```text
 ui/
-├── common/          # Общие компоненты (без префикса)
-├── desktop/         # Префикс Desktop (DesktopAuthForm)
-└── mobile/          # Префикс Mobile (MobileAuthForm)
+├── common/          # Common components (no prefix)
+├── desktop/         # Desktop prefix (DesktopAuthForm)
+└── mobile/          # Mobile prefix (MobileAuthForm)
 ```
 
-**Правила:**
+**Rules:**
 
-- По умолчанию компоненты в `common`
-- Максимум один дополнительный уровень вложенности
-- Вложенные элементы получают префикс родителя
+- By default components in `common`
+- Maximum one additional nesting level
+- Nested elements get parent prefix
 
-#### model/ — Управление состоянием
+#### model/ — State Management
 
 ```text
 model/
 ├── store/           # Redux store/reducer
-├── types/           # TypeScript типы
-├── constants/       # Константы
-├── schemas/         # Zod схемы валидации
-├── selectors/       # Селекторы состояния
+├── types/           # TypeScript types
+├── constants/       # Constants
+├── schemas/         # Zod validation schemas
+├── selectors/       # State selectors
 └── actions/         # Actions/thunks
 ```
 
-#### service/ — Сайд-эффекты и бизнес-процессы
+#### service/ — Side Effects and Business Processes
 
-**Базовая структура:**
+**Basic structure:**
 
 ```text
 service/
-└── auth-flow/       # Основной процесс (saga/thunk)
+└── auth-flow/       # Main process (saga/thunk)
     └── index.ts
 ```
 
-**Расширенная структура:**
+**Extended structure:**
 
 ```text
 service/
-├── adapters/        # Адаптеры внешних систем
-├── gateways/        # Доступ к инфраструктуре
-└── workflows/       # Бизнес-процессы
+├── adapters/        # External system adapters
+├── gateways/        # Infrastructure access
+└── workflows/       # Business processes
 ```
 
-#### route/ — Подключение к роутеру (только для pages)
+#### route/ — Router Integration (only for pages)
 
 ```text
 route/
-├── index.ts         # Регистрация/соединение с роутером
-├── loader.ts        # Загрузка данных
-├── action.ts        # Обработка действий
-└── fetcher.ts       # Фетчеры данных
+├── index.ts         # Registration/connection with router
+├── loader.ts        # Data loading
+├── action.ts        # Action handling
+└── fetcher.ts       # Data fetchers
 ```
 
-#### lib/ — Утилиты и хуки
+#### lib/ — Utilities and Hooks
 
 ```text
 lib/
-├── helpers/         # Хелперы
-└── hooks/           # Хуки
+├── helpers/         # Helpers
+└── hooks/           # Hooks
 ```
 
-#### assets/ — Статические ресурсы
+#### assets/ — Static Resources
 
-Статические файлы: изображения, видео, шрифты, JSON, локализация.
+Static files: images, videos, fonts, JSON, localization.
 
-## TIER 4: Правила и ограничения
+## TIER 4: Rules and Constraints
 
-### ✅ Требования
+### ✅ Requirements
 
-- [ ] **Иерархия слоёв:** Соответствует FSD с зависимостями только вниз по иерархии
-- [ ] **Фасады слайсов:** У всех слайсов есть `index.ts` как Public API
-- [ ] **Запрет кросс-импортов:** Нет импортов между слайсами одного слоя
-- [ ] **Сегментная организация:** Сложные слайсы разделены на сегменты
-- [ ] **Именованные экспорты:** Только именованные экспорты
-- [ ] **Тесты на уровне слайсов:** Тесты в `__tests__/` рядом со слайсами
+- [ ] **Layer hierarchy:** Matches FSD with dependencies only downward in hierarchy
+- [ ] **Slice facades:** All slices have `index.ts` as Public API
+- [ ] **Cross-import prohibition:** No imports between slices of same layer
+- [ ] **Segment organization:** Complex slices are divided into segments
+- [ ] **Named exports:** Only named exports
+- [ ] **Slice-level tests:** Tests in `__tests__/` next to slices
 
-### ❌ Запрещено
+### ❌ Forbidden
 
-- Нарушение иерархии слоёв (импорт из вышестоящих слоёв)
-- Кросс-импорты между слайсами на одном слое
-- Доменные группировки (для этого используй `fsd_domain`)
-- Прямой импорт из внутренних частей слайсов (только через фасады)
-- `Default` экспорты
+- Layer hierarchy violation (import from upper layers)
+- Cross-imports between slices on same layer
+- Domain groupings (use `fsd_domain` for this)
+- Direct import from internal parts of slices (only through facades)
+- `Default` exports
 
 ### Risk Assessment
 
 <cognitive_triggers>
-Давайте проанализируем потенциальные риски при использовании FSD Standard архитектуры и способы их смягчения.
+Let's analyze potential risks when using FSD Standard architecture and ways to mitigate them.
 </cognitive_triggers>
 
-**Потенциальные проблемы и решения:**
+**Potential problems and solutions:**
 
-| **Риск**                   | **Симптомы**                           | **Смягчение**                                                   |
+| **Risk**                   | **Symptoms**                           | **Mitigation**                                                   |
 | -------------------------- | -------------------------------------- | --------------------------------------------------------------- |
-| Нарушение иерархии         | Импорты из вышестоящих слоёв           | ESLint: правила импортов по слоям + автоматизированная проверка |
-| Кросс-импорты в слое       | Зависимости между слайсами одного слоя | Рефакторинг: перемещение общего кода в shared                   |
-| Отсутствие фасадов         | Прямые импорты из сегментов            | Обязательные index.ts для каждого слайса                        |
-| Рост сложности без доменов | >50 слайсов в features/entities        | Миграция на fsd_domain для доменного разделения                 |
+| Hierarchy violation         | Imports from upper layers           | ESLint: import rules by layers + automated checking |
+| Cross-imports in layer       | Dependencies between slices of same layer | Refactoring: move common code to shared                   |
+| Missing facades         | Direct imports from segments            | Required index.ts for each slice                        |
+| Complexity growth without domains | >50 slices in features/entities        | Migration to fsd_domain for domain separation                 |
 
 <risk_completion_criteria>
-Risk Assessment содержит конкретные риски, их симптомы и способы смягчения для FSD Standard.
+Risk Assessment contains specific risks, their symptoms, and mitigation methods for FSD Standard.
 </risk_completion_criteria>
 
-## TIER 5: Примеры использования
+## TIER 5: Usage Examples
 
-### Пример структуры приложения
+### Example Application Structure
 
-**Описание:** Полное приложение с страницами, виджетами, фичами и shared
+**Description:** Full application with pages, widgets, features, and shared
 
 ```xml
 <package_root>
@@ -480,11 +480,11 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-**Примечание:** Каждый слайс имеет фасад; сегменты используются для сложных слайсов; тесты рядом.
+**Note:** Each slice has a facade; segments are used for complex slices; tests nearby.
 
-### Пример слайса features/auth
+### Example features/auth Slice
 
-**Описание:** Полный слайс авторизации
+**Description:** Full authorization slice
 
 ```xml
 <module name="auth">
@@ -524,7 +524,7 @@ Risk Assessment содержит конкретные риски, их симп�
 </module>
 ```
 
-## TIER 6: XML-схема для валидатора
+## TIER 6: XML Schema for Validator
 
 ```xml
 <package_root>
@@ -578,9 +578,9 @@ Risk Assessment содержит конкретные риски, их симп�
 </package_root>
 ```
 
-## TIER 7: Метаданные для валидатора
+## TIER 7: Metadata for Validator
 
-### Полная валидация
+### Full Validation
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -600,7 +600,7 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-### Частичная валидация (отдельный слайс)
+### Partial Validation (Single Slice)
 
 ```xml
 <architecture_metadata version="1" language="ts">
@@ -617,24 +617,24 @@ Risk Assessment содержит конкретные риски, их симп�
 </architecture_metadata>
 ```
 
-## TIER 8: Применимость и валидация
+## TIER 8: Applicability and Validation
 
-### ✅ Подходит для
+### ✅ Suitable for
 
-- Средних и сложных фронтенд приложений
-- Проектов без явного доменного разделения
-- Команд начинающих с FSD
-- Приложений с чёткой функциональной структурой
+- Medium and complex frontend applications
+- Projects without explicit domain separation
+- Teams starting with FSD
+- Applications with clear functional structure
 
-### ❌ Не подходит для
+### ❌ Not suitable for
 
-- Простых приложений (используй `single_module` или `layered_library`)
-- Проектов с явным доменным разделением (используй `fsd_domain`)
-- Серверных приложений (используй `server_fsd`)
-- Монорепозиториев с множественными приложениями (используй `multi_app_monolith`)
+- Simple applications (use `single_module` or `layered_library`)
+- Projects with explicit domain separation (use `fsd_domain`)
+- Server applications (use `server_fsd`)
+- Monorepos with multiple applications (use `multi_app_monolith`)
 
 <completion_criteria>
-Документ полностью готов к использованию: все правила FSD Standard архитектуры определены, примеры структуры предоставлены, XML-схемы для валидатора готовы, метаданные корректны. Документ соответствует стандарту reference-промптов и может быть использован для валидации архитектуры проектов.
+Document is fully ready for use: all FSD Standard architecture rules are defined, structure examples provided, XML schemas for validator ready, metadata correct. Document complies with reference prompt standard and can be used for project architecture validation.
 </completion_criteria>
 
 [REFERENCE-END]
