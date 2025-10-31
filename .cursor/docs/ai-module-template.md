@@ -4,7 +4,7 @@ type: reference
 alwaysApply: false
 ---
 
-# 🧩 AI Module Unit Documentation Reference (Справочник документации модульных единиц)
+# 🧩 AI Module Unit Documentation Reference
 
 [REFERENCE-BEGIN]
 
@@ -19,7 +19,7 @@ Target models: Claude, GPT, Gemini, Qwen with universal documentation patterns.
 </expert_role>
 
 <terminology_note>
-В этом справочнике термин "module unit" = "модульная единица" (папка с фасадом index.ts/index.tsx, где на уровень выше нет другого фасадного файла). Не путать с "функциональным элементом" из архитектуры.
+In this reference, the term "module unit" = "модульная единица" (a folder with facade index.ts/index.tsx, where there is no other facade file one level up). Do not confuse with "функциональный элемент" from architecture.
 </terminology_note>
 
 ## 🧩 TIER 2: Documentation Process
@@ -129,26 +129,26 @@ If size limits exceeded: prioritize essential information and move detailed exam
 ## 🔧 TIER 3: Template System
 
 <output_format>
-**Формат выходной документации:**
+**Documentation output format:**
 
-- **Основной формат:** Markdown с YAML frontmatter
-- **XML секции:** Каждая основная секция обернута в соответствующие XML теги
-- **Структура:** Линейная последовательность секций без вложенных блоков
-- **Кодировка:** UTF-8 с поддержкой русского языка
-- **Ограничения:** Максимум 120 строк контента, включая YAML (исключение: тестовые файлы могут быть больше)
+- **Main format:** Markdown with YAML frontmatter
+- **XML sections:** Each main section wrapped in corresponding XML tags
+- **Structure:** Linear sequence of sections without nested blocks
+- **Encoding:** UTF-8 with Russian language support
+- **Limits:** Maximum 120 lines of content, including YAML (exception: test files may be larger)
 
-**Правила форматирования:**
+**Formatting rules:**
 
-- Использовать XML теги для всех основных секций
-- Кавычки в коде: одинарные для строковых литералов
-- Отступы: 4 пробела для YAML, 2 для markdown кода
-- Максимум 80 символов в строке (кроме кода)
+- Use XML tags for all main sections
+- Quotes in code: single quotes for string literals
+- Indentation: 4 spaces for YAML, 2 for markdown code
+- Maximum 80 characters per line (except code)
 
 </output_format>
 
 <module_template>
 
-**Унифицированный шаблон module-ai-docs.md:**
+**Unified template for module-ai-docs.md:**
 
 ````markdown
 ---
@@ -233,22 +233,22 @@ const pipeline = ${INTEGRATION_EXAMPLE};
 
 <template_variables>
 
-**Template переменные для документации модульных единиц:**
+**Template variables for module unit documentation:**
 
-- `${MODULE_NAME}` - имя модульной единицы (validation, mcp-server)
-- `${MODULE_PATH}` - путь модульной единицы в проекте
-- `${PARENT_PACKAGE}` - родительский пакет
-- `${MODULE_PURPOSE}` - назначение модульной единицы
-- `${EXPORT_FUNCTION_*}` - экспортируемые функции
-- `${EXPORT_TYPE_*}` - экспортируемые типы
-- `${EXPORT_CONST_*}` - экспортируемые константы
-- `${USAGE_SCENARIO_*}` - сценарии использования модульной единицы
-- `${USAGE_DESCRIPTION_*}` - описания примеров использования
-- `${VARIABLE_NAME_*}` - имена переменных в примерах
-- `${INTEGRATION_EXAMPLE_*}` - примеры интеграции с другими модульными единицами
-- `${EXTERNAL_PACKAGE_*}` - внешние зависимости
-- `${INTERNAL_IMPORT_*}` - внутренние импорты
-- `${BUG_*}`, `${LIMITATION_*}`, `${TECH_DEBT_*}` - проблемы и ограничения
+- `${MODULE_NAME}` - module unit name (validation, mcp-server)
+- `${MODULE_PATH}` - module unit path in project
+- `${PARENT_PACKAGE}` - parent package
+- `${MODULE_PURPOSE}` - module unit purpose
+- `${EXPORT_FUNCTION_*}` - exported functions
+- `${EXPORT_TYPE_*}` - exported types
+- `${EXPORT_CONST_*}` - exported constants
+- `${USAGE_SCENARIO_*}` - usage scenarios for module unit
+- `${USAGE_DESCRIPTION_*}` - usage example descriptions
+- `${VARIABLE_NAME_*}` - variable names in examples
+- `${INTEGRATION_EXAMPLE_*}` - integration examples with other module units
+- `${EXTERNAL_PACKAGE_*}` - external dependencies
+- `${INTERNAL_IMPORT_*}` - internal imports
+- `${BUG_*}`, `${LIMITATION_*}`, `${TECH_DEBT_*}` - issues and limitations
 
 </template_variables>
 
@@ -257,7 +257,7 @@ const pipeline = ${INTEGRATION_EXAMPLE};
 <module_examples>
 
 <example type="validation_module">
-**Пример AI-документации для модульной единицы валидации:**
+**Example AI documentation for validation module unit:**
 
 ````markdown
 ---
@@ -341,7 +341,7 @@ const pipeline = await handleMCPRequest('validate').then(validateCode).then(form
 </example>
 
 <example type="mcp_server_adapter">
-**Пример AI-документации для MCP Server адаптера:**
+**Example AI documentation for MCP Server adapter:**
 
 ````markdown
 ---
@@ -428,39 +428,39 @@ process.stdin.pipe(mcpServer).pipe(process.stdout);
 
 <required_elements>
 
-**Секции документации модульных единиц:**
+**Module unit documentation sections:**
 
-- `<module_purpose>` - назначение и область ответственности модульной единицы (2-3 предложения)
-- `<public_api>` - экспортируемые функции, типы, константы
-- `<usage_examples>` - конкретные примеры использования модульной единицы в коде
-- `<module_structure>` - полная XML структура включая тесты
-- `<dependencies>` - внешние пакеты и внутренние импорты
-- `<notes>` - ключевые особенности и ограничения
+- `<module_purpose>` - purpose and responsibility scope of module unit (2-3 sentences)
+- `<public_api>` - exported functions, types, constants
+- `<usage_examples>` - concrete examples of module unit usage in code
+- `<module_structure>` - complete XML structure including tests
+- `<dependencies>` - external packages and internal imports
+- `<notes>` - key features and limitations
 
-**YAML метаданные:**
+**YAML metadata:**
 
 - `documentation_type: 'ai-module-documentation'`
 - `ai_documentation_version: '2.0.0'`
-- `module_context` с полными метаданными модульной единицы
-- `size_limits: content: { max: 120 }` - строгий лимит 120 строк (исключение: тестовые файлы)
+- `module_context` with full module unit metadata
+- `size_limits: content: { max: 120 }` - strict limit of 120 lines (exception: test files)
 
-**Структура примеров кода:**
+**Code example structure:**
 
-- **Основное использование:** базовый import + вызов главной функции
-- **Интеграция:** пример использования в более крупном workflow
+- **Basic usage:** basic import + main function call
+- **Integration:** example usage in larger workflow
 
-**Зависимости по категориям:**
+**Dependencies by category:**
 
-- **Node.js:** встроенные модули (node:fs, node:path)
-- **Внешние:** npm пакеты из package.json
-- **Внутренние:** относительные импорты модульных единиц проекта
+- **Node.js:** built-in modules (node:fs, node:path)
+- **External:** npm packages from package.json
+- **Internal:** relative imports of project module units
 
-**XML структура файлов:**
+**XML file structure:**
 
-- `<module>` - корневой тег модуля
-- `<facade>` - публичный API модуля
-- `<file>` - файлы с кодом, типами, конфигурацией
-- `<test>` - тестовые файлы
+- `<module>` - root module tag
+- `<facade>` - public API of module
+- `<file>` - files with code, types, configuration
+- `<test>` - test files
 
 </required_elements>
 
