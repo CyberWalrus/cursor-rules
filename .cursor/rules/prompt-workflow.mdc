@@ -39,6 +39,19 @@ Target: Claude, GPT, Gemini, Qwen models with universal prompt patterns.
 
 **Verification checkpoint:** "Is ALL prompt logic in English? YES = proceed | NO = STOP and translate"
 
+**WRITING STYLE (CRITICAL - ZERO TOLERANCE):**
+
+**ABSOLUTE REQUIREMENT:** Write concise, powerful phrases with maximum meaning density - NO EXCEPTIONS!
+
+**MANDATORY Rules:**
+
+1. Eliminate redundant words, contradictions, and filler content
+2. Each sentence must convey essential information only
+3. Prefer single precise verb over multiple weak modifiers
+4. Zero tolerance for vague, verbose, or conflicting statements
+
+**Verification checkpoint:** "Is every phrase maximally dense and contradiction-free? YES = proceed | NO = STOP and rewrite"
+
 **CONTENT RESTRICTIONS:**
 
 - **FORBIDDEN:** File tree structures, directory hierarchies, ASCII art trees
@@ -420,6 +433,7 @@ Complete ALL for Step 2:
 - Develop algorithm_steps with clear instructions (ALWAYS in English - NO Russian text in logic)
 - Add examples and prefill patterns (technical structure in English, user output samples in Russian if applicable)
 - Set completion_criteria for each step (in English - MANDATORY)
+- **Writing style (CRITICAL):** Apply WRITING STYLE rules from expert_role (concise, powerful phrases, maximum meaning density, zero tolerance for redundancy/contradictions)
 
 **CRITICAL CHECK:** Verify all prompt logic is in English. Scan for Russian text in non-example sections and translate immediately if found
 
@@ -892,12 +906,14 @@ Few-shot examples (input → expected structured output):
     This is a new prompt creation task requiring planning phase.
     </prompt_analysis>
 
-    Plan должен содержать:
-    - Цель: автоматизация code review через AI промпт
-    - Связанные промпты: critique-workflow.mdc (процесс критики), code-workflow.mdc (контекст разработки)
-    - Структура: TIER 1-2 (обязательно), TIER 3-5 (опционально), XML tags, YAML
-    - Валидация: После создания провалидировать через MCP (score ≥85), проверить здравый смысл исправлений
-    - Критерии готовности: score ≥85, 0 critical issues, production-ready
+    Plan should contain:
+    - Goal: code review automation through AI prompt
+    - Related prompts: critique-workflow.mdc (critique process), code-workflow.mdc (development context)
+    - Structure: TIER 1-2 (mandatory), TIER 3-5 (optional), XML tags, YAML
+    - Validation: After creation validate via MCP (score ≥85), check common sense of fixes
+    - Completion criteria: score ≥85, 0 critical issues, production-ready
+    
+    **Note:** User-facing responses must be in Russian, but this plan structure example is in English for clarity.
     ```
 
 6. Create compact mode router prompt
@@ -965,6 +981,8 @@ Few-shot examples (input → expected structured output):
     ```markdown
     # Git Commit Workflow
 
+    **Note:** This is a command type prompt example. Command type prompts use Russian language for ALL content as an exception to language policy.
+    
     Ты — инженер автоматизации git-процессов. Твоя задача — создать атомарные коммиты с проверкой качества.
 
     ## 1. Проверка качества кода

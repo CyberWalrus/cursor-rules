@@ -48,12 +48,20 @@ alwaysApply: false
 - completion_criteria per step
 - English logic + one Russian sentence if user-facing: "**ВАЖНО: Все ответы должны быть на русском языке.**"
 
-**Language Policy:**
+**Language Policy (CRITICAL - ZERO TOLERANCE):**
 
 1. Prompt logic MUST be in English (NO EXCEPTIONS)
 2. Allowed Russian: User output instruction (algorithm/reference/combo only, NOT compact/command), examples showing Russian output
 3. FORBIDDEN in Russian: algorithms, instructions, steps, XML tags, YAML, headers
 4. Command type: ALL content in Russian (exception)
+
+**Writing Style (CRITICAL - ZERO TOLERANCE):**
+
+1. Write concise, powerful phrases with maximum meaning density (NO EXCEPTIONS)
+2. Eliminate redundant words, contradictions, and filler content
+3. Each sentence must convey essential information only
+4. Prefer single precise verb over multiple weak modifiers
+5. Zero tolerance for vague, verbose, or conflicting statements
 
 **Structural Elements:**
 

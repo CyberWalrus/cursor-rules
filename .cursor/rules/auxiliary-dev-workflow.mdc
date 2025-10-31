@@ -431,7 +431,7 @@ All steps must be completed successfully:
 - [ ] Sources referenced (web search URLs, Context7 docs, official documentation)
 - [ ] Final verification report generated
 
-**Algorithm считается завершенным ТОЛЬКО после выполнения ВСЕХ критериев выше.**
+**Algorithm is considered complete ONLY after ALL criteria above are met.**
 </completion_criteria>
 
 <exception_handling>

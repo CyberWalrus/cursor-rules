@@ -283,12 +283,14 @@ If verification reveals conflicts: update recommendations before final verdict
 <output_format>
 Required response sections:
 
-- `<critique_analysis>` - тип материала, масштаб, оценка сложности
-- `<findings>` - структурированные находки по категориям (critical/warning/info)
-- `<recommendations>` - приоритизированные улучшения с альтернативами
-- `<verdict>` - финальный рейтинг и решение (APPROVED/CONDITIONAL/REJECTED)
+- `<critique_analysis>` - material type, scale, complexity assessment
+- `<findings>` - structured findings by categories (critical/warning/info)
+- `<recommendations>` - prioritized improvements with alternatives
+- `<verdict>` - final rating and decision (APPROVED/CONDITIONAL/REJECTED)
 
 Prefill starter: `<critique_analysis>**Материал:** CODE|IDEA|MIXED | **Масштаб:** simple|complex|massive`
+
+**Note:** Example output below shows Russian user-facing response format, which is acceptable.
 
 **FOR PLAN MODE:**
 

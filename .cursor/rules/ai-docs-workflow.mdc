@@ -5,7 +5,7 @@ globs: **/package-ai-docs.md, **/module-ai-docs.md
 alwaysApply: false
 ---
 
-# 🔗 Анализ интеграции AI документации с архитектурными правилами
+# 🔗 AI Documentation Integration with Architecture Rules
 
 [REFERENCE-BEGIN]
 
@@ -31,146 +31,146 @@ Let's think step by step about terminology mapping and document selection.
 
 <algorithm_steps>
 
-### Step 1: ОБЯЗАТЕЛЬНОЕ ЧТЕНИЕ СПРАВОЧНИКОВ
+### Step 1: MANDATORY REFERENCE READING
 
-**КРИТИЧЕСКИ ВАЖНО: НЕ ПРИСТУПАЙТЕ К ГЕНЕРАЦИИ ДОКУМЕНТАЦИИ ДО ЧТЕНИЯ СПРАВОЧНИКОВ!**
+**CRITICAL: DO NOT GENERATE DOCUMENTATION WITHOUT READING REFERENCES FIRST!**
 
-- **ОБЯЗАТЕЛЬНО прочитайте:** `.cursor/docs/ai-package-template.md` (для пакетной документации)
-- **ОБЯЗАТЕЛЬНО прочитайте:** `.cursor/docs/ai-module-template.md` (для модульной документации)
-- Изучите структуру, YAML метаданные, XML теги и примеры из справочников
-- Убедитесь, что понимаете различия между пакетной и модульной документацией
+- **MANDATORY:** Read `.cursor/docs/ai-package-template.md` (for package documentation)
+- **MANDATORY:** Read `.cursor/docs/ai-module-template.md` (for module documentation)
+- Study structure, YAML metadata, XML tags, and examples from references
+- Ensure you understand the differences between package and module documentation
 
 <completion_criteria>
-Оба справочника прочитаны и изучены, структура документации понятна
+Both references are read and studied, documentation structure is understood
 </completion_criteria>
 
 <exception_handling>
-Если справочники недоступны — запросите их чтение перед продолжением работы
+If references are unavailable — request their reading before continuing work
 </exception_handling>
 
 ### Step 2: Terminology Alignment
 
-- Сопоставьте архитектурные термины и термины AI документации
-- Зафиксируйте единый словарь: «модульная единица» и «архитектурный модуль»
-- Используйте терминологию из прочитанных справочников
+- Map architectural terms with AI documentation terms
+- Establish unified vocabulary: "modular unit" (модульная единица) and "architectural module" (архитектурный модуль)
+- Use terminology from read references
 
 <completion_criteria>
-Единый словарь утверждён и использован далее по документу
+Unified vocabulary is established and used throughout the document
 </completion_criteria>
 
 <exception_handling>
-Если термины конфликтуют — выберите наиболее точный в контексте назначения документа и добавьте пояснение
+If terms conflict — choose the most accurate one in the context of the document's purpose and add clarification
 </exception_handling>
 
-### Step 3: Выбор типа документа
+### Step 3: Document Type Selection
 
-- Определите: `module-ai-docs.md` (для модульных единиц) или `package-ai-docs.md` (для пакетов/слоёв)
-- Примените алгоритм выбора (см. ниже)
-- Используйте структуру из соответствующего справочника
+- Determine: `module-ai-docs.md` (for modular units) or `package-ai-docs.md` (for packages/layers)
+- Apply selection algorithm (see below)
+- Use structure from the corresponding reference
 
 <completion_criteria>
-Тип документа выбран корректно для каждого случая
+Document type is correctly selected for each case
 </completion_criteria>
 
 <exception_handling>
-Если структура неоднозначна — уточните наличие `package.json` и фасада `index.ts`
+If structure is ambiguous — clarify presence of `package.json` and facade `index.ts`
 </exception_handling>
 
-### Step 4: Настройка module_docs в пакете
+### Step 4: module_docs Configuration in Package
 
-- Добавьте/уточните YAML блок `module_docs` в `package-ai-docs.md`
-- Определите `type`, `rule`, `targets` для генерации модульной документации
-- Используйте политику из `.cursor/docs/ai-package-template.md`
+- Add/clarify YAML block `module_docs` in `package-ai-docs.md`
+- Define `type`, `rule`, `targets` for generating module documentation
+- Use policy from `.cursor/docs/ai-package-template.md`
 
 <completion_criteria>
-`module_docs` корректно описывает цели генерации `module-ai-docs.md`
+`module_docs` correctly describes goals for generating `module-ai-docs.md`
 </completion_criteria>
 
 <exception_handling>
-При сложной структуре используйте `type: custom` и укажите явные `targets`
+For complex structures, use `type: custom` and specify explicit `targets`
 </exception_handling>
 
-### Step 5: Урегулирование терминологических конфликтов
+### Step 5: Terminology Conflict Resolution
 
-- В модульной документации используйте термин «модульная единица»
-- В пакетной документации используйте «архитектурный модуль/пакет»
-- Следуйте терминологии из соответствующих справочников
+- In module documentation, use term "modular unit" (модульная единица)
+- In package documentation, use "architectural module/package" (архитектурный модуль/пакет)
+- Follow terminology from corresponding references
 
 <completion_criteria>
-Термины единообразны в обоих типах документации
+Terms are consistent across both documentation types
 </completion_criteria>
 
 <exception_handling>
-Если в исходных файлах встречаются иные термины — добавьте явное примечание о соответствии
+If source files contain different terms — add explicit note about correspondence
 </exception_handling>
 
-### Step 6: Генерация документации
+### Step 6: Documentation Generation
 
-- **ТОЛЬКО ПОСЛЕ ЧТЕНИЯ СПРАВОЧНИКОВ** приступайте к созданию/обновлению документации
-- Используйте структуру и шаблоны из соответствующих справочников
-- Следуйте YAML метаданным и XML тегам из шаблонов
+- **ONLY AFTER READING REFERENCES** proceed with creating/updating documentation
+- Use structure and templates from corresponding references
+- Follow YAML metadata and XML tags from templates
 
 <completion_criteria>
-Документация создана/обновлена с использованием структуры из справочников
+Documentation is created/updated using structure from references
 </completion_criteria>
 
 <exception_handling>
-Если структура не соответствует справочникам — пересоздайте документацию по шаблонам
+If structure does not match references — recreate documentation according to templates
 </exception_handling>
 
-### Step 7: Валидация качества
+### Step 7: Quality Validation
 
-- Проверьте наличие YAML, TIER заголовков, XML тегов, системных якорей
-- Убедитесь, что структура соответствует справочникам
-- Пройдите MCP валидацию (цель ≥85)
+- Check presence of YAML, TIER headers, XML tags, system anchors
+- Ensure structure matches references
+- Pass MCP validation (target ≥85)
 
 <completion_criteria>
-Документы соответствуют структуре справочников и проходят MCP проверку
+Documents match reference structure and pass MCP validation
 </completion_criteria>
 
 <exception_handling>
-При недоборе баллов исправьте критические и предупреждения, затем повторите валидацию
+If score is below target, fix critical issues and warnings, then re-validate
 </exception_handling>
 
 </algorithm_steps>
 
 <completion_criteria>
-Все шаги выполнены, справочники прочитаны, терминология согласована, типы документов выбраны корректно, документация сгенерирована с использованием структуры из справочников и прошла MCP‑валидацию с баллом ≥85.
+All steps completed, references read, terminology aligned, document types correctly selected, documentation generated using structure from references and passed MCP validation with score ≥85.
 </completion_criteria>
 
 <exception_handling>
-Если любой из шагов не выполнен — остановите процесс и запросите выполнение пропущенного шага. Если справочники недоступны — запросите их чтение перед продолжением. Если MCP валидация не проходит — исправьте критические проблемы и повторите валидацию.
+If any step is not completed — stop process and request execution of missed step. If references are unavailable — request their reading before continuing. If MCP validation fails — fix critical issues and re-validate.
 </exception_handling>
 
-## 📚 TIER 3: Сопоставление терминологии
+## 📚 TIER 3: Terminology Mapping
 
 <terminology_mapping>
 
-### Архитектурные концепции (combo-architecture.md)
+### Architectural Concepts (combo-architecture.md)
 
-| **Термин**                 | **Описание**                                                                                                                                                                                                                                                                        | **Область применения**                    |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| **Простой пакет**          | Одна модульная единица                                                                                                                                                                                                                                                              | `shared/lib/hooks/use-safe-back/`         |
-| **Сложный пакет**          | Множество модульных единиц в FSD                                                                                                                                                                                                                                                    | `features/user/`, `shared/`               |
-| **Модульная единица**      | Изолированный блок кода с публичным API через фасад (index.ts/index.tsx). Определяется как папка, содержащая фасадный файл, при этом на уровень выше этой папки нет другого фасадного файла. Все внешние части пакета могут импортировать из этой папки только через фасадный файл. | Любая папка с `index.ts` фасадом          |
-| **Функциональный элемент** | Независимый компонент/хук/функция                                                                                                                                                                                                                                                   | `AuthForm`, `useAuth`, `validatePassword` |
+| **Term**                | **Description**                                                                                                                                                                                                                                                                        | **Application Area**                    |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| **Simple Package**      | Single modular unit                                                                                                                                                                                                                                                              | `shared/lib/hooks/use-safe-back/`         |
+| **Complex Package**     | Multiple modular units in FSD                                                                                                                                                                                                                                                    | `features/user/`, `shared/`               |
+| **Modular Unit**        | Isolated code block with public API through facade (index.ts/index.tsx). Defined as folder containing facade file, with no other facade file one level above. All external package parts can import from this folder only through facade file. | Any folder with `index.ts` facade          |
+| **Functional Element** | Independent component/hook/function                                                                                                                                                                                                                                                   | `AuthForm`, `useAuth`, `validatePassword` |
 
-### AI Documentation концепции
+### AI Documentation Concepts
 
-| **Справочник**                          | **Документирует**     | **Файл результата**  | **Соответствие архитектуре**          |
+| **Reference**                          | **Documents**     | **Result File**  | **Architecture Match**          |
 | --------------------------------------- | --------------------- | -------------------- | ------------------------------------- |
-| **.cursor/docs/ai-module-template.md**  | «Модульные единицы»   | `module-ai-docs.md`  | ✅ Простые пакеты (модульные единицы) |
-| **.cursor/docs/ai-package-template.md** | Пакеты с package.json | `package-ai-docs.md` | ✅ Сложные пакеты (workspace пакеты)  |
+| **.cursor/docs/ai-module-template.md**  | Modular units (модульные единицы)   | `module-ai-docs.md`  | ✅ Simple packages (modular units) |
+| **.cursor/docs/ai-package-template.md** | Packages with package.json | `package-ai-docs.md` | ✅ Complex packages (workspace packages)  |
 
 </terminology_mapping>
 
-## 🧭 TIER 4: Правильное применение
+## 🧭 TIER 4: Proper Application
 
 <application_rules>
 
-### Когда использовать module-ai-docs.md
+### When to use module-ai-docs.md
 
-✅ **Простые пакеты (модульные единицы):**
+✅ **Simple packages (modular units):**
 
 ```text
 shared/lib/hooks/use-safe-back/
@@ -180,7 +180,7 @@ shared/lib/hooks/use-safe-back/
 └── module-ai-docs.md         # 🎯 AI документация модуля
 ```
 
-✅ **Отдельные слайсы в сложных пакетах:**
+✅ **Individual slices in complex packages:**
 
 ```text
 features/user/auth/
@@ -191,9 +191,9 @@ features/user/auth/
 └── module-ai-docs.md         # 🎯 AI документация слайса
 ```
 
-### Когда использовать package-ai-docs.md
+### When to use package-ai-docs.md
 
-✅ **Сложные пакеты (workspace уровень):**
+✅ **Complex packages (workspace level):**
 
 ```text
 executables/mcp-validator/
@@ -204,7 +204,7 @@ executables/mcp-validator/
 └── package-ai-docs.md              # 🎯 AI документация пакета
 ```
 
-✅ **FSD слои как пакеты:**
+✅ **FSD layers as packages:**
 
 ```text
 shared/
@@ -217,43 +217,43 @@ shared/
 
 </application_rules>
 
-## 🧩 TIER 5: Ссылки на справочники
+## 🧩 TIER 5: Reference Links
 
 <references>
-- **КРИТИЧЕСКИ ВАЖНО - ЧИТАТЬ ПЕРЕД ГЕНЕРАЦИЕЙ:**
-  - `.cursor/docs/ai-package-template.md` - шаблон пакетной документации
-  - `.cursor/docs/ai-module-template.md` - шаблон модульной документации
-- **ДОПОЛНИТЕЛЬНО:** Изучите архитектурные принципы: `.cursor/docs/architecture.md`
-- **ГЕНЕРАЦИЯ XML АРХИТЕКТУРЫ:** Для создания/обновления `architecture.xml` файлов, на которые ссылается `package-ai-docs.md`, используйте промпт `.cursor/docs/generate-architecture-xml.md`.
+- **CRITICAL - READ BEFORE GENERATION:**
+  - `.cursor/docs/ai-package-template.md` - package documentation template
+  - `.cursor/docs/ai-module-template.md` - module documentation template
+- **ADDITIONALLY:** Study architectural principles: `.cursor/docs/architecture.md`
+- **XML ARCHITECTURE GENERATION:** For creating/updating `architecture.xml` files referenced by `package-ai-docs.md`, use prompt `.cursor/docs/generate-architecture-xml.md`.
 
-**⚠️ ПРЕДУПРЕЖДЕНИЕ: Генерация документации БЕЗ чтения справочников ЗАПРЕЩЕНА!**
+**⚠️ WARNING: Documentation generation WITHOUT reading references is FORBIDDEN!**
 </references>
 
-## 🪢 TIER 6: Конфликты терминологии и решение
+## 🪢 TIER 6: Terminology Conflicts and Resolution
 
 <conflicts_and_resolution>
 
-### Термин «модуль» используется по-разному
+### Term "module" is used differently
 
-— В модульной AI документации «модульная единица» соответствует архитектурной модульной единице
-— В пакетной AI документации «модуль» = архитектурная группировка внутри пакета (например: `services`, `lib`, `model`)
+— In module AI documentation, "modular unit" (модульная единица) corresponds to architectural modular unit
+— In package AI documentation, "module" = architectural grouping within package (e.g., `services`, `lib`, `model`)
 
-### Решение конфликта
+### Conflict Resolution
 
-— В AI документации модулей используйте термин «модульная единица»
-— В AI документации пакетов используйте «архитектурный модуль»
+— In module AI documentation, use term "modular unit" (модульная единица)
+— In package AI documentation, use "architectural module" (архитектурный модуль)
 
 </conflicts_and_resolution>
 
-## 🧮 TIER 7: Алгоритм выбора и генерации документации
+## 🧮 TIER 7: Documentation Selection and Generation Algorithm
 
 <selection_algorithm>
 
-1. Есть `package.json`? → `package-ai-docs.md` (пакетная документация)
-2. Одна функция/компонент в папке? → `module-ai-docs.md` (модульная документация)
-3. Несколько связанных функций в папке с фасадом? → `module-ai-docs.md`
-4. Крупный FSD слой (`shared`, `features`) → `package-ai-docs.md`
-5. Если в `package-ai-docs.md` есть `module_docs`, создавайте `module-ai-docs.md` по указанным `type/rule/targets`
+1. Has `package.json`? → `package-ai-docs.md` (package documentation)
+2. Single function/component in folder? → `module-ai-docs.md` (module documentation)
+3. Multiple related functions in folder with facade? → `module-ai-docs.md`
+4. Large FSD layer (`shared`, `features`) → `package-ai-docs.md`
+5. If `package-ai-docs.md` has `module_docs`, create `module-ai-docs.md` according to specified `type/rule/targets`
 
 </selection_algorithm>
 
@@ -262,43 +262,43 @@ shared/
 <output_format>
 This is a reference prompt for integrating AI docs with architecture. Expected model output consists of the following sections in Markdown, using XML tags as shown:
 
-**🚨 ОБЯЗАТЕЛЬНЫЙ ПЕРВЫЙ ШАГ:**
+**🚨 MANDATORY FIRST STEP:**
 
-- Прочитать `.cursor/docs/ai-package-template.md` и `.cursor/docs/ai-module-template.md`
-- Изучить структуру, YAML метаданные и XML теги из справочников
+- Read `.cursor/docs/ai-package-template.md` and `.cursor/docs/ai-module-template.md`
+- Study structure, YAML metadata, and XML tags from references
 
-**Затем сгенерировать:**
+**Then generate:**
 
-- `<terminology_mapping>` — согласованный словарь терминов
-- `<application_rules>` — правила выбора типа документа
-- `<module_docs_yaml>` — образцы YAML политики `module_docs`
-- `<conflicts_and_resolution>` — типовые конфликты и решения
-- `<selection_algorithm>` — пошаговый алгоритм выбора
-- `<conclusion>` — краткие выводы
+- `<terminology_mapping>` — unified terminology dictionary
+- `<application_rules>` — document type selection rules
+- `<module_docs_yaml>` — `module_docs` YAML policy samples
+- `<conflicts_and_resolution>` — common conflicts and resolutions
+- `<selection_algorithm>` — step-by-step selection algorithm
+- `<conclusion>` — brief conclusions
 
-All responses must be in Russian.
+**Note:** All user-facing responses must be in Russian.
 </output_format>
 
-## ✅ TIER 8: Заключение
+## ✅ TIER 8: Conclusion
 
 <conclusion>
-AI документация совместима с архитектурой при корректной настройке `module_docs` и соблюдении терминологии:
+AI documentation is compatible with architecture when `module_docs` is correctly configured and terminology is followed:
 
-- `module-ai-docs.md` ↔ «модульные единицы» (простые пакеты, слайсы)
-- `package-ai-docs.md` ↔ «сложные пакеты» (FSD структуры, workspace пакеты)
+- `module-ai-docs.md` ↔ "modular units" (модульные единицы) - simple packages, slices
+- `package-ai-docs.md` ↔ "complex packages" (сложные пакеты) - FSD structures, workspace packages
 
-Терминология унифицирована: для модульной документации — «модульная единица», для пакетной — «архитектурный модуль/пакет».
+Terminology is unified: for module documentation — "modular unit" (модульная единица), for package documentation — "architectural module/package" (архитектурный модуль/пакет).
 </conclusion>
 
 ## 📏 TIER 9: Completion Criteria
 
 <completion_criteria>
 
-- Терминология согласована и зафиксирована в `<terminology_mapping>`
-- Для всех кейсов выбран корректный тип документа (`module-ai-docs.md` или `package-ai-docs.md`)
-- Политика `module_docs` описана и применима к проекту
-- Разрешены терминологические конфликты с явными пояснениями
-- Документ проходит MCP валидацию с баллом ≥85
+- Terminology is aligned and documented in `<terminology_mapping>`
+- Correct document type is selected for all cases (`module-ai-docs.md` or `package-ai-docs.md`)
+- `module_docs` policy is described and applicable to project
+- Terminology conflicts are resolved with explicit clarifications
+- Document passes MCP validation with score ≥85
 
 </completion_criteria>
 

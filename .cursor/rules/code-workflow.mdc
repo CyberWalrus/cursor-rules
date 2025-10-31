@@ -250,7 +250,7 @@ If UNSURE: STOP, ask user, use read_file. NEVER proceed with assumptions or gues
 
 <phase id="P1--S1" name="Read project rules">
 
-### P1--S1: Изучить системные правила проекта
+### P1--S1: Study project system rules
 
 **CRITICAL:** Use ONLY read_file tool for these tasks. NO codebase_search, NO grep.
 
@@ -282,7 +282,7 @@ Any error (missing/empty/failed): STOP, report to user, request fix. Do NOT proc
 
 <phase id="P1--S2" name="Read AI documentation">
 
-### P1--S2: Изучить AI документацию проекта
+### P1--S2: Read project AI documentation
 
 **CRITICAL:** This phase contains the MOST CRITICAL STEP (P1--S2--T4). Do not skip.
 
@@ -362,7 +362,7 @@ Major version drift detected: WARN user, request confirmation to continue.
 
 <phase id="P1--S3" name="Architecture validation">
 
-### P1--S3: Архитектурная валидация через MCP
+### P1--S3: Architecture validation via MCP
 
 **CRITICAL:** This is the NEW MANDATORY step that prevents architectural violations before planning.
 

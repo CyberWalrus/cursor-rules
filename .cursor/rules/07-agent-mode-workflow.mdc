@@ -34,7 +34,7 @@ alwaysApply: true
 Code changes ≥20 lines → read `naming.md`, `code-standards.md`, `testing.md`
 Need scripts/project knowledge → read `package.json`, `package-ai-docs.md`
 New files/global architecture → read `architecture.md`
-Prompt create/edit → read `prompt-workflow.mdc`
+Prompt create/edit → read `prompt-workflow-compact.mdc`
 AI docs update → read `ai-docs-workflow.mdc`
 
 **EXTERNAL DEPENDENCIES:**
