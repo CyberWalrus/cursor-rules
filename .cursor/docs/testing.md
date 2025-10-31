@@ -1,60 +1,71 @@
 ---
 id: test-guide-advanced
 type: reference
-use_cases: ['advanced_mocking', 'browser_testing', 'e2e_patterns', 'test_automation']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 
-# 🧪 Продвинутые Техники Тестирования
+# Advanced Testing Techniques
 
 [REFERENCE-BEGIN]
 
-## 🎯 TIER 1: Expert Role
+## TIER 1: Expert Role
 
 <expert_role>
-Ты эксперт по продвинутым техникам тестирования в TypeScript проектах.
-Твоя специализация: создание качественных тестов с мокированием, браузерное React тестирование, E2E автоматизация.
-Используй эти паттерны для написания надежных тестов в Vitest, React Testing Library, Playwright.
+You are an expert in advanced testing techniques for TypeScript projects.
+Your specialization: creating quality tests with mocking, browser React testing, E2E automation.
+Use these patterns to write reliable tests in Vitest, React Testing Library, Playwright.
 
 **ВАЖНО: Все ответы должны быть на русском языке.**
-Код, имена API, пути к файлам оставляй на английском в обратных кавычках.
+Keep code, API names, file paths in English with backticks.
 </expert_role>
 
-## 🛠 TIER 2: Testing Setup Instructions
+## TIER 2: Testing Setup Instructions
 
 <setup_guidance>
-При настройке продвинутого тестирования используй следующий tech stack:
+<cognitive_triggers>
+When setting up advanced testing infrastructure, think about compatibility with your project dependencies and browser requirements.
+</cognitive_triggers>
 
-**Для браузерного React тестирования:**
+When setting up advanced testing, use the following tech stack:
+
+**For browser React testing:**
 
 ```bash
 yarn add -D vitest @vitest/browser vitest-browser-react playwright
 ```
 
-**Для E2E автоматизации:**
+**For E2E automation:**
 
 ```bash
 npx playwright install chromium firefox webkit
 ```
 
 <completion_criteria>
-Все зависимости установлены, конфигурация Vitest и Playwright настроена
+All dependencies installed, Vitest and Playwright configuration set up
 </completion_criteria>
 
 <exception_handling>
-Если установка браузеров Playwright не удалась: используй `npx playwright install --with-deps`
-Если конфликт версий: проверь совместимость с основными зависимостями проекта
+If Playwright browser installation fails: use `npx playwright install --with-deps`
+If version conflict: check compatibility with main project dependencies
 </exception_handling>
 </setup_guidance>
 
-## 🎭 TIER 3: Advanced Mocking Patterns
+## TIER 3: Advanced Mocking Patterns
 
 <mocking_instructions>
-При создании моков для тестов применяй следующие паттерны:
+<cognitive_triggers>
+When creating mocks, consider: correct order (mock before import), proper typing with vi.mocked(), and cleanup between tests to prevent leaks.
+</cognitive_triggers>
 
-### 1. 🏗️ Базовое мокирование модулей
+When creating mocks for tests, apply the following patterns:
+
+**CRITICAL ORDER:**
+
+1. Declare mock: `vi.mock('./module')` - FIRST
+2. Import module: `import { fn } from './module'` - SECOND
+3. Type mock: `const mockFn = vi.mocked(fn)` - THIRD
+
+### 1. Basic module mocking
 
 ```typescript
 vi.mock('node:fs', async (importOriginal) => {
@@ -71,7 +82,7 @@ const mockReadFileSync = vi.mocked(readFileSync);
 mockReadFileSync.mockReturnValue('mocked content');
 ```
 
-### 2. 🎯 Factory функции для тестовых данных
+### 2. Factory functions for test data
 
 ```typescript
 const createMockUser = (overrides = {}) => ({
@@ -88,7 +99,7 @@ it('должен обрабатывать админа', () => {
 });
 ```
 
-### 3. 🌐 HTTP клиенты и API
+### 3. HTTP clients and API
 
 ```typescript
 const mockFetch = vi.fn() as MockedFunction<typeof fetch>;
@@ -118,7 +129,7 @@ it('должен обрабатывать успешный ответ', async ()
 });
 ```
 
-### 4. ⏰ Время и асинхронность
+### 4. Time and asynchronicity
 
 ```typescript
 beforeAll(() => vi.useFakeTimers());
@@ -137,22 +148,26 @@ vi.setSystemTime(mockDate);
 ```
 
 <completion_criteria>
-Моки правильно типизированы, используют vi.mocked(), сбрасываются между тестами
+Mocks are properly typed, use vi.mocked(), reset between tests
 </completion_criteria>
 
 <exception_handling>
-Если TypeScript не видит мок: используй `vi.mocked(functionName)` для типизации
-Если мок не применяется: убедись что `vi.mock()` вызывается до импорта модуля
-Если моки "протекают" между тестами: добавь `vi.clearAllMocks()` в `beforeEach`
+If TypeScript doesn't see the mock: use `vi.mocked(functionName)` for typing
+If mock doesn't apply: ensure `vi.mock()` is called before module import
+If mocks "leak" between tests: add `vi.clearAllMocks()` in `beforeEach`
 </exception_handling>
 </mocking_instructions>
 
-## ⚛️ TIER 4: Browser React Testing
+## TIER 4: Browser React Testing
 
 <browser_testing_instructions>
-Для тестирования React компонентов в реальном браузере используй следующие паттерны:
+<cognitive_triggers>
+When testing in browser, consider real CSS rendering, actual DOM events, and viewport-specific behavior that differs from jsdom.
+</cognitive_triggers>
 
-### 1. 🔄 Пользовательские взаимодействия в браузере
+For testing React components in a real browser, use the following patterns:
+
+### 1. User interactions in browser
 
 ```typescript
 import { render, screen, cleanup } from 'vitest-browser-react';
@@ -202,7 +217,7 @@ describe('Button Component Browser Tests', () => {
 });
 ```
 
-### 3. 🎪 Тестирование с контекстом в браузере
+### 2. Context testing in browser
 
 ```typescript
 const createTestWrapper = ({ user = createMockUser(), theme = 'light' } = {}) => {
@@ -229,7 +244,7 @@ test('должен использовать контекст и применят
 });
 ```
 
-### 4. 🔄 Хуки и состояние в браузере
+### 3. Hooks and state in browser
 
 ```typescript
 import { renderHook, act } from 'vitest-browser-react';
@@ -267,7 +282,7 @@ test('должен работать с асинхронными эффектам
 });
 ```
 
-### 5. 📱 Адаптивность и viewport в браузере
+### 4. Responsiveness and viewport in browser
 
 ```typescript
 import { page } from '@vitest/browser/context';
@@ -293,7 +308,7 @@ test('должен адаптироваться под мобильные уст
 });
 ```
 
-### 6. 🎨 CSS и анимации в браузере
+### 5. CSS and animations in browser
 
 ```typescript
 test('должен корректно обрабатывать CSS анимации', async () => {
@@ -316,43 +331,47 @@ test('должен корректно обрабатывать CSS анимац�
 ```
 
 <completion_criteria>
-Тесты выполняются в реальном браузере, проверяют CSS стили, обрабатывают пользовательские взаимодействия
+Tests execute in real browser, verify CSS styles, handle user interactions
 </completion_criteria>
 
 <exception_handling>
-Если браузер не запускается: проверь установку Playwright драйверов
-Если getComputedStyle возвращает пустые значения: убедись что CSS загружен
-Если userEvent не работает: используй await перед всеми взаимодействиями
+If browser doesn't start: check Playwright driver installation
+If getComputedStyle returns empty values: ensure CSS is loaded
+If userEvent doesn't work: use await before all interactions
 </exception_handling>
 </browser_testing_instructions>
 
-## 🌐 TIER 5: E2E Automation Patterns
+## TIER 5: E2E Automation Patterns
 
 <e2e_instructions>
-Для создания E2E тестов с Playwright следуй этим принципам:
-**🎯 ЦЕЛЬ E2E тестов:** Проверить работу системы как единого целого глазами пользователя.
+<cognitive_triggers>
+When writing E2E tests, focus on user workflows, not implementation details. Test what users see and do, not how it's implemented.
+</cognitive_triggers>
 
-**📸 О СКРИНШОТАХ:**
-E2E тесты в первую очередь проверяют **сценарии работы пользователя**, а не визуальную регрессию.
-Скриншоты - это опциональная возможность Playwright, используй их только когда:
+For creating E2E tests with Playwright, follow these principles:
+**E2E TEST GOAL:** Verify system operation as a whole from user perspective.
 
-- Нужна визуальная регрессия (дизайн компонентов, layout)
-- Тестируешь адаптивность на разных устройствах
-- Требуется документирование состояний UI
+**ABOUT SCREENSHOTS:**
+E2E tests primarily verify **user workflow scenarios**, not visual regression.
+Screenshots are an optional Playwright feature, use them only when:
 
-**По умолчанию:** E2E тест проверяет функциональность через взаимодействия (`click`, `fill`, `expect`) без скриншотов.
+- Visual regression is needed (component design, layout)
+- Testing responsiveness on different devices
+- UI state documentation is required
 
-### Что тестировать в E2E
+**By default:** E2E test verifies functionality through interactions (`click`, `fill`, `expect`) without screenshots.
 
-**✅ ОБЯЗАТЕЛЬНО:**
+### What to test in E2E
 
-- **Критические пути**: регистрация, авторизация, оплата
-- **Интеграция с внешними сервисами**: API, платежи, email
-- **Кросс-браузерная совместимость**: Chrome, Firefox, Safari
-- **Мобильные viewport**: адаптивность, touch события
-- **Performance**: загрузка страниц, Core Web Vitals
+**MANDATORY:**
 
-### 1. 📱 Современные E2E паттерны
+- **Critical paths**: registration, authorization, payment
+- **External service integration**: API, payments, email
+- **Cross-browser compatibility**: Chrome, Firefox, Safari
+- **Mobile viewport**: responsiveness, touch events
+- **Performance**: page loading, Core Web Vitals
+
+### 1. Modern E2E patterns
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -408,7 +427,7 @@ test.describe('Mobile Experience', () => {
 });
 ```
 
-### 3. 🎪 API интеграция
+### 2. API integration
 
 ```typescript
 test('должен корректно обрабатывать API ошибки', async ({ page }) => {
@@ -430,55 +449,97 @@ test('должен корректно обрабатывать API ошибки'
 ```
 
 <completion_criteria>
-E2E тесты покрывают критические пути, работают на разных устройствах, стабильно проходят
+E2E tests cover critical paths, work on different devices, run stably
 </completion_criteria>
 
 <exception_handling>
-Если тест нестабилен: используй `page.waitForResponse()` и `page.waitForLoadState()`
-Если элемент не найден: добавь `data-testid` атрибуты вместо CSS селекторов
-Если тайм-аут: увеличь время ожидания для медленных операций
+If test is unstable: use `page.waitForResponse()` and `page.waitForLoadState()`
+If element not found: add `data-testid` attributes instead of CSS selectors
+If timeout: increase wait time for slow operations
 </exception_handling>
 </e2e_instructions>
 
-## 🚨 TIER 6: Error Prevention & Troubleshooting
+## TIER 6: Error Prevention & Troubleshooting
 
 <troubleshooting_guidance>
-При возникновении проблем с тестами применяй следующие решения:
+<cognitive_triggers>
+When debugging test failures, systematically check: mock order, type definitions, cleanup between tests, and async timing.
+</cognitive_triggers>
 
-### ❌ Частые проблемы
+When encountering test problems, apply the following solutions:
 
-1. **Мок объявлен после импорта** - перенеси `vi.mock()` в начало файла
-2. **TypeScript не видит мок** - используй `vi.mocked(functionName)`
-3. **Моки не сбрасываются** - добавь `vi.clearAllMocks()` в `beforeEach`
-4. **Тестирование реализации** - тестируй поведение, не внутреннее состояние
-5. **Зависимость от времени** - используй `vi.useFakeTimers()`
-6. **Непонятная ошибка теста** - проверь пути в импортах и моках (относительные пути должны быть точными)
+### Common problems
 
-### ✅ Решения
+1. **Mock declared after import** - move `vi.mock()` to top of file
+2. **TypeScript doesn't see mock** - use `vi.mocked(functionName)`
+3. **Mocks don't reset** - add `vi.clearAllMocks()` in `beforeEach`
+4. **Testing implementation** - test behavior, not internal state
+5. **Time dependency** - use `vi.useFakeTimers()`
+6. **Unclear test error** - check import paths and mocks (relative paths must be exact)
+
+### Solutions
 
 ```typescript
-// Правильный порядок
-vi.mock('./userService'); // СНАЧАЛА мок
-import { userService } from './userService'; // ПОТОМ импорт
+// Correct order
+vi.mock('./userService'); // MOCK FIRST
+import { userService } from './userService'; // THEN import
 
-// Типобезопасные моки
+// Type-safe mocks
 const mockUserService = vi.mocked(userService);
 mockUserService.getUser.mockResolvedValue(createMockUser());
 
-// Стабильное время
+// Clear mocks between tests (mandatory in beforeEach)
+beforeEach(() => {
+    vi.clearAllMocks(); // Clears call history
+    // Use vi.restoreAllMocks() if you need to restore original implementations
+});
+
+// Stable time
 vi.useFakeTimers();
 vi.setSystemTime(new Date('2025-01-15'));
 ```
 
 <completion_criteria>
-Все тесты стабильно проходят, моки работают корректно, нет race conditions
+All tests run stably, mocks work correctly, no race conditions
 </completion_criteria>
 
 <exception_handling>
-Если тесты падают только в CI: проверь различия в окружении и зависимостях
-Если непонятная ошибка: добавь дополнительные console.log для отладки
-Если проблемы с асинхронностью: используй waitFor и правильные матчеры
+If tests fail only in CI: check environment and dependency differences
+If unclear error: add additional console.log for debugging
+If asynchrony problems: use waitFor and correct matchers
 </exception_handling>
 </troubleshooting_guidance>
+
+## TIER 7: Output Format
+
+<output_format>
+**Test Output Standards:**
+
+- **Test names:** Russian language (`it('должен обрабатывать админа', ...)`)
+- **Code and APIs:** English (function names, imports, file paths)
+- **Error messages:** Can be in Russian if shown to users, otherwise English
+- **Console output:** Match project conventions (usually English for logs, Russian for user-facing)
+
+**Example structure:**
+
+```typescript
+describe('UserService', () => {
+    it('должен возвращать пользователя по ID', async () => {
+        // Test implementation in English
+        const user = await userService.getUser(1);
+        expect(user).toBeDefined();
+    });
+});
+```
+
+<completion_criteria>
+Tests follow naming conventions, code is in English, test descriptions in Russian
+</completion_criteria>
+
+<exception_handling>
+If test description language conflicts with project standards: follow project conventions, but prefer Russian for test names in this codebase
+If code comments need translation: keep technical comments in English, user-facing messages in Russian
+</exception_handling>
+</output_format>
 
 [REFERENCE-END]
