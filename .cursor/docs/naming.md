@@ -1,347 +1,348 @@
 ---
 id: naming-conventions-guide
 type: reference
-use_cases: ['naming_conventions', 'code_style', 'consistency_check', 'file_naming', 'variable_naming']
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 
-# 🏷️ Справочник соглашений об именовании
+# Naming Conventions Reference Guide
 
 [REFERENCE-BEGIN]
 
-## 🎯 TIER 1: Экспертная роль
+## TIER 1: Expert Role
 
 <expert_role>
-Вы — эксперт по соглашениям об именованию в TypeScript/React проектах.
-Специализируетесь на обеспечении консистентности кода, читаемости и навигации.
-Обладаете глубокими знаниями в области: файловая система, компоненты, функции, типы, константы, CSS, тестирование, Storybook.
+You are a Naming Conventions Expert specializing in TypeScript/React projects.
+You specialize in ensuring code consistency, readability, and navigation.
+You have deep knowledge in: file system, components, functions, types, constants, CSS, testing, Storybook.
 
 **ВАЖНО: Все ответы должны быть на русском языке.**
 </expert_role>
 
-## 📋 TIER 2: Область применения
+## TIER 2: Scope and Application
 
 <algorithm_motivation>
-Систематический подход к именованию обеспечивает консистентность кода, улучшает читаемость и упрощает навигацию в проекте. Четкие соглашения об именовании снижают когнитивную нагрузку разработчиков и ускоряют разработку.
+A systematic approach to naming ensures code consistency, improves readability, and simplifies navigation in the project. Clear naming conventions reduce cognitive load for developers and accelerate development.
 
 <completion_criteria>
-**Критерий завершения:** Все элементы проекта именованы согласно установленным соглашениям, консистентность проверена
+**Completion criteria:** All project elements are named according to established conventions, consistency is verified
 </completion_criteria>
 </algorithm_motivation>
 
 <algorithm_steps>
 
-1. **Анализ типа элемента** — определить категорию (файл, компонент, функция, тип, константа)
-2. **Применение правила именования** — использовать соответствующий регистр (kebab-case, camelCase, PascalCase, SCREAMING_SNAKE_CASE)
-3. **Проверка консистентности** — убедиться в соответствии установленным стандартам проекта
-4. **Валидация исключений** — учесть особые случаи и устоявшиеся конвенции
+1. **Element type analysis** — determine category (file, component, function, type, constant)
+2. **Apply naming rule** — use appropriate casing (kebab-case, camelCase, PascalCase, SCREAMING_SNAKE_CASE)
+3. **Consistency check** — ensure compliance with established project standards
+4. **Exception validation** — account for special cases and established conventions
 
 <completion_criteria>
-**Критерий завершения:** Каждый элемент прошел все 4 шага алгоритма именования
+**Completion criteria:** Each element has passed all 4 steps of the naming algorithm
 </completion_criteria>
 
 <exception_handling>
-**При конфликте правил:** приоритет читаемости над строгим следованием конвенциям
-**При устоявшихся исключениях:** документировать и применять консистентно
-**При наследии от внешних библиотек:** сохранять оригинальное именование (React.Component, useState)
-**При API интеграциях:** следовать соглашениям внешнего API
-**При миграции legacy кода:** документировать отклонения и план приведения к стандартам
+**Rule conflicts:** prioritize readability over strict convention adherence
+**Established exceptions:** document and apply consistently
+**External library inheritance:** preserve original naming (React.Component, useState)
+**API integrations:** follow external API conventions
+**Legacy code migration:** document deviations and plan for standardization
 </exception_handling>
 </algorithm_steps>
 
 <reference_scope>
-Компактный справочник соглашений об именовании для TypeScript/React проекта.
-Покрывает: файлы, компоненты, функции, типы, константы, CSS, тесты, Storybook.
-Цель: консистентность кода, читаемость, навигация.
+Compact reference guide for naming conventions in TypeScript/React projects.
+Covers: files, components, functions, types, constants, CSS, tests, Storybook.
+Goal: code consistency, readability, navigation.
 
 <cognitive_triggers>
-Давайте пошагово проанализируем соглашения об именовании для обеспечения консистентности кода.
+Let's analyze naming conventions step by step to ensure code consistency.
 </cognitive_triggers>
 
 <completion_criteria>
-**Критерий завершения проекта:** Все элементы кодовой базы соответствуют установленным соглашениям об именовании, консистентность проверена автоматическими инструментами, команда разработчиков обучена стандартам.
+**Project completion criteria:** All codebase elements conform to established naming conventions, consistency is verified by automated tools, development team is trained on standards.
 </completion_criteria>
 
 <exception_handling>
-**Общие принципы обработки исключений:**
+**General exception handling principles:**
 
-- При конфликте правил: приоритет читаемости над строгим следованием конвенциям
-- При устоявшихся исключениях: документировать и применять консистентно
-- При наследии от внешних библиотек: сохранять оригинальное именование (React.Component, useState)
-- При API интеграциях: следовать соглашениям внешнего API
-- При миграции legacy кода: документировать отклонения и план приведения к стандартам
-- При технических ограничениях: найти компромиссное решение с минимальным отклонением от стандартов
-  </exception_handling>
-  </reference_scope>
+- Rule conflicts: prioritize readability over strict convention adherence
+- Established exceptions: document and apply consistently
+- External library inheritance: preserve original naming (React.Component, useState)
+- API integrations: follow external API conventions
+- Legacy code migration: document deviations and standardization plan
+- Technical constraints: find compromise solution with minimal deviation from standards
+</exception_handling>
+</reference_scope>
 
-## 📚 TIER 3: Основные правила именования
-
-<output_format>
-**Формат ответа:** Структурированный справочник с примерами кода и четкими правилами именования для каждого типа элементов проекта.
-
-**Структура ответа:**
-
-1. Определение типа элемента (файл, компонент, функция, тип)
-2. Применяемое правило именования (kebab-case, camelCase, PascalCase)
-3. Конкретные примеры с комментариями
-4. Исключения и особые случаи
+## TIER 3: Core Naming Rules
 
 <completion_criteria>
-**Критерий завершения:** Все правила именования применены консистентно, примеры соответствуют установленным стандартам
+**Completion criteria:** All naming rules defined with clear examples and exception handling, reference guide ready for use
+</completion_criteria>
+
+<output_format>
+**Response format:** Structured reference guide with code examples and clear naming rules for each type of project element.
+
+**Response structure:**
+
+1. Element type definition (file, component, function, type)
+2. Applied naming rule (kebab-case, camelCase, PascalCase)
+3. Concrete examples with comments
+4. Exceptions and special cases
+
+<completion_criteria>
+**Completion criteria:** All naming rules applied consistently, examples conform to established standards
 </completion_criteria>
 </output_format>
 
 <naming_rules>
 
-### Проекты и репозитории: kebab-case
+### Projects and Repositories: kebab-case
 
 <project_naming>
-**Правило:** Названия проектов/репозиториев используют kebab-case или lowercase
+**Rule:** Project/repository names use kebab-case or lowercase
 
-- `cursor-rules` — конфигурация и правила
-- `vite-plugin-react` — плагин с контекстом
-- `typescript-utils` — библиотека утилит
-- `my-app` — простое приложение
-- Длина: 2-4 слова (до 30 символов оптимально)
-- Описательность: название должно объяснять назначение проекта
+- `cursor-rules` — configuration and rules
+- `vite-plugin-react` — plugin with context
+- `typescript-utils` — utility library
+- `my-app` — simple application
+- Length: 2-4 words (up to 30 characters optimal)
+- Descriptiveness: name should explain project purpose
 
 <completion_criteria>
-**Критерий завершения:** Название проекта в kebab-case, описательное, уникальное, проверено на доступность в GitHub/npm
+**Completion criteria:** Project name in kebab-case, descriptive, unique, verified for availability on GitHub/npm
 </completion_criteria>
 
 <exception_handling>
-**При npm scoped packages:** разрешен формат `@scope/package-name`
-**При доменных именах:** допустимы точки (например, `next.js`)
-**При брендовых названиях:** одно слово lowercase (например, `react`, `vite`)
+**npm scoped packages:** format `@scope/package-name` allowed
+**Domain names:** dots allowed (e.g., `next.js`)
+**Brand names:** single word lowercase (e.g., `react`, `vite`)
 </exception_handling>
 </project_naming>
 
-### Файловая система: kebab-case
+### File System: kebab-case
 
 <file_naming>
-**Правило:** Все файлы и директории используют kebab-case
+**Rule:** All files and directories use kebab-case
 
-- `base-button.tsx` — React компонент
-- `checkbox-variants.ts` — варианты стилей
-- `form-validation.test.tsx` — тест файл
-- `user-settings/` — директория
+- `base-button.tsx` — React component
+- `checkbox-variants.ts` — style variants
+- `form-validation.test.tsx` — test file
+- `user-settings/` — directory
 
 <completion_criteria>
-**Критерий завершения:** Все новые файлы именованы в kebab-case, директории проверены на соответствие
+**Completion criteria:** All new files named in kebab-case, directories checked for compliance
 </completion_criteria>
 </file_naming>
 
-### Код: camelCase/PascalCase
+### Code: camelCase/PascalCase
 
 <code_naming>
-**React компоненты:** PascalCase
+**React components:** PascalCase
 
 - `BaseButton`, `Checkbox`, `ErrorBoundary`
 
-**Функции/переменные:** camelCase
+**Functions/variables:** camelCase
 
 - `validateInput`, `userData`, `isLoading`
-- Булевы с префиксами: `isValid`, `hasError`, `canSubmit`
+- Booleans with prefixes: `isValid`, `hasError`, `canSubmit`
 
-**Типы:** PascalCase с суффиксами
+**Types:** PascalCase with suffixes
 
-- `BaseButtonProps` — пропсы компонента
-- `ButtonState` — состояние
-- `ButtonVariants` — варианты стилей
+- `BaseButtonProps` — component props
+- `ButtonState` — state
+- `ButtonVariants` — style variants
 
-**Zod схемы:** camelCase с суффиксом Schema
+**Zod schemas:** camelCase with Schema suffix
 
-- `configSchema` — схема конфигурации
-- `userValidationSchema` — схема валидации пользователя
+- `configSchema` — configuration schema
+- `userValidationSchema` — user validation schema
 
-**Константы:** SCREAMING_SNAKE_CASE
+**Constants:** SCREAMING_SNAKE_CASE
 
 - `API_ENDPOINTS`, `BUTTON_SIZES`, `MAX_RETRY_COUNT`
-- Регулярные выражения с суффиксом `_REGEX` или `_RX`: `EMAIL_REGEX`, `ID_PART_RX`
+- Regular expressions with `_REGEX` or `_RX` suffix: `EMAIL_REGEX`, `ID_PART_RX`
 
-**Union типы вместо enum:**
+**Union types instead of enum:**
 
 ```typescript
 type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 ```
 
 <completion_criteria>
-**Критерий завершения:** Все элементы кода используют правильный регистр для своей категории
+**Completion criteria:** All code elements use correct casing for their category
 </completion_criteria>
 </code_naming>
 
-### Префиксы функций
+### Function Prefixes
 
 <function_prefixes>
-**Правило:** Функции используют префиксы для обозначения назначения
+**Rule:** Functions use prefixes to indicate purpose
 
-**Селекторы и геттеры:** префикс `get`
+**Selectors and getters:** prefix `get`
 
-- `getAuthStatus` — получение статуса авторизации
-- `getTeamName` — извлечение названия команды
-- `getEventUrl` — формирование URL события
-- `getCurrentWallet` — получение текущего кошелька
+- `getAuthStatus` — get authorization status
+- `getTeamName` — extract team name
+- `getEventUrl` — form event URL
+- `getCurrentWallet` — get current wallet
 
-**Обработчики событий:** префикс `handle`
+**Event handlers:** prefix `handle`
 
-- `handleSafeBack` — обработчик навигации назад
-- `handleSendAmplitude` — обработчик отправки метрик
-- `handleSubmit` — обработчик отправки формы
+- `handleSafeBack` — back navigation handler
+- `handleSendAmplitude` — metrics sending handler
+- `handleSubmit` — form submission handler
 
-**Redux Saga watchers:** префикс `watch`
+**Redux Saga watchers:** prefix `watch`
 
-- `watchGetBalance` — watcher для получения баланса
-- `watchSetUserSettings` — watcher для настроек
-- `watchLoginSuccess` — watcher успешного входа
+- `watchGetBalance` — balance retrieval watcher
+- `watchSetUserSettings` — settings watcher
+- `watchLoginSuccess` — successful login watcher
 
-**Callbacks:** префикс `on`
+**Callbacks:** prefix `on`
 
-- `onJsonResponse` — колбэк при JSON ответе
-- `onExpired` — колбэк при истечении
-- `onClickAway` — колбэк клика вне элемента
+- `onJsonResponse` — callback on JSON response
+- `onExpired` — expiration callback
+- `onClickAway` — click outside element callback
 
-**Фабрики:** префикс `create`
+**Factories:** prefix `create`
 
-- `createErrorBuffer` — создание буфера ошибок
-- `createLogger` — создание логгера
-- `createAction` — создание Redux action
+- `createErrorBuffer` — create error buffer
+- `createLogger` — create logger
+- `createAction` — create Redux action
 
-**Асинхронные HTTP запросы:** префикс `fetch`
+**Async HTTP requests:** prefix `fetch`
 
-- `fetchInit` — инициализация данных
-- `fetchToken` — получение токена
-- `fetchUserData` — загрузка данных пользователя
+- `fetchInit` — data initialization
+- `fetchToken` — get token
+- `fetchUserData` — load user data
 
-**Мутирующие действия:** префиксы `set/add/remove/reset/update`
+**Mutating actions:** prefixes `set/add/remove/reset/update`
 
-- `setUserSettings` — установка настроек
-- `addFavorites` — добавление избранного
-- `removeFavorites` — удаление избранного
-- `resetUserSettingsMessage` — сброс сообщения
-- `updateMohioToken` — обновление токена
+- `setUserSettings` — set settings
+- `addFavorites` — add to favorites
+- `removeFavorites` — remove from favorites
+- `resetUserSettingsMessage` — reset message
+- `updateMohioToken` — update token
 
 <completion_criteria>
-**Критерий завершения:** Все функции используют корректные префиксы согласно назначению
+**Completion criteria:** All functions use correct prefixes according to purpose
 </completion_criteria>
 
 <exception_handling>
-**При внешних библиотеках:** сохранять оригинальные имена (useState, useEffect)
-**При устоявшихся конвенциях:** следовать существующим паттернам проекта
-**При конфликте префиксов:** выбирать наиболее точно описывающий назначение
+**External libraries:** preserve original names (useState, useEffect)
+**Established conventions:** follow existing project patterns
+**Prefix conflicts:** choose most accurately descriptive prefix
 </exception_handling>
 </function_prefixes>
 
-### Специальные файлы
+### Special Files
 
 <special_files_naming>
-**Правило:** Специальные файлы имеют стандартизированные названия
+**Rule:** Special files have standardized names
 
-**Основная точка входа модуля:** `main.ts`
+**Module entry point:** `main.ts`
 
-- `model/types/main.ts` — основные типы модуля
-- `model/constants/main.ts` — основные константы
-- `model/actions/main.ts` — основные actions
-- `model/selectors/main.ts` — основные selectors
+- `model/types/main.ts` — module types
+- `model/constants/main.ts` — module constants
+- `model/actions/main.ts` — module actions
+- `model/selectors/main.ts` — module selectors
 
-**Вспомогательные функции:** `helpers.ts`
+**Helper functions:** `helpers.ts`
 
-- `lib/helpers/validation-helpers.ts` — валидационные хелперы
-- `use-navigate/helpers.ts` — хелперы для хука навигации
+- `lib/helpers/validation-helpers.ts` — validation helpers
+- `use-navigate/helpers.ts` — navigation hook helpers
 
-**Redux Saga файлы:** суффикс `-saga`
+**Redux Saga files:** suffix `-saga`
 
-- `auth-saga.ts` — saga авторизации
-- `notification-saga.ts` — saga уведомлений
-- `favorites-saga.ts` — saga избранного
+- `auth-saga.ts` — authorization saga
+- `notification-saga.ts` — notifications saga
+- `favorites-saga.ts` — favorites saga
 
 <completion_criteria>
-**Критерий завершения:** Специальные файлы именованы согласно стандартам, легко идентифицируются
+**Completion criteria:** Special files named according to standards, easily identifiable
 </completion_criteria>
 
 <exception_handling>
-**При нескольких main файлах:** использовать описательные имена (`main-server.ts`, `main-client.ts`)
-**При helpers без контекста:** добавлять описание предметной области (`validation-helpers.ts`)
+**Multiple main files:** use descriptive names (`main-server.ts`, `main-client.ts`)
+**Helpers without context:** add domain description (`validation-helpers.ts`)
 </exception_handling>
 </special_files_naming>
 
-### React именование
+### React Naming
 
 <react_naming>
-**Правило:** Специфичные конвенции для React кода
+**Rule:** Specific conventions for React code
 
-**DOM refs:** префикс `$`
+**DOM refs:** prefix `$`
 
-- `$image` — ref на изображение
-- `$containerRef` — ref на контейнер
-- `$element` — ref на DOM элемент
-- `$inputRef` — ref на input
+- `$image` — image ref
+- `$containerRef` — container ref
+- `$element` — DOM element ref
+- `$inputRef` — input ref
 
-**useRef значения:** суффикс `Ref`
+**useRef values:** suffix `Ref`
 
-- `mountedRef` — флаг монтирования
-- `timerIdRef` — ID таймера
-- `savedCallback` — сохраненный колбэк
-- `previosPropsRef` — предыдущие пропсы
+- `mountedRef` — mounting flag
+- `timerIdRef` — timer ID
+- `savedCallback` — saved callback
+- `previousPropsRef` — previous props
 
 <completion_criteria>
-**Критерий завершения:** Все refs именованы с префиксом $ (DOM) или суффиксом Ref (значения)
+**Completion criteria:** All refs named with $ prefix (DOM) or Ref suffix (values)
 </completion_criteria>
 
 <exception_handling>
-**При неоднозначности:** DOM refs всегда с $, мутабельные значения с Ref
-**При простых случаях:** допустимо просто `ref` если контекст ясен
+**Ambiguity:** DOM refs always with $, mutable values with Ref
+**Simple cases:** just `ref` acceptable if context is clear
 </exception_handling>
 </react_naming>
 
-### Суффиксы типов
+### Type Suffixes
 
 <type_suffixes>
-**Правило:** Типы используют суффиксы для обозначения назначения
+**Rule:** Types use suffixes to indicate purpose
 
-**Параметры функций:** суффикс `Params`
+**Function parameters:** suffix `Params`
 
-- `GetTeamNameParams` — параметры получения названия команды
-- `UseTimerProps` — параметры хука таймера
-- `CopyTextWithAlertParams` — параметры копирования с алертом
+- `GetTeamNameParams` — get team name parameters
+- `UseTimerProps` — timer hook parameters
+- `CopyTextWithAlertParams` — copy with alert parameters
 
-**Возвращаемые значения:** суффикс `Result` или `Return`
+**Return values:** suffix `Result` or `Return`
 
-- `GetLiveMatchStatusResult` — результат получения статуса матча
-- `AsyncFnReturn` — возвращаемое значение асинхронной функции
-- `GetFavoriteUniqueIdsReturn` — результат получения уникальных ID
+- `GetLiveMatchStatusResult` — get match status result
+- `AsyncFnReturn` — async function return value
+- `GetFavoriteUniqueIdsReturn` — get unique IDs result
 
-**Базовые enum-like типы:** суффикс `Type`
+**Base enum-like types:** suffix `Type`
 
-- `VipStatusType` — тип VIP статуса
-- `FavoriteEntityType` — тип сущности избранного
-- `EventsView` — тип отображения событий (исключение: короткие view типы)
+- `VipStatusType` — VIP status type
+- `FavoriteEntityType` — favorite entity type
+- `EventsView` — events view type (exception: short view types)
 
 <completion_criteria>
-**Критерий завершения:** Все типы используют правильные суффиксы согласно назначению
+**Completion criteria:** All types use correct suffixes according to purpose
 </completion_criteria>
 
 <exception_handling>
-**При Props vs Params:** Props для React компонентов, Params для функций
-**При коротких типах:** допустимо без суффикса если контекст очевиден
-**При конфликте суффиксов:** выбирать наиболее точный
+**Props vs Params:** Props for React components, Params for functions
+**Short types:** acceptable without suffix if context is obvious
+**Suffix conflicts:** choose most accurate suffix
 </exception_handling>
 </type_suffixes>
 
-### Redux паттерны
+### Redux Patterns
 
 <redux_naming>
-**Правило:** Redux код следует специфичным конвенциям именования
+**Rule:** Redux code follows specific naming conventions
 
-**Action types:** namespace паттерн `@@domain__module/ACTION_NAME`
+**Action types:** namespace pattern `@@domain__module/ACTION_NAME`
 
-- `@@lib-ui__account/LOGIN` — вход в аккаунт
-- `@@favorite/ADD` — добавление в избранное
-- `@@line/SET_LINE` — установка линии
-- Формат: домен дабл-андерскор модуль слеш ACTION
+- `@@lib-ui__account/LOGIN` — account login
+- `@@favorite/ADD` — add to favorites
+- `@@line/SET_LINE` — set line
+- Format: domain double-underscore module slash ACTION
 
-**Action creators:** использование `createAction` helper
+**Action creators:** use `createAction` helper
 
 ```typescript
 export const loginSuccess = createAction(
@@ -350,19 +351,19 @@ export const loginSuccess = createAction(
 );
 ```
 
-**Saga functions:** префикс `watch` для watchers
+**Saga functions:** prefix `watch` for watchers
 
-- `watchGetBalance` — watcher получения баланса
-- `watchSetUserSettings` — watcher установки настроек
-- `watchLoginSuccess` — watcher успешного входа
+- `watchGetBalance` — balance retrieval watcher
+- `watchSetUserSettings` — settings watcher
+- `watchLoginSuccess` — successful login watcher
 
 <completion_criteria>
-**Критерий завершения:** Все Redux элементы следуют установленным паттернам именования
+**Completion criteria:** All Redux elements follow established naming patterns
 </completion_criteria>
 
 <exception_handling>
-**При миграции с vanilla Redux:** постепенный переход на createAction
-**При внешних middleware:** сохранять совместимость с их конвенциями
+**Vanilla Redux migration:** gradual transition to createAction
+**External middleware:** maintain compatibility with their conventions
 </exception_handling>
 </redux_naming>
 
@@ -371,27 +372,31 @@ export const loginSuccess = createAction(
 <css_naming>
 
 - `bg-primary-500`, `text-icon-normal`
-- Функции вариантов: `baseButtonVariants`, `checkboxVariants`
+- Variant functions: `baseButtonVariants`, `checkboxVariants`
 
 <completion_criteria>
-**Критерий завершения:** CSS классы соответствуют Tailwind конвенциям, функции стилей именованы консистентно
+**Completion criteria:** CSS classes conform to Tailwind conventions, style functions named consistently
 </completion_criteria>
 </css_naming>
 
 </naming_rules>
 
-## 🧪 TIER 4: Специальные случаи
+## TIER 4: Special Cases
+
+<completion_criteria>
+**Completion criteria:** All special cases (testing, Storybook, imports/exports) documented with examples and exceptions
+</completion_criteria>
 
 <special_cases>
 
-### Тестирование
+### Testing
 
 <test_naming>
-**Файлы:** kebab-case по имени компонента
+**Files:** kebab-case by component name
 
 - `button.test.tsx`, `form-validation.e2e.test.tsx`
 
-**Описания:** русский язык
+**Descriptions:** Russian language
 
 ```typescript
 describe('Button', () => {
@@ -401,96 +406,100 @@ describe('Button', () => {
 ```
 
 <completion_criteria>
-**Критерий завершения:** Все тестовые файлы именованы в kebab-case, описания на русском языке
+**Completion criteria:** All test files named in kebab-case, descriptions in Russian language
 </completion_criteria>
 
 <exception_handling>
-**При e2e тестах:** добавлять суффикс `.e2e.test.tsx`
-**При интеграционных тестах:** добавлять суффикс `.integration.test.tsx`
-**При unit тестах:** использовать только `.test.tsx`
+**e2e tests:** add `.e2e.test.tsx` suffix
+**Integration tests:** add `.integration.test.tsx` suffix
+**Unit tests:** use only `.test.tsx`
 </exception_handling>
 </test_naming>
 
 ### Storybook
 
 <storybook_naming>
-**Meta объекты:** camelCase
-**Истории:** PascalCase английский
+**Meta objects:** camelCase
+**Stories:** PascalCase English
 
 - `Default`, `AllVariants`, `WithIcons`, `Disabled`
 
 <completion_criteria>
-**Критерий завершения:** Meta объекты в camelCase, истории в PascalCase на английском языке
+**Completion criteria:** Meta objects in camelCase, stories in PascalCase English language
 </completion_criteria>
 
 <exception_handling>
-**При сложных названиях:** использовать описательные имена (например, `WithLongTextAndMultipleLines`)
-**При состояниях:** добавлять префикс состояния (`LoadingState`, `ErrorState`)
-**При вариантах:** группировать по типу (`SizeVariants`, `ColorVariants`)
+**Complex names:** use descriptive names (e.g., `WithLongTextAndMultipleLines`)
+**States:** add state prefix (`LoadingState`, `ErrorState`)
+**Variants:** group by type (`SizeVariants`, `ColorVariants`)
 </exception_handling>
 </storybook_naming>
 
-### Импорты/экспорты
+### Imports/Exports
 
 <import_export_naming>
-**ТОЛЬКО именованные импорты/экспорты:**
+**ONLY named imports/exports:**
 
 ```typescript
-// ✅ Правильно
+// ✅ Correct
 export { BaseButton };
 import { BaseButton } from './base-button';
 
-// ❌ Неправильно
+// ❌ Incorrect
 export default BaseButton;
 import BaseButton from './base-button';
 ```
 
 <completion_criteria>
-**Критерий завершения:** Все импорты и экспорты используют именованный синтаксис, default экспорты исключены
+**Completion criteria:** All imports and exports use named syntax, default exports excluded
 </completion_criteria>
 
 <exception_handling>
-**При внешних библиотеках:** разрешены default импорты (например, `import React from "react"`)
-**При типах:** использовать `import type` для типов TypeScript
-**При реэкспортах:** использовать `export { ... } from "..."` синтаксис
-**При циклических зависимостях:** использовать именованные импорты для избежания проблем
+**External libraries:** default imports allowed (e.g., `import React from "react"`)
+**Types:** use `import type` for TypeScript types
+**Re-exports:** use `export { ... } from "..."` syntax
+**Circular dependencies:** use named imports to avoid issues
 </exception_handling>
 </import_export_naming>
 
 </special_cases>
 
-## ⚠️ TIER 5: Контроль качества
+## TIER 5: Quality Control
+
+<completion_criteria>
+**Completion criteria:** Quality principles and validation checklist provide comprehensive naming verification
+</completion_criteria>
 
 <quality_control>
 
-### Принципы
+### Principles
 
 <naming_principles>
 
-1. **Читаемость:** `validatePackageName` > `validate`
-2. **Консистентность:** одинаковые суффиксы для одного типа
-3. **Полные слова:** `button` > `btn` (кроме устоявшихся: `props`, `ref`, `config`)
-4. **Описательность:** имя должно объяснять назначение
-   </naming_principles>
+1. **Readability:** `validatePackageName` > `validate`
+2. **Consistency:** same suffixes for same type
+3. **Full words:** `button` > `btn` (except established: `props`, `ref`, `config`)
+4. **Descriptiveness:** name should explain purpose
+</naming_principles>
 
-### Быстрая проверка
+### Quick Validation Checklist
 
 <validation_checklist>
-**Правильный ли регистр?** kebab/camel/Pascal/SCREAMING_SNAKE
-**Описывает ли назначение?** понятно без контекста
-**Консистентно с проектом?** следует установленным паттернам
-**Избегает сокращений?** полные слова где возможно
+**Correct casing?** kebab/camel/Pascal/SCREAMING_SNAKE
+**Describes purpose?** clear without context
+**Consistent with project?** follows established patterns
+**Avoids abbreviations?** full words where possible
 
 <completion_criteria>
-**Критерий завершения:** Все элементы соответствуют правилам своих категорий, консистентны в проекте
+**Completion criteria:** All elements conform to rules of their categories, consistent within project
 </completion_criteria>
 
 <exception_handling>
-**При конфликте правил:** приоритет читаемости над строгим следованием конвенциям
-**При устоявшихся исключениях:** документировать и применять консистентно
-**При наследии от внешних библиотек:** сохранять оригинальное именование (React.Component, useState)
-**При API интеграциях:** следовать соглашениям внешнего API
-**При миграции legacy кода:** документировать отклонения и план приведения к стандартам
+**Rule conflicts:** prioritize readability over strict convention adherence
+**Established exceptions:** document and apply consistently
+**External library inheritance:** preserve original naming (React.Component, useState)
+**API integrations:** follow external API conventions
+**Legacy code migration:** document deviations and standardization plan
 </exception_handling>
 </validation_checklist>
 
