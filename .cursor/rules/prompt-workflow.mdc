@@ -1,9 +1,6 @@
 ---
 id: prompt-engineering-v1
 type: combo
-use_cases: ['prompt_creation', 'prompt_improvement', 'prompt_editing', 'prompt_validation']
-prompt_language: en
-response_language: ru
 globs: **/*.mdc, .cursor/**/*.md
 alwaysApply: false
 ---
@@ -268,9 +265,10 @@ When creating/editing compact prompts, apply these criteria:
 - NO TIER structure (use **bold** headers instead)
 - NO system anchors [ALGORITHM-BEGIN/END]
 - Inline exception handling (embedded in logic)
-- Imperative triggers (INSTANT, EXECUTE, REQUIRED)
+- Imperative triggers (EXECUTE, REQUIRED - INSTANT is optional, not mandatory)
 - Numbered lists over prose
 - No emoji (token economy)
+- Do NOT add Russian language instruction "**ВАЖНО: Все ответы должны быть на русском языке.**" for compact type prompts
 
 <completion_criteria>
 Completion: Type clearly identified, complexity assessed, operation selected, edit analysis completed if applicable, compact criteria applied if compact type
@@ -298,6 +296,7 @@ After type determination, verify understanding:
 - [ ] Understand: Inline exception handling
 - [ ] Understand: Target score ≥85 (same as all types)
 - [ ] Understand: ALL content in English except examples
+- [ ] Understand: Do NOT add Russian language instruction for compact type prompts
 
 **IF type = COMMAND:**
 
@@ -365,7 +364,7 @@ Complete ALL for current step:
 
 **FOR ALGORITHM/REFERENCE/COMBO TYPES:**
 
-- Add minimal YAML frontmatter (id, type, use_cases, alwaysApply)
+- Add minimal YAML frontmatter (id, type, alwaysApply)
 - Create TIER headers (1-2 mandatory, 3-5 optional)
 - Wrap content in XML tags (expert_role, algorithm_steps, examples)
 
@@ -406,6 +405,13 @@ Complete ALL for Step 2:
 - Include concrete examples (bash commands, git workflows, output formats)
 - Add operational context where needed (example in Russian: "Работа ведётся в корне репозитория")
 - Specify expected behavior and edge cases
+
+**FOR COMPACT TYPE:**
+
+- Fill content with clear instructions (ALWAYS in English - MANDATORY)
+- Do NOT add Russian language instruction "**ВАЖНО: Все ответы должны быть на русском языке.**" for compact type prompts
+- Use numbered lists and imperative triggers (EXECUTE, REQUIRED - INSTANT is optional, not mandatory)
+- Add examples showing Russian output if applicable (but no language instruction)
 
 **FOR ALGORITHM/REFERENCE/COMBO TYPES:**
 
@@ -735,9 +741,6 @@ Minimal YAML frontmatter:
 ---
 id: prompt-name
 type: algorithm|reference|combo|compact|command
-use_cases: ['specific', 'use', 'cases']
-prompt_language: en|ru|mixed
-response_language: en|ru|mixed
 alwaysApply: false
 ---
 ```
@@ -745,9 +748,6 @@ alwaysApply: false
 Guidance:
 
 - `id` must be unique, descriptive, and may include a version suffix (e.g., `prompt-engineering-v2`)
-- `use_cases` should list concrete, relevant scenarios
-- `prompt_language`: main prompt content language (en=English, ru=Russian, mixed=bilingual)
-- `response_language`: expected model response language (en=English, ru=Russian, mixed=context-dependent)
 - `globs` (optional): file patterns for prompt application scope (e.g., `"**/*.md"`, `".cursor/**/*"`, `"src/**/*.ts"`)
 - `alwaysApply` controls whether the prompt is auto-applied in your tooling
   </yaml_essentials>
@@ -928,7 +928,7 @@ Few-shot examples (input → expected structured output):
 
     <feature_flag_router>
 
-    **INSTANT DETECTION - NO API CALLS:**
+    **Detection logic:**
 
     Check in order, route immediately:
 
@@ -1027,7 +1027,7 @@ Reference: `.cursor/rules/compact-prompts-best-practices.mdc`
 **Key principles (apply ONLY to compact type):**
 
 1. **One semantic wrapper:** Single XML tag with prompt name, no multiple tags
-2. **Imperative triggers:** Use INSTANT, EXECUTE, REQUIRED (not "please" or "you should")
+2. **Imperative triggers:** Use EXECUTE, REQUIRED (INSTANT is optional, not mandatory - avoid overuse of "INSTANT ENFORCEMENT")
 3. **No TIER structure:** Use **bold** headers, flat structure
 4. **No system anchors:** [ALGORITHM-BEGIN/END] NOT needed for compact
 5. **Inline exception handling:** Embed fallbacks in logic (3. Otherwise → default)
@@ -1036,6 +1036,7 @@ Reference: `.cursor/rules/compact-prompts-best-practices.mdc`
 8. **Explicit action items:** Specific actions with examples (not abstract hints)
 9. **Minimal YAML:** Only id, type, alwaysApply (no use_cases, language, globs)
 10. **Numbered lists > prose:** Scannable structure, -50% tokens
+11. **No Russian language instruction:** Do NOT add "**ВАЖНО: Все ответы должны быть на русском языке.**" for compact type prompts
 
 **Compact prompt anatomy:**
 
@@ -1214,12 +1215,12 @@ Remember: you are an elite prompt engineer - ensure your final answer is thoroug
 
 Before completing, verify ALL critical elements are present:
 
-- YAML frontmatter is present and correctly filled (id, type, use_cases, prompt_language, response_language, alwaysApply); `id` is unique/descriptive (e.g., includes version), `use_cases` are relevant, language fields specify appropriate values
+- YAML frontmatter is present and correctly filled (id, type, alwaysApply); `id` is unique/descriptive (e.g., includes version)
 - All required TIER sections (1-2 mandatory, 3-5 as needed) are included with proper XML tags
 - Each algorithm step has completion_criteria and exception_handling where needed
 - **LANGUAGE POLICY APPLIED**: Prompt content is in English; ONLY adds Russian phrase "**ВАЖНО: Все ответы должны быть на русском языке.**" if user-facing output expected; examples show English structure with Russian output samples
 - **SYSTEM ANCHORS are MANDATORY placed**: [ALGORITHM-BEGIN/END] for algorithm type, [REFERENCE-BEGIN/END] for reference type
-- **COMPACT TYPE VERIFICATION**: If type=compact, verify: ONE semantic XML tag (not multiple), NO TIER structure, NO system anchors, imperative trigger first line, numbered lists, minimal YAML (id+type+alwaysApply only), inline fallback
+- **COMPACT TYPE VERIFICATION**: If type=compact, verify: ONE semantic XML tag (not multiple), NO TIER structure, NO system anchors, imperative trigger first line (INSTANT optional, not mandatory), numbered lists, minimal YAML (id+type+alwaysApply only), inline fallback, NO Russian language instruction added
 - **COMMAND TYPE VERIFICATION**: If type=command, verify: NO YAML frontmatter, NO TIER structure, NO XML tags, NO system anchors, imperative style (Russian: "Ты — [role]"), direct instructions with ## headers, optional bash examples
 - Output format section matches the required structure with prefill examples
 - The model's response begins with `<prompt_analysis>**Type:** ...` and includes `<improvements>` and `<result>` sections
