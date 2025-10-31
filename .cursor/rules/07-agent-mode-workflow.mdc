@@ -1,7 +1,6 @@
 ---
 id: 07-agent-mode-workflow
 type: compact
-response_language: ru
 alwaysApply: true
 ---
 

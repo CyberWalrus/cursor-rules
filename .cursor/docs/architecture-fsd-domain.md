@@ -1,16 +1,6 @@
 ---
 id: architecture-fsd-domain
 type: reference
-use_cases:
-    [
-        'fsd_domain_architecture',
-        'feature_sliced_design_with_domains',
-        'large_frontend_applications',
-        'business_domains',
-        'enterprise_projects',
-    ]
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

@@ -1,9 +1,6 @@
 ---
 id: ui-workflow-v1
 type: algorithm
-use_cases: ['ui_planning', 'visual_validation', 'browser_testing', 'design_fixes']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

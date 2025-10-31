@@ -2,9 +2,6 @@
 id: plan-mode-dispatcher
 type: combo
 alwaysApply: false
-use_cases: ['task_classification', 'workflow_routing', 'meta_analysis', 'ai_dispatcher']
-prompt_language: mixed
-response_language: ru
 ---
 
 # 🚦 Plan Mode Dispatcher

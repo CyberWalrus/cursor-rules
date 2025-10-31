@@ -1,9 +1,6 @@
 ---
 id: architecture-single-module
 type: reference
-use_cases: ['single_module_architecture', 'simple_projects', 'utilities', 'hooks', 'validators']
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

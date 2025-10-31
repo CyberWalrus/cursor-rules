@@ -1,16 +1,6 @@
 ---
 id: architecture-fsd-standard
 type: reference
-use_cases:
-    [
-        'fsd_standard_architecture',
-        'feature_sliced_design',
-        'frontend_applications',
-        'no_domains',
-        'medium_complexity_projects',
-    ]
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

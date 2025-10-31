@@ -1,9 +1,6 @@
 ---
 id: architecture-server-fsd
 type: reference
-use_cases: ['server_fsd_architecture', 'backend_apps', 'api_servers', 'cli_tools', 'microservices']
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

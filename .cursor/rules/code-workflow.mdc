@@ -1,9 +1,6 @@
 ---
 id: code-workflow
 type: algorithm
-use_cases: ['planning', 'project_preparation', 'architecture_validation']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

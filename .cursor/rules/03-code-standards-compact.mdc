@@ -1,8 +1,6 @@
 ---
 id: code-standards-compact
 type: compact
-prompt_language: ru
-response_language: ru
 alwaysApply: true
 ---
 

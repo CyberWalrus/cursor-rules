@@ -1,9 +1,6 @@
 ---
 id: auxiliary-code-workflow-v1
 type: algorithm
-use_cases: ['side_development', 'infrastructure_setup', 'deployment_scripts', 'system_automation', 'vpn_setup']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

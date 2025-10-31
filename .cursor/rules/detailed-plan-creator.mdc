@@ -1,9 +1,6 @@
 ---
 id: detailed-plan-creator-v1
 type: algorithm
-use_cases: ['complex_planning', 'architecture_design', 'implementation_roadmap', 'detailed_breakdown']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

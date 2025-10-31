@@ -1,9 +1,6 @@
 ---
 id: ai-documentation-package-reference
 type: reference
-use_cases: ['ai_package_documentation', 'package_templates', 'documentation_standards']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

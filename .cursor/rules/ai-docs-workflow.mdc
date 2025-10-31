@@ -1,9 +1,6 @@
 ---
 id: ai-documentation-integration-analysis
 type: reference
-use_cases: ['ai_docs_integration', 'architecture_alignment', 'terminology_mapping']
-prompt_language: mixed
-response_language: ru
 globs: **/package-ai-docs.md, **/module-ai-docs.md
 alwaysApply: false
 ---

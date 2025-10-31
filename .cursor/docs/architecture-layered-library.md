@@ -1,17 +1,6 @@
 ---
 id: architecture-layered-library
 type: reference
-use_cases:
-    [
-        'layered_library_architecture',
-        'multi_module_packages',
-        'ui_libraries',
-        'shared_layers',
-        'api_clients',
-        'utility_packages',
-    ]
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

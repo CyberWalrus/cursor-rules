@@ -1,9 +1,6 @@
 ---
 id: code-standards-reference
 type: reference
-use_cases: ['code_quality_enforcement', 'code_review', 'linting', 'development_standards']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

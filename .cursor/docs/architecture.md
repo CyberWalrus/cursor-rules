@@ -1,9 +1,6 @@
 ---
 id: architecture-reference-v2
 type: reference
-use_cases: ['architecture_reference', 'fsd_rules', 'module_architecture', 'ai_coding_assistant']
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

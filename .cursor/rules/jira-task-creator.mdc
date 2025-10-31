@@ -1,9 +1,6 @@
 ---
 id: jira-task-creator-v1
 type: algorithm
-use_cases: ['jira_task_creation', 'requirements_gathering', 'interactive_planning', 'task_specification']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 

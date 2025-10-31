@@ -1,9 +1,6 @@
 ---
 id: technical-critique
 type: algorithm
-use_cases: ['code_review', 'concept_validation', 'technical_analysis']
-prompt_language: en
-response_language: ru
 alwaysApply: false
 ---
 

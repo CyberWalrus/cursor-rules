@@ -1,8 +1,6 @@
 ---
 id: architecture-xml-generator-v1
 type: algorithm
-use_cases: ['architecture_docs_generation', 'package_structure_export', 'fsd_layers_docs']
-response_language: mixed
 alwaysApply: false
 ---
 

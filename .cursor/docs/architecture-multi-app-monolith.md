@@ -1,16 +1,6 @@
 ---
 id: architecture-multi-app-monolith
 type: reference
-use_cases:
-    [
-        'multi_app_monolith_architecture',
-        'fullstack_monorepos',
-        'enterprise_solutions',
-        'shared_tooling',
-        'multiple_entrypoints',
-    ]
-prompt_language: ru
-response_language: ru
 alwaysApply: false
 ---
 

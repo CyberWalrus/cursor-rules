@@ -1,9 +1,6 @@
 ---
 id: ai-documentation-module-reference
 type: reference
-use_cases: ['ai_module_documentation', 'module_templates', 'api_documentation']
-prompt_language: mixed
-response_language: ru
 alwaysApply: false
 ---
 
