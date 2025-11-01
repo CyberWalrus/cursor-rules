@@ -37,12 +37,17 @@ BEFORE calling search_replace/write/edit_notebook → check file path → IF mat
 
 **FILE-BASED TRIGGERS (automatic):**
 
-- `prompts/**/*.md` OR `.cursor/**/*.mdc` → `prompt-workflow-compact.mdc`
+**Prompt file detection:** ANY `.md/.mdc` with YAML frontmatter containing `type:` field (check file content, not directory path)
+**Exclude:** README.md, CHANGELOG.md (documentation, not prompts - skip trigger)
+
+- Prompt files (including `user-rules/*.md`, `prompts/**/*.md`, `.cursor/**/*.mdc`) → `prompt-workflow-compact.mdc`
 - `prompts/validation/*.md` → ALSO `code-standards.md`, `testing.md`
 - `*.test.ts` (new/edit) → `testing.md`
 - Creating new `.ts/.tsx` files → `architecture.md`, `naming.md`
 - Editing `*.ts/*.tsx` (≥20 lines changes) → `code-standards.md`, `naming.md`
 - AI docs update (package-ai-docs.md, module-ai-docs.md) → `ai-docs-workflow.mdc`
+
+**Self-check:** Before editing `.md/.mdc` → inspect YAML → if `type:` field exists → prompt file → trigger applies
 
 **EXTERNAL DEPENDENCIES:**
 
@@ -60,7 +65,7 @@ After EACH file modification (search_replace/write/edit_notebook):
 1. **VALIDATE:** Call `mcp_mcp-validator_validate`:
    - `.ts/.tsx/.js/.jsx` → `'code'`
    - `.test.ts/.spec.ts` → `'tests'`
-   - `.mdc/.md` (in `.cursor/`) → `'prompts'`
+   - `.mdc/.md` (in `.cursor/`) → `'prompts'` | SKIP: README.md, CHANGELOG.md
    - `architecture.xml` → `'architecture'`
    - `package-ai-docs.md, module-ai-docs.md` → `'documentation'`
 
