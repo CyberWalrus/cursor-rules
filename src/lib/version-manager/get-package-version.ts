@@ -1,9 +1,9 @@
-import { readFile } from 'fs-extra';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 /** Получает версию из package.json пакета */
 export async function getPackageVersion(packageDir: string): Promise<string> {
-    if (packageDir === null || packageDir === undefined) {
+    if (!packageDir) {
         throw new Error('packageDir is required');
     }
 

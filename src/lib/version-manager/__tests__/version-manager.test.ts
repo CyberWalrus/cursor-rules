@@ -7,7 +7,7 @@ const { mockReadFile } = vi.hoisted(() => ({
     mockReadFile: vi.fn(),
 }));
 
-vi.mock('fs-extra', () => ({
+vi.mock('node:fs/promises', () => ({
     readFile: mockReadFile,
 }));
 
