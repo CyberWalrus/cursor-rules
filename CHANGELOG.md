@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.1.4] - 2025-11-01
+
+<small>01.11.2025 22:34</small>
+
+### Changed
+
+- **Миграция с fs-extra на нативный node:fs/promises**
+    - Полностью переведены модули file-operations и version-manager на нативные API Node.js
+    - Устранена зависимость от fs-extra, что исключает CommonJS/ESM конфликты
+    - Добавлена функция pathExists для проверки существования файлов
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/17fa59f80ce4c89cfb2cc91a5e3b8ccd82ed8655" target="_blank">17fa59f</a>
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/4aa9d7dd776ab8b13e136865f3c1321d96d2abf5" target="_blank">4aa9d7d</a>
+
+- **Миграция CLI с commander на citty**
+    - Переход на современный типобезопасный CLI builder из экосистемы UnJS
+    - Поддержка async commands из коробки
+    - Улучшенная структура команд с использованием defineCommand
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/a98fa5b6eea92e2ce69659b18c3c415047fa6123" target="_blank">a98fa5b</a>
+
+- **Обновление зависимостей**
+    - Добавлены citty ^0.1.6 и picocolors ^1.1.0
+    - Удалена зависимость fs-extra (заменена на node:fs/promises)
+    - picocolors обеспечивает безопасность (chalk 5.6.1 был скомпрометирован в сентябре 2025) и производительность (2x быстрее, 14x легче)
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/9e0a9fff7fbcc4ed4e7cd2d748b81a669af41b1b" target="_blank">9e0a9ff</a>
+
+- **Обновление документации**
+    - Актуализирована package-ai-docs.md с описанием новых зависимостей (citty, picocolors)
+    - Обновлены context7_refs с указанием актуальных зависимостей
+    - Добавлены преимущества использования нативного node:fs/promises
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/1e874257d98c788bef8af146ddb632fe1371c2d1" target="_blank">1e87425</a>
+
 ## [0.1.3] - 2025-11-01
 
 <small>01.11.2025 15:54</small>
