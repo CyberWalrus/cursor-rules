@@ -37,7 +37,7 @@ jobs:
         run: yarn build
 
       - name: Run e2e tests
-        run: yarn vitest --config vitest.e2e.ci.config.ts --run
+        run: yarn test:e2e
         env:
           MCP_E2E_TEST: "true"
           NODE_ENV: "test"
@@ -72,7 +72,7 @@ jobs:
         run: yarn build
 
       - name: Run e2e tests
-        run: yarn vitest --config vitest.e2e.ci.config.ts --run
+        run: yarn test:e2e
         env:
           MCP_E2E_TEST: "true"
           NODE_ENV: "test"
@@ -107,7 +107,7 @@ jobs:
         run: yarn build
 
       - name: Run e2e tests
-        run: yarn vitest --config vitest.e2e.ci.config.ts --run
+        run: yarn test:e2e
         env:
           MCP_E2E_TEST: "true"
           NODE_ENV: "test"
