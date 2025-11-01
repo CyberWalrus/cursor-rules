@@ -1,14 +1,15 @@
-import { copy, pathExists } from 'fs-extra';
+import { cp } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { RULES_DIRS } from '../../model/constants/main';
+import { pathExists } from './path-exists';
 
 /** Копирует правила из пакета в целевую директорию */
 export async function copyRulesToTarget(packageDir: string, targetDir: string): Promise<void> {
-    if (packageDir === null || packageDir === undefined) {
+    if (!packageDir) {
         throw new Error('packageDir is required');
     }
-    if (targetDir === null || targetDir === undefined) {
+    if (!targetDir) {
         throw new Error('targetDir is required');
     }
 
@@ -22,9 +23,9 @@ export async function copyRulesToTarget(packageDir: string, targetDir: string): 
                 return;
             }
 
-            await copy(sourcePath, targetPath, {
-                errorOnExist: false,
-                overwrite: true,
+            await cp(sourcePath, targetPath, {
+                force: true,
+                recursive: true,
             });
         }),
     );

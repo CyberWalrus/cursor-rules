@@ -1,12 +1,13 @@
-import { pathExists, readFile } from 'fs-extra';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { VERSION_FILE_NAME } from '../../model/constants/main';
 import type { VersionInfo } from '../../model/types/main';
+import { pathExists } from './path-exists';
 
 /** Читает файл версии из целевой директории */
 export async function readVersionFile(targetDir: string): Promise<VersionInfo | null> {
-    if (targetDir === null || targetDir === undefined) {
+    if (!targetDir) {
         throw new Error('targetDir is required');
     }
 

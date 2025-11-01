@@ -1,11 +1,12 @@
-import { pathExists, remove } from 'fs-extra';
+import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { RULES_DIRS } from '../../model/constants/main';
+import { pathExists } from './path-exists';
 
 /** Удаляет правила из целевой директории */
 export async function deleteRulesFromTarget(targetDir: string): Promise<void> {
-    if (targetDir === null || targetDir === undefined) {
+    if (!targetDir) {
         throw new Error('targetDir is required');
     }
 
@@ -18,7 +19,10 @@ export async function deleteRulesFromTarget(targetDir: string): Promise<void> {
                 return;
             }
 
-            await remove(targetPath);
+            await rm(targetPath, {
+                force: true,
+                recursive: true,
+            });
         }),
     );
 }

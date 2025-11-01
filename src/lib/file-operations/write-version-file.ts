@@ -1,4 +1,4 @@
-import { writeFile } from 'fs-extra';
+import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { VERSION_FILE_NAME } from '../../model/constants/main';
@@ -6,10 +6,10 @@ import type { VersionInfo } from '../../model/types/main';
 
 /** Записывает файл версии в целевую директорию */
 export async function writeVersionFile(targetDir: string, versionInfo: VersionInfo): Promise<void> {
-    if (targetDir === null || targetDir === undefined) {
+    if (!targetDir) {
         throw new Error('targetDir is required');
     }
-    if (versionInfo === null || versionInfo === undefined) {
+    if (!versionInfo) {
         throw new Error('versionInfo is required');
     }
 

@@ -1,20 +1,26 @@
 import type { VersionInfo } from '../../../model/types/main';
 import { copyRulesToTarget, deleteRulesFromTarget, readVersionFile, writeVersionFile } from '../index';
 
-const { mockCopy, mockPathExists, mockReadFile, mockRemove, mockWriteFile } = vi.hoisted(() => ({
-    mockCopy: vi.fn(),
+const { mockCp, mockAccess, mockReadFile, mockRm, mockWriteFile, mockPathExists } = vi.hoisted(() => ({
+    mockAccess: vi.fn(),
+    mockCp: vi.fn(),
     mockPathExists: vi.fn(),
     mockReadFile: vi.fn(),
-    mockRemove: vi.fn(),
+    mockRm: vi.fn(),
     mockWriteFile: vi.fn(),
 }));
 
-vi.mock('fs-extra', () => ({
-    copy: mockCopy,
-    pathExists: mockPathExists,
+vi.mock('node:fs/promises', () => ({
+    access: mockAccess,
+    constants: { F_OK: 0 },
+    cp: mockCp,
     readFile: mockReadFile,
-    remove: mockRemove,
+    rm: mockRm,
     writeFile: mockWriteFile,
+}));
+
+vi.mock('../path-exists', () => ({
+    pathExists: mockPathExists,
 }));
 
 describe('file-operations', () => {
@@ -25,12 +31,12 @@ describe('file-operations', () => {
     describe('copyRulesToTarget', () => {
         it('должен копировать существующие директории правил', async () => {
             mockPathExists.mockResolvedValue(true);
-            mockCopy.mockResolvedValue(undefined);
+            mockCp.mockResolvedValue(undefined);
 
             await copyRulesToTarget('/package', '/target');
 
             expect(mockPathExists).toHaveBeenCalled();
-            expect(mockCopy).toHaveBeenCalled();
+            expect(mockCp).toHaveBeenCalled();
         });
 
         it('должен пропускать несуществующие директории', async () => {
@@ -39,19 +45,19 @@ describe('file-operations', () => {
             await copyRulesToTarget('/package', '/target');
 
             expect(mockPathExists).toHaveBeenCalled();
-            expect(mockCopy).not.toHaveBeenCalled();
+            expect(mockCp).not.toHaveBeenCalled();
         });
     });
 
     describe('deleteRulesFromTarget', () => {
         it('должен удалять существующие директории правил', async () => {
             mockPathExists.mockResolvedValue(true);
-            mockRemove.mockResolvedValue(undefined);
+            mockRm.mockResolvedValue(undefined);
 
             await deleteRulesFromTarget('/target');
 
             expect(mockPathExists).toHaveBeenCalled();
-            expect(mockRemove).toHaveBeenCalled();
+            expect(mockRm).toHaveBeenCalled();
         });
 
         it('должен пропускать несуществующие директории', async () => {
@@ -60,7 +66,7 @@ describe('file-operations', () => {
             await deleteRulesFromTarget('/target');
 
             expect(mockPathExists).toHaveBeenCalled();
-            expect(mockRemove).not.toHaveBeenCalled();
+            expect(mockRm).not.toHaveBeenCalled();
         });
     });
 
