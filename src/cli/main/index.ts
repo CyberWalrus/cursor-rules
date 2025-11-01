@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import { defineCommand, runMain } from 'citty';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,41 +9,61 @@ import { updateCommand } from '../commands/update/index';
 const currentFilePath = fileURLToPath(import.meta.url);
 const packageDir = join(dirname(currentFilePath), '..', '..', '..');
 
+/** Получает текущую рабочую директорию */
+function getTargetDir(): string {
+    return process.cwd();
+}
+
+const main = defineCommand({
+    meta: {
+        description: 'CLI tool for managing .cursor rules in projects',
+        name: 'cursor-rules',
+        version: '0.1.3',
+    },
+    subCommands: {
+        init: defineCommand({
+            meta: {
+                description: 'Initialize .cursor rules in the project',
+                name: 'init',
+            },
+            /** Запускает инициализацию .cursor правил */
+            async run(): Promise<void> {
+                const targetDir = getTargetDir();
+                await initCommand(packageDir, targetDir);
+                // eslint-disable-next-line no-console
+                console.log('✅ Rules initialized successfully');
+            },
+        }),
+        'replace-all': defineCommand({
+            meta: {
+                description: 'Replace all .cursor rules with the latest version',
+                name: 'replace-all',
+            },
+            /** Запускает полную замену .cursor правил */
+            async run(): Promise<void> {
+                const targetDir = getTargetDir();
+                await replaceAllCommand(packageDir, targetDir);
+                // eslint-disable-next-line no-console
+                console.log('✅ Rules replaced successfully');
+            },
+        }),
+        update: defineCommand({
+            meta: {
+                description: 'Update .cursor rules to the latest version',
+                name: 'update',
+            },
+            /** Запускает обновление .cursor правил */
+            async run(): Promise<void> {
+                const targetDir = getTargetDir();
+                await updateCommand(packageDir, targetDir);
+                // eslint-disable-next-line no-console
+                console.log('✅ Rules updated successfully');
+            },
+        }),
+    },
+});
+
 /** Запускает CLI приложение */
 export async function runCli(): Promise<void> {
-    const program = new Command();
-
-    program.name('cursor-rules').description('CLI tool for managing .cursor rules in projects').version('0.1.0');
-
-    program
-        .command('init')
-        .description('Initialize .cursor rules in the project')
-        .action(async () => {
-            const targetDir = process.cwd();
-            await initCommand(packageDir, targetDir);
-            // eslint-disable-next-line no-console
-            console.log('✅ Rules initialized successfully');
-        });
-
-    program
-        .command('update')
-        .description('Update .cursor rules to the latest version')
-        .action(async () => {
-            const targetDir = process.cwd();
-            await updateCommand(packageDir, targetDir);
-            // eslint-disable-next-line no-console
-            console.log('✅ Rules updated successfully');
-        });
-
-    program
-        .command('replace-all')
-        .description('Replace all .cursor rules with the latest version')
-        .action(async () => {
-            const targetDir = process.cwd();
-            await replaceAllCommand(packageDir, targetDir);
-            // eslint-disable-next-line no-console
-            console.log('✅ Rules replaced successfully');
-        });
-
-    await program.parseAsync(process.argv);
+    await runMain(main);
 }
