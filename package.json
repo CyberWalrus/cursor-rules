@@ -1,9 +1,9 @@
 {
-    "name": "cursor-rules",
+    "name": "cursor-rules-cli",
     "version": "0.1.0",
     "description": "CLI tool for managing .cursor rules in projects",
     "bin": {
-        "cursor-rules": "./dist/cli.js"
+        "cursor-rules-cli": "./dist/cli.js"
     },
     "type": "module",
     "scripts": {
@@ -16,7 +16,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:CyberWalrus/cursor-rules.git"
+        "url": "git@github.com:CyberWalrus/cursor-rules-cli.git"
     },
     "keywords": [
         "cursor",
