@@ -1,4 +1,8 @@
-# Cursor Rules
+# Cursor Rules CLI
+
+[![npm version](https://img.shields.io/npm/v/cursor-rules-cli.svg)](https://www.npmjs.com/package/cursor-rules-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/cursor-rules-cli.svg)](https://nodejs.org)
 
 Модульная система AI-промптов для Cursor IDE с автоматической классификацией задач и встроенной валидацией качества. Обеспечивает консистентность кода, архитектурную целостность и автоматическое следование best practices. Решает системные проблемы AI-ассистентов: незавершенность задач, игнорирование инструментов, фабрикацию данных.
 
