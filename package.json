@@ -1,0 +1,8 @@
+{
+  "name": "cursor-rules",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:CyberWalrus/cursor-rules.git",
+  "author": "Пахомов Андрей Николаевич <andrey.pahomov@ligastavok.ru>",
+  "license": "MIT"
+}
