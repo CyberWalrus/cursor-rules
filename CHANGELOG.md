@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3] - 2025-11-01
+
+<small>01.11.2025 15:54</small>
+
+### Changed
+
+- **Обновление версии**
+    - Обновлена версия пакета до 0.1.3
+    - <a href="https://github.com/CyberWalrus/cursor-rules-cli/commit/2e5f27d2fa767086392c2ed502b622b98295c1ac" target="_blank">2e5f27d</a>
+
 ## [0.1.2] - 2025-11-01
 
 <small>01.11.2025 15:42</small>
