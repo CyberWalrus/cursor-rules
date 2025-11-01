@@ -1,8 +1,59 @@
 {
-  "name": "cursor-rules",
-  "version": "0.1.0",
-  "main": "index.js",
-  "repository": "git@github.com:CyberWalrus/cursor-rules.git",
-  "author": "Пахомов Андрей Николаевич <andrey.pahomov@ligastavok.ru>",
-  "license": "MIT"
+    "name": "cursor-rules",
+    "version": "0.1.0",
+    "description": "CLI tool for managing .cursor rules in projects",
+    "bin": {
+        "cursor-rules": "./dist/cli.js"
+    },
+    "type": "module",
+    "scripts": {
+        "build": "tsup",
+        "start": "node --import tsx src/cli.ts",
+        "test:unit": "cross-env NODE_ENV=test vitest --run",
+        "test:e2e": "cross-env NODE_ENV=test MCP_E2E_TEST=true vitest --config vitest.e2e.config.ts --run",
+        "typecheck": "tsc --noEmit",
+        "lint": "yarn eslint --fix --report-unused-disable-directives-severity off src && yarn typecheck"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:CyberWalrus/cursor-rules.git"
+    },
+    "keywords": [
+        "cursor",
+        "ai",
+        "rules",
+        "cli",
+        "cursor-ai",
+        "configuration",
+        "management"
+    ],
+    "author": "Пахомов Андрей Николаевич <andrey.pahomov@ligastavok.ru>",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "5.6.2",
+        "commander": "14.0.2",
+        "fs-extra": "11.3.2",
+        "zod": "4.1.12"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "11.0.4",
+        "@types/node": "24.9.2",
+        "cross-env": "10.1.0",
+        "eslint-walrus-config": "1.1.0",
+        "tsup": "8.5.0",
+        "tsx": "4.20.6",
+        "typescript": "5.9.3",
+        "vitest": "4.0.6"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "files": [
+        "dist",
+        ".cursor",
+        "user-rules"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

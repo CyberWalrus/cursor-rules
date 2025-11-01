@@ -142,4 +142,7 @@ target/
 .DS_Store
 lib/*
 reports/*
+
+# GitHub Actions secrets (local development only)
+.github/workflows/.secrets
 user-rules/meta-info.md
