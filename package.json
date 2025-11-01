@@ -10,7 +10,7 @@
         "build": "tsup",
         "start": "node --import tsx src/cli.ts",
         "test:unit": "cross-env NODE_ENV=test vitest --run",
-        "test:e2e": "cross-env NODE_ENV=test MCP_E2E_TEST=true vitest --config vitest.e2e.config.ts --run",
+        "test:e2e": "cross-env NODE_ENV=test vitest --run",
         "typecheck": "tsc --noEmit",
         "lint": "yarn eslint --fix --report-unused-disable-directives-severity off src && yarn typecheck"
     },

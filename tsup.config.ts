@@ -14,7 +14,6 @@ export default defineConfig({
             },
         };
     },
-    external: ['@modelcontextprotocol/sdk', 'openai', 'zod'],
     format: ['esm'],
     outDir: 'dist',
     sourcemap: false,
