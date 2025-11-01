@@ -40,12 +40,11 @@ BEFORE calling search_replace/write/edit_notebook → check file path → IF mat
 **Prompt file detection:** ANY `.md/.mdc` with YAML frontmatter containing `type:` field (check file content, not directory path)
 **Exclude:** README.md, CHANGELOG.md (documentation, not prompts - skip trigger)
 
-- Prompt files (including `user-rules/*.md`, `prompts/**/*.md`, `.cursor/**/*.mdc`) → `prompt-workflow-compact.mdc`
-- `prompts/validation/*.md` → ALSO `code-standards.md`, `testing.md`
-- `*.test.ts` (new/edit) → `testing.md`
-- Creating new `.ts/.tsx` files → `architecture.md`, `naming.md`
-- Editing `*.ts/*.tsx` (≥20 lines changes) → `code-standards.md`, `naming.md`
-- AI docs update (package-ai-docs.md, module-ai-docs.md) → `ai-docs-workflow.mdc`
+- Prompt files (including `user-rules/*.md`, `prompts/**/*.md`, `.cursor/**/*.mdc`) → `.cursor/rules/prompt-workflow-compact.mdc`
+- `*.test.ts` (new/edit) → `.cursor/rules/testing.md`
+- Creating new `.ts/.tsx` files → `.cursor/rules/architecture.md`, `.cursor/rules/naming.md`
+- Editing `*.ts/*.tsx` (≥20 lines changes) → `.cursor/rules/code-standards.md`, `.cursor/rules/naming.md`
+- AI docs update (package-ai-docs.md, module-ai-docs.md) → `.cursor/rules/ai-docs-workflow.mdc`
 
 **Self-check:** Before editing `.md/.mdc` → inspect YAML → if `type:` field exists → prompt file → trigger applies
 
