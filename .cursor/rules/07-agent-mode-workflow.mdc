@@ -37,8 +37,7 @@ BEFORE calling search_replace/write/edit_notebook → check file path → IF mat
 
 **FILE-BASED TRIGGERS (automatic):**
 
-**Prompt file detection:** ANY `.md/.mdc` with YAML frontmatter containing `type:` field (check file content, not directory path)
-**Exclude:** README.md, CHANGELOG.md (documentation, not prompts - skip trigger)
+**Prompt file detection:** ANY `.md/.mdc` with YAML frontmatter containing `type:` field (check file content, not directory path) | Exclude: see VALIDATION EXCEPTIONS
 
 - Prompt files (including `user-rules/*.md`, `prompts/**/*.md`, `.cursor/**/*.mdc`) → `.cursor/rules/prompt-workflow-compact.mdc`
 - `*.test.ts` (new/edit) → `.cursor/rules/testing.md`
@@ -55,24 +54,28 @@ BEFORE calling search_replace/write/edit_notebook → check file path → IF mat
 
 **UNIT TESTS:** All `.ts/.tsx` MUST have tests in `__tests__/` | EXCLUDE: `*.types.ts`, `*.constants.ts`, `*.schema.ts`
 
+**VALIDATION EXCEPTIONS:**
+
+- README.md, CHANGELOG.md (documentation files, not prompts/AI-docs - skip MCP validation and triggers)
+
 **VALIDATION PROTOCOL:**
 
 After EACH file modification (search_replace/write/edit_notebook):
 
 **MANDATORY (ZERO EXCEPTIONS):**
 
-1. **VALIDATE:** Call `mcp_mcp-validator_validate`:
+1. **VALIDATE:** Call `mcp_mcp-validator_validate` (skip files in VALIDATION EXCEPTIONS):
    - `.ts/.tsx/.js/.jsx` → `'code'`
    - `.test.ts/.spec.ts` → `'tests'`
-   - `.mdc/.md` (in `.cursor/`) → `'prompts'` | SKIP: README.md, CHANGELOG.md
+   - `.mdc/.md` (in `.cursor/`) → `'prompts'`
    - `architecture.xml` → `'architecture'`
-   - `package-ai-docs.md, module-ai-docs.md` → `'documentation'` | SKIP: README.md, CHANGELOG.md
+   - `package-ai-docs.md, module-ai-docs.md` → `'documentation'`
 
 2. **CHECK SCORE:** Target ≥85 | Score <85 → apply fixes, re-validate (max 3 iterations)
 
 3. **VERBALIZE:** `[OK] File: [name] | Score: [X]/100 | Status: PASSED ✓`
 
-**BLOCKED:** Skip validation | Accept score <85 | Respond before validation complete
+**BLOCKED:** If validation fails (score <85) → fix issues, re-validate; do NOT respond until score ≥85
 
 **ANTI-PATTERN:** search_replace → lint (❌) | **CORRECT:** search_replace → MCP → lint (✓)
 
